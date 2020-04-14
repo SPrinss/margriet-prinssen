@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recensie demo</title>
+  <script type="module" src="../../src/mp-card/mp-card.js"></script>
+  <script type="module" src="../../src/mp-button/mp-button.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lusitana&family=Work+Sans:wght@300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/demo/mp-card/styles.css">
+
+</head>
+<body>
+
+  <!-- <mp-card>
+    <figure slot="figure"><img src="https://images.unsplash.com/photo-1559781435-8232735d6d22?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80" alt=""></figure>
+    <h4>Freudjes, geen familie</h4>
+    <h5>mugmetdegoudentand</h5>
+    <p>19-03-1994 - Toneelschuur Haarlem</p>
+  </mp-card> -->
+  
+  <mp-card>
+    <h4 slot="header-main">Freudjes, geen familie</h4>
+    <h5 slot="header-main">mugmetdegoudentand</h5>
+    <li slot="header-aside">08-31-2007</li>
+    <li slot="header-aside">Ruïne van Brederode</li>
+    <li slot="header-aside">Velsen</li>
+
+    <div class="persons-grid">
+      <ul>
+        <li>Actors</li>
+        <li><a href="#">Ab Gietelink</a></li>
+        <li><a href="#">Bert Apeldoorn</a></li>
+        <li><a href="#">Munda de la Marre</a></li>
+        <li><a href="#">Arthur Geesing</a></li>
+      </ul>
+      <ul>
+        <li>Directors</li>
+        <li><a href="#">Ab Gietelink</a></li>
+
+      </ul>
+      <ul>
+        <li>Writers</li>
+        <li><a href="#">J. W. Goethe</a></li>
+        <li><a href="#">Ab Gietelink</a></li>
+      </ul>
+    </div>
+    <mp-button slot="footer" text arrow>See review</mp-button>
+  </mp-card>
+
+  <mp-card>
+    <figure slot="header-main"><img src="https://images.unsplash.com/photo-1559781726-b7c7e77515ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80"></figure>
+
+  </mp-card>
+</body>
+</html>

@@ -1,0 +1,49 @@
+@import '../../src/styles/theme/reset'
+@import '../../src/styles/theme/text-styles'
+
+:host
+  display inline-block
+
+.hidden {
+  display: none;
+}
+.combobox-wrapper {
+  position: relative;
+  font-size: 16px;
+  width: 100%;
+}
+input, #ex1-combobox, #ex1-listbox {
+  width: 100%;
+}
+.listbox, .grid {
+  background: inherit;
+  border: 1px solid #ccc;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  z-index: 1;
+}
+.listbox .result {
+  cursor: default;
+  margin: 0;
+}
+.listbox .result:hover, .grid .result-row:hover {
+  background: var(--mp-color-main--60);
+}
+.listbox .focused, .grid .focused {
+  background: var(--mp-color-main--60);
+}
+.result, input {
+  mp-text-b3()
+  width 100%
+  height 100%
+  padding var(--mp-size--2)
+}
+
+.result-category {
+  color: var(--mp-color-dark--60);
+}
+.result-count {
+  color: var(--mp-color-dark--40);
+}

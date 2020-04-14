@@ -1,0 +1,23 @@
+@import '../../src/styles/theme/reset'
+@import '../../src/styles/theme/main'
+@import '../../src/styles/mixins/base-styles'
+
+:host
+  display block
+
+header
+  background-color var(--mp-color-main--70)
+  min-height var(--mp-size--14)
+
+.recensie-grid
+  $grid(2)
+
+a > recensie-preview:hover 
+  box-shadow var(--mp-box-shadow--3)
+  cursor pointer
+
+ul li:first-of-type
+  margin-bottom var(--mp-size--2)
+  color var(--mp-color-dark--60)
+
+$$text-styles()

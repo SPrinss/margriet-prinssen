@@ -1,0 +1,48 @@
+@import '../../src/styles/theme/reset'
+@import '../../src/styles/theme/main'
+@import '../../src/styles/mixins/base-styles'
+
+:host
+  display block
+  border-radius var(--mp-border-radius--1)
+  box-shadow var(--mp-box-shadow--1)
+
+$$text-styles()
+
+figure
+img
+  max-width 100%
+  max-height 100%
+  object-fit cover
+  padding: 0;
+  margin: 0;
+  user-select none
+
+main
+  padding var(--mp-size--4)
+
+h4
+  margin-bottom var(--mp-size--2)
+
+ul
+  margin-bottom var(--mp-size--1)
+
+ul li
+  display inline-block
+
+ul li:not(:last-of-type):after
+  content: '-'
+  display inline-block
+  width: 10px;
+  margin-left: 5px;
+  text-align: center;
+
+span
+  mp-text-c2()
+
+span:first-of-type:not(:empty) + span:nth-of-type(2):not(:empty):before
+  content: '-'
+  display inline-block
+  width: 10px;
+  margin-right: 5px;
+  text-align: center;

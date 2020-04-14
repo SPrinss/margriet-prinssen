@@ -1,0 +1,40 @@
+
+page-content-spacing()
+  max-width 1080px
+  margin auto
+  padding 0 var(--mp-size--5);
+
+
+:host
+  display block
+
+header
+  position relative
+  
+header
+main ::slotted(section)
+  margin-bottom var(--mp-size--11)
+
+::slotted([name="header"] *)
+  width 100%
+  min-height 300px
+
+.header-content-container
+  position absolute
+  top 0
+  left 0
+  right 0
+  bottom var(--mp-size--8)
+  width: 100%
+  heigth 100%
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: white;
+
+.header-content-container
+main
+  page-content-spacing()
+
+
+

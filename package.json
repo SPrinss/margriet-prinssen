@@ -4,8 +4,17 @@
   "description": "Site of Margriet Prinssen",
   "main": "index.html",
   "scripts": {
-    "start": "npm run start:server::watch",
-    "start:server::watch": "es-dev-server --app-index ./index.html --http2 --node-resolve --watch --open",
+    "start": "concurrently --kill-others \"npm run start:server::watch\" \"npm run compile:styles::watch\"",
+    "start:server::watch": "es-dev-server --app-index ./demo/index.html --http2 --node-resolve --watch --open",
+    "compile:styles": "npm run compile:styles::src && npm run compile:styles::demo && npm run compile:styles::app",
+    "compile:styles::app": "stylus ./*.styl",
+    "compile:styles::src": "stylus src/**/*.styl",
+    "compile:styles::demo": "stylus demo/**/*.styl",
+    "compile:styles::dist": "stylus dist/**/*.styl",
+    "compile:styles::watch": "concurrently --kill-others \"npm run compile:styles::src:watch\" \"npm run compile:styles::demo:watch\" \"npm run compile:styles::app:watch\"",
+    "compile:styles::app:watch": "stylus ./*.styl -w",
+    "compile:styles::src:watch": "stylus src/**/*.styl -w",
+    "compile:styles::demo:watch": "stylus demo/**/*.styl -w",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,11 +32,18 @@
     "@html-element-wrappers/img": "^0.3.1",
     "@html-element-wrappers/input": "^0.3.1",
     "@html-element-wrappers/select": "^0.3.1",
+    "@vaadin/vaadin-combo-box": "^5.0.11",
+    "algoliasearch": "^4.1.0",
+    "hogan.js": "^3.0.2",
     "html-element-property-mixins": "^0.10.3",
+    "instantsearch.js": "^4.4.0",
+    "listbox-combobox": "^1.1.1",
     "lit-html": "^1.2.1",
     "pwa-helpers": "^0.9.1"
   },
   "devDependencies": {
-    "es-dev-server": "^1.46.0"
+    "es-dev-server": "^1.46.0",
+    "concurrently": "^5.1.0",
+    "stylus": "^0.54.7"
   }
 }

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recensie demo</title>
+  <script type="module" src="../../src/mp-combobox/mp-combobox.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lusitana&family=Work+Sans:wght@300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/demo/mp-combobox/styles.css">
+
+</head>
+<body>
+  <mp-combobox
+    id="demo"
+    has-inline-autocomplete
+  ></mp-combobox>
+  
+  <script>
+    demo.items = [{"value": "testing", "count": "4", "category": "Person"}, {"value": "testy", "count": "22", "category": "Person"}, {"value": "tester", "count": "1", "category": "Person"}, {"value": "even wat anders", "count": "44", "category": "Theater"}];
+    demo.items.forEach(item => item.formatter = (item) => `<span class="result-category">${item.category}:</span> <span>${item.value}<span> <span class="result-count">(${item.count})</span>`)
+    demo.addEventListener('value-changed', e => console.log(e))
+  </script>
+</body>
+</html>

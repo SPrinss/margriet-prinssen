@@ -1,0 +1,98 @@
+@import '../../src/styles/theme/reset'
+@import '../../src/styles/theme/text-styles'
+
+:host
+  outline none
+  user-select none
+  -webkit-user-select none
+  display inline-block
+  font-size 0
+  --mp-button-tint-color var(--mp-color-main--100)
+  --mp-button-border-color var(--mp-button-tint-color)
+
+  button
+    height var(--mp-size--9)
+    padding 0 var(--mp-size--4)
+    mp-text-b2()
+    background-color var(--mp-button-tint-color)
+    color var(--mp-button-color, var(--mp-color-light--100))
+    border-radius var(--mp-button-border-radius, var(--mp-border-radius--1))
+    border 2px solid transparent
+    cursor pointer
+    user-select none
+    webkit-user-select none
+    outline 5px auto blue
+    outline 5px auto -webkit-focus-ring-color
+
+    &:not([disabled])
+
+      &:hover
+        background-color var(--mp-color-main--90)
+
+      &:active:not(:hover)
+        background-color var(--mp-color-main--90)
+
+      &:active
+        background-color var(--mp-button-tint-color)
+    
+    &[disabled]
+      cursor default
+      opacity 0.4
+  
+:host(:not(.focus-visible)) button
+  outline none
+
+:host([light]) button
+  background transparent
+  color var(--mp-button-color, var(--mp-button-tint-color))
+  border-color var(--mp-button-border-color)
+
+  &:hover
+    background var(--mp-color-main--10)
+
+  &:active:not(:hover)
+    background var(--mp-color-main--10)
+
+  &:active
+    background transparent
+
+  
+:host([text])
+  --mp-button-border-color var(--mp-color-dark--100)
+  button
+    background transparent
+    height var(--mp-size--6)
+    mp-text-b3()
+    border 0
+    border-bottom 2px solid var(--mp-button-border-color)
+    color var(--mp-button-color, var(--mp-color-dark--100))
+    border-radius 0
+    padding 0 0 var(--mp-size--7) 0
+
+    &:hover,
+    &:active,
+    &:active:not(:hover)
+      background-color transparent
+
+    &:active
+      background-position mplc(100% - 2px) -2px
+  
+:host([text][arrow-back]),
+:host([text][arrow])
+  button
+    background-size 32px
+    background-repeat no-repeat
+
+:host([text][arrow])
+  button
+    padding 0 var(--mp-size--8) var(--mp-size--7) 0
+    background-position 100% -2px
+    background-image url("data:image/svg+xml,%3Csvg fill='none' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M0 16h27' stroke='%23000'/%3E%3Cpath d='M32 16l-10 6V10l10 6z' fill='%23000'/%3E%3C/svg%3E")
+
+:host([text][arrow-back])
+  button
+    padding 0 0 var(--mp-size--7) var(--mp-size--8)
+    background-position 0% +2px
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMmpzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTUgMTZIMzIiIHN0cm9rZT0iYmxhY2siLz4KPHBhdGggZD0iTTIuNjIyNjhlLTA3IDE2TDEwIDIyTDEwIDEwTDIuNjIyNjhlLTA3IDE2WiIgZmlsbD0iYmxhY2siLz4KPC9zdmc+Cg==")
+
+

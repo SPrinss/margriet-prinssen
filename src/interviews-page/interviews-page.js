@@ -1,4 +1,4 @@
-import { MPElement, html } from './mp-base';
+import { MPElement, html } from '../mp-element/mp-element';
 
 class InterviewsPage extends MPElement {
 
