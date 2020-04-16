@@ -35,16 +35,16 @@ class RecensiesPage extends MPElement {
         <div class="recensie-grid">
           ${this.items.map(item => {
             return html`
-              <a href="#">
+              <a href="recensies/${item._objectId}">
               <recensie-preview
-                .title="${item.title}"
-                .groups="${item.groups}"
-                .reviewDate="${item.reviewDate}"
-                .theater="${item.theaters}"
-                .city="${item.city}"
-                .actors="${item.persons}"
-                .directors="${item.directors}"
-                .writers="${item.writers}"
+                .title=${item.title}
+                .groups=${item.groups}
+                .reviewDate=${item.reviewDate}
+                .theater=${item.theaters}
+                .city=${item.city}
+                .actors=${item.persons}
+                .directors=${item.directors}
+                .writers=${item.writers}
               >
               </recensie-preview>
               </a>
