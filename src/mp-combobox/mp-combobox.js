@@ -239,8 +239,9 @@ class MPCombobox extends LitElement {
   }
 
   clickItem(evt) {
-    if(evt.target && evt.target.nodeName === 'LI') {
-      this.selectItem(evt.target);
+    const parentElIsLi = evt.target.parentNode.nodeName === 'LI';
+    if(evt.target && parentElIsLi || evt.target.nodeName === 'LI') {
+      this.selectItem(parentElIsLi ? evt.target.parentNode : evt.target);
     }
   }
 
