@@ -18,6 +18,7 @@ class RecensiePreview extends MPElement {
       timePerformed: {
         observe: true,
         DOM: true,
+        attributeName: 'time-performed',
         fromAttributeConverter: StringConverter.fromAttribute
       },
       theater: {
