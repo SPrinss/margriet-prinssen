@@ -22,19 +22,6 @@ class MPSearch extends MPElement {
 				defaultValue: "",
 				changedHandler: "_searchInputChange"
 			},
-			items: {
-				observe: true,
-				defaultValue: [],
-        fromAttributeConverter: ObjectConverter.fromAttribute
-			},
-			selectedFacets: {
-				observe: true,
-				defaultValue: []
-			},
-			selectedOption: {
-				observe: true,
-				defaultValue: {}
-			},
 			searchForFacetValues: {
 				observe: true,
 				DOM: true,
@@ -47,8 +34,32 @@ class MPSearch extends MPElement {
 				attributeName: 'facet-attributes',
 				fromAttributeConverter: ObjectConverter.fromAttribute,
 				defaultValue: []				
+			},
+			searchResults: {
+				observe: true,
+				defaultValue: [],
+				changedHandler: '_handleSearchResultsChanged'
+			},
+			_items: {
+				observe: true,
+				defaultValue: []
+			},
+			_selectedFacets: {
+				observe: true,
+				defaultValue: [],
+				changedHandler: "_handleSelecedFacetsChanged"
+			},
+			_selectedOption: {
+				observe: true,
+				defaultValue: {}
 			}
+
+
 		}
+	}
+
+	_handleSearchResultsChanged(oldVal, newVal) {
+		this.dispatchEvent(new CustomEvent('search-results-changed', {detail: {value: newVal}}))
 	}
 
 	_configChange(oldVal, config) {
@@ -57,7 +68,13 @@ class MPSearch extends MPElement {
 	}
 
 	_searchInputChange(oldVal, newVal) {
-		if(newVal && newVal.length > 3) this.runQuery(newVal)
+		if(newVal) this.runQuery(newVal)
+	}
+
+	async _handleSelecedFacetsChanged(oldVal, newVal) {
+		if(!newVal || newVal.length === 0) return;
+		const titles = await this.getTitles('');
+		this.searchResults = titles;
 	}
 
 	async runQuery(query, options = {}) {
@@ -69,8 +86,6 @@ class MPSearch extends MPElement {
 				facetFilters: this.facetFilters
 			};
 
-			console.log(queryFilters, this.facetFilters)
-
 			const facetQueries = this.facetAttributes.map(
 				attributeName => {
 					return this.algoliaIndex.searchForFacetValues(attributeName, query, queryFilters)
@@ -81,8 +96,9 @@ class MPSearch extends MPElement {
 			facets = facetResults.map((facetResult, i) => this.parseFacetResult(facetResult, this.facetAttributes[i]));
 		}
 
-		const titles = await this.getTitles(query, this.selectedFacets);
-		this.items = [].concat(...facets, titles);
+		const titles = await this.getTitles(query);
+		this.searchResults = [].concat(...titles);
+		this._items = [].concat(...facets, titles);
 	}
 	
 	parseFacetResult(result, category) {
@@ -97,16 +113,14 @@ class MPSearch extends MPElement {
 		});
 	}
 
-	async getTitles(query) {
-		const res = await this.algoliaIndex.search(query, {"facetFilters": this.facetFilters} );
-
+	async getTitles(query, page = 0) {
+		const res = await this.algoliaIndex.search(query, {"facetFilters": this.facetFilters, page: page} );
 		if(!res || !res.hits) return [];
 		return res.hits.map(hit => {return {...hit, value: hit.title, formatter: (item) => `<span>${item.value}</span>`}});
 	}
 
 	get facetFilters() {
-		return this.selectedFacets.map((filter, i) => {
-			if(this.selectedFacets.length === 1) return `${filter.category}:${filter.value}`;
+		return this._selectedFacets.map((filter, i) => {
 			return `${filter.category}:${filter.value}`;
 		});
 	}
@@ -120,23 +134,25 @@ class MPSearch extends MPElement {
 
 		<ul>
 
-    	${this.selectedFacets.map((item, i) => {
+    	${this._selectedFacets.map((item, i) => {
 					return html`
-						<li>${item.value}</li><button @click=${(e) => this.selectedFacets = this.selectedFacets.filter((item, index) => i != index )}>X</button>
+						<li>${item.value}</li><button @click=${(e) => this._selectedFacets = this._selectedFacets.filter((item, index) => i != index )}>X</button>
 					`
 				}
 				 )} 
-  	</ul>
+
+				<li ?hidden=${this._selectedFacets.length === 0}>Wis</li><button ?hidden=${this._selectedFacets.length === 0} @click=${(e) => this._selectedFacets = []}>X</button>
+		</ul>
 
 		<mp-combobox 
-			.items=${this.items} 
+			.items=${this._items} 
 			@input=${e => this.searchInput = e.target.input.value} 
-			@value-changed=${(e) => this.selectedOption = e.detail.value}
+			@value-changed=${(e) => this._selectedOption = e.detail.value}
 		></mp-combobox>
 		<mp-button 
-			?disabled=${!this.selectedOption || !this.selectedOption.value || this.selectedFacets.includes(this.selectedOption.value)} 
+			?disabled=${!this._selectedOption || !this._selectedOption.category || this._selectedOption.category === 'titel' || this._selectedFacets.includes(this._selectedOption.value)} 
 			@click=${() => {
-				this.selectedFacets = [].concat(...this.selectedFacets, this.selectedOption);
+				this._selectedFacets = [].concat(...this._selectedFacets, this._selectedOption);
 				this.shadowRoot.querySelector('mp-combobox').reset();
 			}
 		}
