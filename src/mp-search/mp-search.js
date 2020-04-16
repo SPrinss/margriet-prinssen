@@ -1,6 +1,7 @@
 import { MPElement, html } from '../mp-element/mp-element';
 import '../mp-select/mp-select'
 import '../mp-button/mp-button'
+import '../mp-input/mp-input'
 import '../mp-combobox/mp-combobox';
 import { StringConverter, NumberConverter, BooleanConverter, ObjectConverter } from 'html-element-property-mixins/src/utils/attribute-converters';
 import algoliasearch from 'https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.esm.browser.js';
@@ -23,16 +24,29 @@ class MPSearch extends MPElement {
 			},
 			items: {
 				observe: true,
-				defaultValue: ["try", "it"],
+				defaultValue: [],
         fromAttributeConverter: ObjectConverter.fromAttribute
 			},
-			filterItems: {
+			selectedFacets: {
 				observe: true,
 				defaultValue: []
 			},
 			selectedOption: {
 				observe: true,
-				defaultValue: ''
+				defaultValue: {}
+			},
+			searchForFacetValues: {
+				observe: true,
+				DOM: true,
+				attributeName: 'search-for-facet-values',
+				defaultValue: true
+			},
+			facetAttributes: {
+				observe: true,
+				DOM: true,
+				attributeName: 'facet-attributes',
+				fromAttributeConverter: ObjectConverter.fromAttribute,
+				defaultValue: []				
 			}
 		}
 	}
@@ -40,10 +54,6 @@ class MPSearch extends MPElement {
 	_configChange(oldVal, config) {
 		if(!config) return;
 		this.algoliaIndex = algoliasearch(config.applicationId, config.searchOnlyAPIKey).initIndex(config.index);
-		console.log(this.algoliaIndex)
-		// this.algoliaIndex.setSettings({
-		// 	'attributesForFaceting': ['director', 'theater']
-		// })
 	}
 
 	_searchInputChange(oldVal, newVal) {
@@ -53,35 +63,55 @@ class MPSearch extends MPElement {
 	async runQuery(query, options = {}) {
 		if(!query) return;
 
-		const personsQuery = this.getFaceValues('persons', query);
-		const theatersQuery = this.getFaceValues('theaters', query);
-		const groupsQuery = this.getFaceValues('groups', query);
-		const titlesQuery = this.getTitles(query);
-		
-		const queryResults = await Promise.all([personsQuery,
-			theatersQuery,
-			groupsQuery,
-			titlesQuery]);
-			
-		this.items = [].concat(...queryResults);
+		let facets = [];
+		if(this.searchForFacetValues) {
+			const queryFilters = (!this.facetFilters || this.facetFilters.length === 0) ? {} : {
+				facetFilters: this.facetFilters
+			};
 
+			console.log(queryFilters, this.facetFilters)
+
+			const facetQueries = this.facetAttributes.map(
+				attributeName => {
+					return this.algoliaIndex.searchForFacetValues(attributeName, query, queryFilters)
+				}
+			)
+			const facetResults = await Promise.all(facetQueries);
+
+			facets = facetResults.map((facetResult, i) => this.parseFacetResult(facetResult, this.facetAttributes[i]));
+		}
+
+		const titles = await this.getTitles(query, this.selectedFacets);
+		this.items = [].concat(...facets, titles);
 	}
 	
-	async getFaceValues(facetName, query) {
-		const res = await this.algoliaIndex.searchForFacetValues(facetName, query);
-		console.log(res)
-		if(!res || !res.facetHits) return [];
-		const items = res.facetHits.map(hit => {return {value: hit.value, count: hit.count, category: facetName, }});
-    items.forEach(item => item.formatter = (item) => `<span class="result-category">${item.category}:</span> <span>${item.value}<span> <span class="result-count">(${item.count})</span>`)
-		return items;
+	parseFacetResult(result, category) {
+		if(!result || !result.facetHits) return [];
+		return result.facetHits.map(hit => {
+			return {
+				value: hit.value, 
+				count: hit.count, 
+				category: category, 
+				formatter: (item) => `<span class="result-category">${item.category}:</span> <span>${item.value}<span> <span class="result-count">(${item.count})</span>` 
+			}
+		});
 	}
 
 	async getTitles(query) {
-		const res = await this.algoliaIndex.search(query);
+		const res = await this.algoliaIndex.search(query, {"facetFilters": this.facetFilters} );
+
 		if(!res || !res.hits) return [];
-		const items = res.hits.map(hit => {return {...hit, value: hit.title}});
-		return items;
+		return res.hits.map(hit => {return {...hit, value: hit.title, formatter: (item) => `<span>${item.value}</span>`}});
 	}
+
+	get facetFilters() {
+		return this.selectedFacets.map((filter, i) => {
+			if(this.selectedFacets.length === 1) return `${filter.category}:${filter.value}`;
+			return `${filter.category}:${filter.value}`;
+		});
+	}
+
+
 
 	get template() {
 		return html
@@ -89,20 +119,30 @@ class MPSearch extends MPElement {
 		<link rel="stylesheet" href="/src/mp-search/mp-search.css">
 
 		<ul>
-    	${this.filterItems.map((item, i) => {
+
+    	${this.selectedFacets.map((item, i) => {
 					return html`
-						<li>${item} <button @click=${(e) => this.filterItems = this.filterItems.filter((item, index) => i != index )}>x</button></li>
+						<li>${item.value}</li><button @click=${(e) => this.selectedFacets = this.selectedFacets.filter((item, index) => i != index )}>X</button>
 					`
 				}
 				 )} 
   	</ul>
 
-		<mp-combobox .items=${this.items} @input=${e => this.searchInput = e.target.input.value} @value-changed=${(e) => this.selectedOption = e.detail.value}></mp-combobox>
-		<mp-button ?disabled=${!this.selectedOption || this.filterItems.includes(this.selectedOption)} @click=${() => {
-			this.filterItems = [].concat(...this.filterItems, this.selectedOption);
-			this.shadowRoot.querySelector('mp-combobox').reset();
-		}}
+		<mp-combobox 
+			.items=${this.items} 
+			@input=${e => this.searchInput = e.target.input.value} 
+			@value-changed=${(e) => this.selectedOption = e.detail.value}
+		></mp-combobox>
+		<mp-button 
+			?disabled=${!this.selectedOption || !this.selectedOption.value || this.selectedFacets.includes(this.selectedOption.value)} 
+			@click=${() => {
+				this.selectedFacets = [].concat(...this.selectedFacets, this.selectedOption);
+				this.shadowRoot.querySelector('mp-combobox').reset();
+			}
+		}
 		>Gebruik als filter</mp-button>
+
+		<mp-input type="checkbox" @input=${e => this.searchForFacetValues = !searchForFacetValues}></mp-input>
 		`
 	}
 }

@@ -119,7 +119,6 @@ class MPCombobox extends LitElement {
 
   search(searchString) {
     var callback = function(item) {
-      console.log(item.value, searchString, `${item.value}`.toLowerCase().indexOf(searchString.toLowerCase()))
       return `${item.value}`.toLowerCase().indexOf(searchString.toLowerCase()) === 0;
     };
     var returnValue = function(item) {
@@ -145,6 +144,7 @@ class MPCombobox extends LitElement {
         resultItem.setAttribute('role', 'option');
         resultItem.setAttribute('id', 'result-item-' + i);
         resultItem.setAttribute('data-value', `${results[i].value}`);
+        resultItem.setAttribute('data-full-value', `${JSON.stringify(results[i])}`);
         resultItem.innerHTML = results[i].formatter ? results[i].formatter(results[i]) : `${results[i].value}`;
         if(this.shouldAutoSelect && i === 0) {
           resultItem.setAttribute('aria-selected', 'true');
@@ -247,8 +247,10 @@ class MPCombobox extends LitElement {
   selectItem(item) {
     if(item) {
       this.input.value = item.dataset.value;
+      this.fullvalue = JSON.parse(item.dataset.fullValue);
       this.selected = this.input.value;
-      this.dispatchEvent(new window.CustomEvent('value-changed', { composed:true, bubbles: true, detail: {value: this.selected} }));
+
+      this.dispatchEvent(new window.CustomEvent('value-changed', { composed:true, bubbles: true, detail: {value: this.fullvalue} }));
       this.hideListbox();
     }
   }
