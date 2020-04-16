@@ -14,12 +14,16 @@
       background-color: var(--mp-color-main--40);
     }
   </style>
+  
   <mp-search
+    id="demo"
     algolia-config='{"applicationId": "QZ9LK09320","searchOnlyAPIKey": "5fe26edd91681f874040eb6110bf8a7f","index": "margriet_prinssen"}'
     facet-attributes='["persons", "groups", "theaters"]'
-  >
+  ></mp-search>
 
-  </mp-search>
+  <script>
+    demo.addEventListener('search-results-changed', (e) => console.log(e.detail.value));
+  </script>
   
 </body>
 </html>
