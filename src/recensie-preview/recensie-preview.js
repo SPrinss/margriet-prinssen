@@ -15,10 +15,10 @@ class RecensiePreview extends MPElement {
         DOM: true,
         fromAttributeConverter: ObjectConverter.fromAttribute
       },
-      timePerformed: {
+      reviewDate: {
         observe: true,
         DOM: true,
-        attributeName: 'time-performed',
+        attributeName: 'review-date',
         fromAttributeConverter: StringConverter.fromAttribute
       },
       theater: {
@@ -68,7 +68,7 @@ class RecensiePreview extends MPElement {
       </div>
       <div>
         <ul>
-          <li>${this.timePerformed}</li>
+          <li>${this.reviewDate}</li>
           <li>${this.theater}</li>
           <li>${this.city}</li>
         </ul>
