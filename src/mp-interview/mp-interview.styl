@@ -1,0 +1,129 @@
+@import '../../src/styles/theme/reset'
+@import '../../src/styles/theme/main'
+
+header {
+  background-color: hsl(138, 100%, 68%);
+  padding-top: 32px;
+}
+
+#header-content-wrapper 
+  padding 24px 0
+  color hsl(243, 50%, 20%)
+  grid-area header
+
+#header-content-wrapper ::slotted(h1) 
+  margin-bottom var(--mp-size--4)
+
+main, header 
+  display grid
+  grid-template-columns 2fr 4fr minmax(0px, 2fr)
+  justify-items center
+  align-items start
+  gap var(--mp-size--8)
+
+main 
+  grid-template-areas: 
+    "aside-left body aside-right";
+  margin-top var(--mp-size--7)
+
+header 
+  grid-template-areas: 
+    ". header .";
+
+#aside-left-content-wrapper 
+  grid-area aside-left
+  justify-self end
+  text-align end
+
+#main-content-wrapper
+  grid-area body
+
+#aside-right-content-wrapper
+  grid-area aside-right
+
+::slotted(h1) 
+  mp-text-h1()
+
+::slotted(h2)
+  mp-text-h2()
+
+::slotted(h3)
+  mp-text-h3()
+  margin-top var(--mp-size--8)
+  margin-bottom var(--mp-size--5)
+
+
+::slotted(h4)
+  mp-text-h4()
+
+::slotted(h5)
+  mp-text-h5()
+
+::slotted(h6)
+  mp-text-h6()
+
+::slotted(article), 
+::slotted(p) 
+  mp-text-b2()
+
+::slotted(ul)
+  padding 0
+
+@media only screen and (max-width: 660px)
+  header 
+    padding-top var(--mp-size--6)
+
+  #header-content-wrapper 
+    padding var(--mp-size--4) 0
+
+  #header-content-wrapper ::slotted(h1),
+  #aside-left-content-wrapper ::slotted(h3)
+    margin-bottom var(--mp-size--3)
+
+  main, header 
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    justify-items start
+    align-items start
+    gap var(--mp-size--3)
+
+  main 
+    grid-template-areas: 
+      "aside-left"\
+      "body"\
+      "aside-right";
+
+  header 
+    grid-template-areas: 
+      "."\
+      "header"\
+      ".";
+    padding 0 var(--mp-size--3)
+
+  #aside-left-content-wrapper 
+    grid-area aside-left
+    justify-self start
+    text-align left
+    padding 0 var(--mp-size--3)
+    width 100%
+    border-bottom 1px solid black
+
+  ::slotted(h1) 
+    mp-text-h2()
+
+  ::slotted(h2)
+    mp-text-h3()
+
+  ::slotted(h3)
+    mp-text-h4()
+
+  ::slotted(h4)
+    mp-text-h5()
+
+  ::slotted(h5)
+    mp-text-h6()
+
+  ::slotted(article),
+  ::slotted(p) 
+    mp-text-b3()
+    padding 0 var(--mp-size--3)
