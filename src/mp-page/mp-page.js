@@ -10,7 +10,10 @@ class MPPage extends MPElement {
         <div class="header-content-container">
           <slot name="header-content"></slot>
         </div>
+        <div id="hor-line-top"></div>
+        <div id="hor-line-bottom"></div>
       </header>
+
       <main>
         <slot></slot>
       </main>

@@ -6,7 +6,7 @@
   display block
 
 header
-  background-color var(--mp-color-main--70)
+  // background-color var(--mp-color-main--70)
   min-height var(--mp-size--14)
 
 .recensie-grid
@@ -21,3 +21,28 @@ ul li:first-of-type
   color var(--mp-color-dark--60)
 
 $$text-styles()
+
+mp-recensie:not([active])
+mp-page:not([active]) 
+  display: none;
+
+.list 
+  list-style: none;
+  mp-text-b3()
+
+.list li:first-of-type 
+  color hsl(138, 100%, 30%)
+
+.list li:not(:first-of-type) 
+  color black
+
+article p:first-of-type 
+  padding-top 0
+  margin-top 0
+
+figure, img {
+  max-width: 100%;
+  object-fit: contain;
+  padding: 0;
+  margin: 0;
+}  

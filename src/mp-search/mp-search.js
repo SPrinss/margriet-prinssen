@@ -51,10 +51,22 @@ class MPSearch extends MPElement {
 			},
 			_selectedOption: {
 				observe: true,
-				defaultValue: {}
+				defaultValue: {},
+				changedHandler: "_handleSelectedOptionChanged"
 			}
+		}
+	}
 
-
+	async _handleSelectedOptionChanged(oldVal, newVal) {
+		if(!newVal && this.facetFilters.length === 0) return;
+		if(!newVal && this.facetFilters.length !== 0) {
+			const titles = await this.getTitles('', [].concat(...this.facetFilters));
+			this.searchResults = titles;
+		} else if(!!newVal.category) {
+			const titles = await this.getTitles('', [].concat(...this.facetFilters, `${newVal.category}:${newVal.value}`));
+			this.searchResults = titles;
+		} else {
+			this.searchResults = [newVal];
 		}
 	}
 
@@ -73,7 +85,7 @@ class MPSearch extends MPElement {
 
 	async _handleSelecedFacetsChanged(oldVal, newVal) {
 		if(!newVal || newVal.length === 0) return;
-		const titles = await this.getTitles('');
+		const titles = await this.getTitles('', this.facetFilters);
 		this.searchResults = titles;
 	}
 
@@ -96,8 +108,7 @@ class MPSearch extends MPElement {
 			facets = facetResults.map((facetResult, i) => this.parseFacetResult(facetResult, this.facetAttributes[i]));
 		}
 
-		const titles = await this.getTitles(query);
-		this.searchResults = [].concat(...titles);
+		const titles = await this.getTitles(query, this.facetFilters);
 		this._items = [].concat(...facets, titles);
 	}
 	
@@ -113,10 +124,11 @@ class MPSearch extends MPElement {
 		});
 	}
 
-	async getTitles(query, page = 0) {
-		const res = await this.algoliaIndex.search(query, {"facetFilters": this.facetFilters, page: page} );
+	async getTitles(query, facetFilters = [], page = 0) {
+		if(!this.algoliaIndex) return;
+		const res = await this.algoliaIndex.search(query, {"facetFilters": facetFilters, page: page} );
 		if(!res || !res.hits) return [];
-		return res.hits.map(hit => {return {...hit, value: hit.title, formatter: (item) => `<span>${item.value}</span>`}});
+		return res.hits.map(hit => {return {...hit, value: hit.title || hit.name, formatter: (item) => `<span>${item.value}</span>`}});
 	}
 
 	get facetFilters() {
@@ -144,6 +156,7 @@ class MPSearch extends MPElement {
 				<li ?hidden=${this._selectedFacets.length === 0}>Wis</li><button ?hidden=${this._selectedFacets.length === 0} @click=${(e) => this._selectedFacets = []}>X</button>
 		</ul>
 
+
 		<mp-combobox 
 			.items=${this._items} 
 			@input=${e => this.searchInput = e.target.input.value} 
@@ -158,7 +171,17 @@ class MPSearch extends MPElement {
 		}
 		>Gebruik als filter</mp-button>
 
-		<mp-input type="checkbox" @input=${e => this.searchForFacetValues = !searchForFacetValues}></mp-input>
+		<div id="titles-checkbox-container">
+			<mp-input 
+				id="titles-checkbox"
+				type="checkbox"
+				@input=${e => {
+					this.searchForFacetValues = !this.searchForFacetValues;
+					this.runQuery(this.searchInput)
+				}}
+				></mp-input>
+				<label for="titles-checkbox">Zoek alleen titels</label>
+		</div>
 		`
 	}
 }

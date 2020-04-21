@@ -16,7 +16,7 @@ input, #ex1-combobox, #ex1-listbox {
   width: 100%;
 }
 .listbox, .grid {
-  background: inherit;
+  background: var(--mp-color-light--100);
   border: 1px solid #ccc;
   list-style: none;
   margin: 0;
@@ -27,6 +27,10 @@ input, #ex1-combobox, #ex1-listbox {
 .listbox .result {
   cursor: default;
   margin: 0;
+
+.listbox .result:hover, .grid .result-row: {
+  background: var(--mp-color-main--20);
+
 }
 .listbox .result:hover, .grid .result-row:hover {
   background: var(--mp-color-main--60);

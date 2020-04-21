@@ -50,14 +50,14 @@ class HomePage extends MPElement {
       </section>
 
       <section>
-        <h2>Recente recensies</h2>
+        <h3>Recente recensies</h3>
         <div class="recensie-grid">
           ${itemTemplates}
         </div>
-        <mp-button class="more-button" text arrow>Bekijk archief</mp-button>
+        <a href="/recensies" arrow>Bekijk archief</a>
       </section>
       <section>
-        <h2>Recente interviews</h2>
+        <h3>Recente interviews</h3>
         <div class="interview-grid">
           ${arr.map(i => {
             return html`
@@ -75,7 +75,7 @@ class HomePage extends MPElement {
           })}
 
         </div>
-        <mp-button class="more-button" text arrow>Bekijk archief</mp-button>
+        <a href="/interviews" arrow>Bekijk archief</a>
         
       </section>
 

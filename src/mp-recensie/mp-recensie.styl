@@ -1,5 +1,6 @@
 @import '../../src/styles/theme/reset'
 @import '../../src/styles/theme/main'
+@import '../../src/styles/mixins/base-styles'
 
 header {
   background-color: hsl(138, 100%, 68%);
@@ -11,32 +12,32 @@ header {
   color hsl(243, 50%, 20%)
   grid-area header
 
-#header-content-wrapper ::slotted(h1) 
+#aside-right-content-wrapper h3
+#aside-right-content-wrapper h5
   margin-bottom var(--mp-size--4)
-
-#aside-left-content-wrapper ::slotted(h3) 
-  margin-bottom var(--mp-size--2)
 
 main, header 
   display grid
   grid-template-columns 2fr 4fr minmax(0px, 2fr)
-  justify-items center
-  align-items start
   gap var(--mp-size--8)
 
 main 
   grid-template-areas: 
     "aside-left body aside-right";
   margin-top var(--mp-size--7)
+  justify-items center
+  align-items start
 
 header 
   grid-template-areas: 
     ". header .";
+  justify-items start
+  align-items start
 
-#aside-left-content-wrapper 
+#aside-right-content-wrapper 
   grid-area aside-left
-  justify-self end
-  text-align end
+  justify-self start
+  text-align start
 
 #main-content-wrapper
   grid-area body
@@ -44,30 +45,34 @@ header
 #aside-right-content-wrapper
   grid-area aside-right
 
-::slotted(h1) 
-  mp-text-h1()
+$$text-styles()
+$$a-link()
 
-::slotted(h2)
-  mp-text-h2()
-
-::slotted(h3)
-  mp-text-h3()
-
-::slotted(h4)
-  mp-text-h4()
-
-::slotted(h5)
-  mp-text-h5()
-
-::slotted(h6)
-  mp-text-h6()
-
-::slotted(article), 
-::slotted(p) 
-  mp-text-b2()
-
-::slotted(ul)
+ul
   padding 0
+  margin-bottom var(--mp-size--2)
+
+
+.list 
+  list-style: none;
+  mp-text-b3()
+
+.list li:first-of-type 
+  color hsl(138, 100%, 30%)
+
+.list li:not(:first-of-type) 
+  color black
+
+article p:first-of-type 
+  padding-top 0
+  margin-top 0
+
+figure, img {
+  max-width: 100%;
+  object-fit: contain;
+  padding: 0;
+  margin: 0;
+}  
 
 @media only screen and (max-width: 660px)
   header 
@@ -76,8 +81,8 @@ header
   #header-content-wrapper 
     padding var(--mp-size--4) 0
 
-  #header-content-wrapper ::slotted(h1),
-  #aside-left-content-wrapper ::slotted(h3)
+  #header-content-wrapper h1,
+  #aside-left-content-wrapper h3
     margin-bottom var(--mp-size--3)
 
   main, header 
@@ -89,9 +94,9 @@ header
 
   main 
     grid-template-areas: 
+      "aside-right"\
       "aside-left"\
-      "body"\
-      "aside-right";
+      "body"\;
 
   header 
     grid-template-areas: 
@@ -100,7 +105,7 @@ header
       ".";
     padding 0 var(--mp-size--3)
 
-  #aside-left-content-wrapper 
+  #aside-right-content-wrapper
     grid-area aside-left
     justify-self start
     text-align left
@@ -108,22 +113,22 @@ header
     width 100%
     border-bottom 1px solid black
 
-  ::slotted(h1) 
+  h1
     mp-text-h2()
 
-  ::slotted(h2)
+  h2
     mp-text-h3()
 
-  ::slotted(h3)
+  h3
     mp-text-h4()
 
-  ::slotted(h4)
+  h4
     mp-text-h5()
 
-  ::slotted(h5)
+  h5
     mp-text-h6()
 
-  ::slotted(article),
-  ::slotted(p) 
+  article,
+  p
     mp-text-b3()
     padding 0 var(--mp-size--3)

@@ -17,10 +17,12 @@ $$text-styles()
     mp-text-h1()
   h2
     mp-text-h2()
+  blockquote > p,
   h3
     mp-text-h3()
   h4
     mp-text-h4()
+  blockquote > span,
   h5
     mp-text-h5()
   h6
@@ -32,6 +34,7 @@ $$text-styles()
     mp-text-c1()
   li
     mp-text-h6()
+
   ::slotted(h1) 
     mp-text-h1()
   ::slotted(h2)
@@ -74,3 +77,24 @@ $$text-styles()
   ::slotted(li)
     margin 0
     padding 0
+
+  blockquote > span
+    margin-top var(--mp-size--5)
+
+$$a-link()
+  a[arrow-back]
+  a[arrow]
+    mp-text-b3()
+    background-size 26px
+    background-repeat no-repeat
+    border-bottom 1px solid var(--mp-color-dark--100)
+
+  a[arrow]
+    padding 0 var(--mp-size--8) var(--mp-size--3) 0
+    background-position 100% -1px
+    background-image url("data:image/svg+xml,%3Csvg fill='none' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M0 16h27' stroke='%23000'/%3E%3Cpath d='M32 16l-10 6V10l10 6z' fill='%23000'/%3E%3C/svg%3E")
+
+  a[arrow-back]
+    padding 0 0 var(--mp-size--3) var(--mp-size--8)
+    background-position 0% +1px
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMmpzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTUgMTZIMzIiIHN0cm9rZT0iYmxhY2siLz4KPHBhdGggZD0iTTIuNjIyNjhlLTA3IDE2TDEwIDIyTDEwIDEwTDIuNjIyNjhlLTA3IDE2WiIgZmlsbD0iYmxhY2siLz4KPC9zdmc+Cg==")

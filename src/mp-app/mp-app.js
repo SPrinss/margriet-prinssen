@@ -1,6 +1,7 @@
 import { MPElement, html } from '../mp-element/mp-element';
 import { installRouter } from 'pwa-helpers/router.js';
-
+import { logo } from '../logo/logo.js';
+import {unsafeSVG} from 'lit-html/directives/unsafe-svg'
 class MPApp extends MPElement {
 
   static get properties() {
@@ -41,7 +42,7 @@ class MPApp extends MPElement {
 
       <main>
       <nav>
-        <h5><a href="/">Margriet Prinssen</a></h5>
+        <a href="/"><svg viewBox="0 0 176.1 34" xmlns="http://www.w3.org/2000/svg" version="1.1" fill="currentColor">${unsafeSVG(`${logo}`)}</svg></a>
         <ul>
           <li><a ?data-active="${this.page.toLowerCase() === 'recensies'}" href="./recensies">Recensies</a></li>
           <li><a ?data-active="${this.page.toLowerCase() === 'interviews'}" href="./interviews">Interviews</a></li>
@@ -49,8 +50,11 @@ class MPApp extends MPElement {
         </ul>
       </nav>
 
+      <div id="hor-line-top"></div>
+      <div id="hor-line-bottom"></div>
+
       <home-page ?visible="${this.page === 'home'}" class="page"></home-page>
-      <recensies-page ?visible="${this.page === 'recensies'}" class="page"></recensies-page>
+      <recensies-page ?visible="${this.page.includes('recensies')}" .recensieId=${this.page.includes('recensies/') ? this.page.substring(this.page.indexOf('recensies/') + 1, this.page.length) : ''} class="page"></recensies-page>
       <interviews-page ?visible="${this.page === 'interviews'}" class="page"></interviews-page>
       <over-page ?visible="${this.page === 'over'}" class="page"></over-page>
       

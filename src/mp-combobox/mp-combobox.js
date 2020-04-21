@@ -104,7 +104,11 @@ class MPCombobox extends LitElement {
         evt.preventDefault();
         return;
       default:
-        this.updateResults(false);
+        if(this.input.value !== this.selected && this.selected !== '') {
+          this.selected = '';
+          this.dispatchEvent(new window.CustomEvent('value-changed', { composed:true, bubbles: true, detail: {value: null }}));
+        }
+        this.updateResults(true);
     }
 
     if(this.hasInlineAutocomplete) {
@@ -119,7 +123,8 @@ class MPCombobox extends LitElement {
 
   search(searchString) {
     var callback = function(item) {
-      return `${item.value}`.toLowerCase().indexOf(searchString.toLowerCase()) === 0;
+      if(!item || !item.value) return true;
+      return `${item.value ? item.value : item}`.toLowerCase().indexOf(searchString.toLowerCase()) === 0;
     };
     var returnValue = function(item) {
       return item;
@@ -130,14 +135,14 @@ class MPCombobox extends LitElement {
   updateResults(shouldShowAll) {
     var searchString = this.input.value;
     var results = this.search(searchString);
-
     this.hideListbox();
 
-    if(!shouldShowAll && !searchString) {
+    if(!shouldShowAll) {
       results = [];
     }
 
     if(results.length) {
+      
       for(var i = 0; i < results.length; i++) {
         var resultItem = document.createElement('li');
         resultItem.className = 'result';
@@ -145,7 +150,7 @@ class MPCombobox extends LitElement {
         resultItem.setAttribute('id', 'result-item-' + i);
         resultItem.setAttribute('data-value', `${results[i].value}`);
         resultItem.setAttribute('data-full-value', `${JSON.stringify(results[i])}`);
-        resultItem.innerHTML = results[i].formatter ? results[i].formatter(results[i]) : `${results[i].value}`;
+        resultItem.innerHTML = results[i].formatter ? results[i].formatter(results[i]) : `${results[i].value || results[i]}`;
         if(this.shouldAutoSelect && i === 0) {
           resultItem.setAttribute('aria-selected', 'true');
           resultItem.classList.add('focused');
@@ -153,6 +158,7 @@ class MPCombobox extends LitElement {
         }
         this.listbox.appendChild(resultItem);
       }
+
       this.listbox.classList.remove('hidden');
       this.combobox.setAttribute('aria-expanded', 'true');
       this.resultsCount = results.length;
@@ -264,7 +270,8 @@ class MPCombobox extends LitElement {
     if(evt.target === this.input || this.combobox.contains(evt.target)) {
       return;
     }
-    this.hideListbox();
+    // TODO
+    // this.hideListbox();
   }
 
   hideListbox() {

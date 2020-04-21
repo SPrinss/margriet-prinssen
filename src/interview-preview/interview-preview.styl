@@ -6,6 +6,7 @@
   display block
   border-radius var(--mp-border-radius--1)
   box-shadow var(--mp-box-shadow--1)
+  background-color var(--mp-color-light--100)
 
 $$text-styles()
 
@@ -46,3 +47,8 @@ span:first-of-type:not(:empty) + span:nth-of-type(2):not(:empty):before
   width: 10px;
   margin-right: 5px;
   text-align: center;
+
+@media (prefers-color-scheme: dark) 
+  :host
+    background-color var(--mp-color-dark--60);
+    color var(--mp-color-light--100)

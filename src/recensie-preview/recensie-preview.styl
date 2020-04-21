@@ -35,12 +35,12 @@ header
   flex-direction row
   justify-content space-between
   padding var(--mp-size--4)
-  background-color var(--mp-color-main--80);
-  color var(--mp-color-light--90);
+  background-color var(--mp-color-secondary--100);
+  color var(--mp-color-dark--100);
 
 main
   padding var(--mp-size--4)
-  background-color white;
+  background-color var(--mp-color-light--100);
 
 header
   align-items flex-end
@@ -57,8 +57,6 @@ header ul
   text-align right
   flex 1
 
-
-
 .persons-grid ul li:first-of-type {
   margin-bottom: var(--mp-size--2);
   color var(--mp-color-dark--60)
@@ -66,3 +64,12 @@ header ul
 
 .persons-grid ul li
   mp-text-c1()  
+
+@media (prefers-color-scheme: dark) 
+  main
+    background-color var(--mp-color-dark--60);
+    color var(--mp-color-light--100);
+
+  header
+    background-color var(--mp-color-main--50);
+    color var(--mp-color-dark--90);
