@@ -36,8 +36,6 @@ class RecensiesPage extends MPElement {
     if(!id) return;
     const resp = await fetch(`https://firestore.googleapis.com/v1/projects/margriet-prinssen/databases/(default)/documents/reviews/${id}`);
     const data = await resp.json();
-    console.log(id, resp, data)
-    this.weqqwe = FireStoreParser(data).fields;
     this.recensie = FireStoreParser(data).fields || {};
   }
 
