@@ -33,12 +33,13 @@ class MPApp extends MPElement {
     this.page = page;
   }
 
-  _handlePageChange(oldPage, newPage) {
+  async _handlePageChange(oldPage, newPage) {
     if(!newPage) return;
     if(newPage.includes('home')) {
       import(`../home-page/home-page.js`);
     } else if (newPage.includes('recensies')) {
-      import(`../recensies-page/recensies-page.js`);
+      const res = await import(`../recensies-page/recensies-page.js`);
+      this.shadowRoot.querySelector('recensies-page').recensieId = this.page.substring(this.page.indexOf('recensies/') + 10, this.page.length);
     } else if (newPage.includes('interviews')) {
       // import(`../interviews-page/interviews-page.js`);
     } else if (newPage.includes('over')) {
