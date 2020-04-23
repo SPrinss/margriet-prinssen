@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Recensie demo</title>
   <script type="module" src="../../src/mp-recensie/mp-recensie.js"></script>
-  <script type="module" src="../../src/mp-button/mp-button.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lusitana&family=Work+Sans:wght@300&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/demo/mp-recensie/styles.css">
 
@@ -16,9 +15,10 @@
     id="demo"
   >
   </mp-recensie>
+
   <script>
-    demo.recensie = {
-      actors: [
+    setTimeout(() => {
+      demo.recensie = { actors: [
         {name: "Ko van den Bosch", id: "yc8sp1HibOdQz24oVjeD"},
         {name: "Raymonde de Kuyper", id: "Z8oSN3aIbXQlADkjp4rF"},
         {id: "O9CscyrdnQYwcZSttnlz", name: "Raymond Spannet"}
@@ -38,9 +38,9 @@
       groups: [{id: "RMaJqcBagtDMpNpAFYdg", name: "Alex d'Electrique"}],
       reviewDate: "01-21-1999",
       city: {name: "Amsterdam", id: "wNoPtGt6HB07FDJ6VzWk"},
-      directors: [{name: "Pieter Bouwman", id: "pTwKbGh12opkWG0QZnNv"}],
-        
-    }
+      directors: [{name: "Pieter Bouwman", id: "pTwKbGh12opkWG0QZnNv"}]
+    }      
+    }, 500);
   </script>
 </body>
 </html>
