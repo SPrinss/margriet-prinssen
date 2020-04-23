@@ -49,12 +49,12 @@ figure, img {
 #hor-line-top
   background: rgb(178,205,255);
   background: linear-gradient(90deg, var(--mp-color-main--100) 39%, transparent 39%);
-  top var(--mp-size--10)
+  top var(--mp-size--11)
 
 #hor-line-bottom
   background: rgb(244,209,143);
   background: linear-gradient(90deg, var(--mp-color-secondary--100) 29%, transparent 29%);
-  top var(--mp-size--11)
+  top var(--mp-size--12)
 
 nav a 
   fill: currentColor;
@@ -82,7 +82,7 @@ nav ul li a
 .page
   display block
   flex 1
-  background-color var(--mp-color-main--10)
+  background-color var(--mp-color-main--30)
 
 .page:not([visible]) {
   display none
@@ -110,6 +110,7 @@ nav ul li a
 footer
   min-height var(--mp-size--10)
   background-color var(--mp-color-main--100)
+  color var(--mp-color-light--100)
   display flex
   align-items center
 
@@ -117,7 +118,6 @@ footer > *
   max-width 1080px
   margin auto
   padding 0 var(--mp-size--5)
-  color var(--mp-color-dark--100)
 
 
 @media (prefers-color-scheme: dark) 
@@ -126,8 +126,6 @@ footer > *
 
   footer
     background-color var(--mp-color-dark--60);
-  
-  footer > * 
     color var(--mp-color-dark--100)
   
   .page

@@ -4,6 +4,7 @@ $grid(amount)
   display grid
   gap var(--mp-size--3)
   grid-template-columns repeat(amount, 1fr)
+  align-items start
 
 $ul-style()
   list-style none
@@ -12,7 +13,7 @@ $ul-style()
 
 $$text-styles()
   p
-    mp-text-b3()
+    mp-text-b2()
   h1
     mp-text-h1()
   h2
@@ -28,7 +29,6 @@ $$text-styles()
   h6
     mp-text-h6()
   article
-  p
     mp-text-b3()
   span
     mp-text-c1()
@@ -49,7 +49,7 @@ $$text-styles()
     mp-text-h6()
   ::slotted(article), 
   ::slotted(p)
-    mp-text-b3()
+    mp-text-b2()
   ::slotted(span)
     mp-text-c1()
   ::slotted(li)

@@ -1,12 +1,72 @@
 @import '../../src/styles/theme/reset'
+@import '../../src/styles/theme/border-radius'
 @import '../../src/styles/theme/main'
 @import '../../src/styles/theme/text-styles'
 
+:host
+  font-size 0
+
+main
+  max-width 500px
+  width 100%
+  margin auto
+
+section 
+  display flex
+  justify-content flex-start
+
+.filters-container
+  display flex
+  justify-content flex-start
+  flex-direction row
+  flex-wrap wrap
+  width 100%
+  margin-bottom var(--mp-size--3)
+
+ul li
+  mp-text-b2()
+  margin var(--mp-size--2) var(--mp-size--3) 0 0
+  padding var(--mp-size--2)
+  background var(--mp-color-main--100)
+  color var(--mp-color-light--100)
+  border-radius var(--mp-border-radius--1)
+
+ul li button
+  background inherit
+  border none
+  padding 0 var(--mp-size--3)
+  mp-text-b2()
+  cursor pointer
+  color inherit
+
+ul li[disabled]
+  opacity: 0.4
+
+ul li[disabled] button
+  cursor not-allowed
+
+.filters-container li:last-of-type
+  margin-left auto
+  margin-right 0
+
 mp-combobox
-  width 500px
+  flex 1
+  height 48px
+  border-radius var(--mp-combobox-border-radius, var(--mp-border-radius--1))
+  --mp-combobox-border-radius var(--mp-border-radius--1) 0 0 var(--mp-border-radius--1)
+  background-color: var(--mp-color-light--100)
+
+mp-checkbox
+  margin-top var(--mp-size--3)
+
+mp-button
+  --mp-button-border-radius 0 var(--mp-border-radius--1) var(--mp-border-radius--1) 0 
 
 #titles-checkbox-container
-  display block
+  mp-text-b2()
+  display flex
 
-#titles-checkbox-container > label
-  mp-text-b1()
+#titles-checkbox-container span 
+  margin-left var(--mp-size--3)
+  align-self center
+
