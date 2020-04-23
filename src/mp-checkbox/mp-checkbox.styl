@@ -17,7 +17,7 @@
     height 100%
     text-align center
     display flex
-    padding 0px var(--mp-size--1) 
+    // padding 0px var(--mp-size--1) 
     mp-text-b1()
     font-family 'MaterialIcons-Regular', 'Material Icons', sans-serif
     color var(--mp-color-light--100)
@@ -29,13 +29,12 @@
     -webkit-appearance none
     -moz-appearance none
     -ms-appearance none
-    height var(--mp-size--7)
-    width var(--mp-size--7)
+    height var(--mp-size--6)
+    width var(--mp-size--6)
     padding 0
-    background transparent
+    background var(--mp-color-main--10)
     color var(--mp-color-main--100)
     border-radius var(--mp-border-radius--1)
-    border 2px solid var(--mp-color-main--100)
     cursor pointer
     user-select none
     margin 0
@@ -45,10 +44,10 @@
     &:not([disabled])
 
       &:hover
-        background var(--mp-color-main--10)
+        background var(--mp-color-main--20)
 
       &:active
-        background var(--mp-color-main--20)
+        background var(--mp-color-main--30)
     
       &[checked]
         background var(--mp-color-main--100)

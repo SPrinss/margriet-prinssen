@@ -2,21 +2,21 @@
 @import '../../src/styles/theme/main'
 @import '../../src/styles/mixins/base-styles'
 
-header {
-  background-color: hsl(138, 100%, 68%);
-  padding-top: 32px;
-}
+:host
+  display block
 
-#header-content-wrapper 
-  padding 24px 0
-  color hsl(243, 50%, 20%)
-  grid-area header
+header
+  min-height var(--mp-size--14)
 
-#aside-right-content-wrapper h3
-#aside-right-content-wrapper h5
-  margin-bottom var(--mp-size--4)
+$$text-styles()
 
-main, header 
+.header-content
+ text-align: center;
+
+mp-page 
+  --mp-page-max-width: 100%
+
+main 
   display grid
   grid-template-columns 2fr 4fr minmax(0px, 2fr)
   gap var(--mp-size--8)
@@ -52,16 +52,14 @@ ul
   padding 0
   margin-bottom var(--mp-size--2)
 
-
 .list 
   list-style: none;
   mp-text-b3()
 
 .list li:first-of-type 
-  color hsl(138, 100%, 30%)
-
-.list li:not(:first-of-type) 
-  color black
+  color var(--mp-color-dark--60)
+  margin-top var(--mp-size--3)
+  margin-bottom var(--mp-size--2)
 
 article p:first-of-type 
   padding-top 0
@@ -73,6 +71,10 @@ figure, img {
   padding: 0;
   margin: 0;
 }  
+
+@media (prefers-color-scheme: dark) 
+  .list li:first-of-type 
+    color: var(--mp-color-secondary--100);
 
 @media only screen and (max-width: 660px)
   header 
@@ -113,22 +115,4 @@ figure, img {
     width 100%
     border-bottom 1px solid black
 
-  h1
-    mp-text-h2()
-
-  h2
-    mp-text-h3()
-
-  h3
-    mp-text-h4()
-
-  h4
-    mp-text-h5()
-
-  h5
-    mp-text-h6()
-
-  article,
-  p
-    mp-text-b3()
-    padding 0 var(--mp-size--3)
+  

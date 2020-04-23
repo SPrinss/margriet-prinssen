@@ -1,6 +1,9 @@
-
+@import '../../src/styles/theme/reset'
+@import '../../src/styles/theme/main'
+@import '../../src/styles/mixins/base-styles'
+  
 page-content-spacing()
-  max-width 1080px
+  max-width var(--mp-page-max-width, 1080px)
   margin auto
   padding 0 var(--mp-size--5);
 
