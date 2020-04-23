@@ -4,9 +4,17 @@
   "description": "Site of Margriet Prinssen",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
     "start": "concurrently --kill-others \"npm run start:server::watch\" \"npm run watch:styles\"",
     "start:server::watch": "es-dev-server --app-index index.html --http2 --node-resolve --watch --open",
+    "build": "rimraf dist && rollup -c rollup.config.js",
+    "start:build": "npm run build && es-dev-server --root-dir dist --app-index index.html --open --compatibility none",
+    "lint:eslint": "eslint --ext .js,.html . --ignore-path .gitignore",
+    "format:eslint": "eslint --ext .js,.html . --fix --ignore-path .gitignore",
+    "lint:prettier": "prettier \"**/*.js\" --check --ignore-path .gitignore",
+    "format:prettier": "prettier \"**/*.js\" --write --ignore-path .gitignore",
+    "lint": "npm run lint:eslint && npm run lint:prettier",
+    "format": "npm run format:eslint && npm run format:prettier",
+    "build:styles": "gulp modulize-styles --folder src && gulp modulize-styles --folder demo",
     "watch:styles": "concurrently --kill-others \"npm run watch:styles:src\" \"npm run watch:styles:demo\"",
     "watch:styles:src": "gulp watch-styles --folder src",
     "watch:styles:demo": "gulp watch-styles --folder demo"
@@ -31,15 +39,48 @@
     "firestore-parser": "^0.9.0",
     "hogan.js": "^3.0.2",
     "html-element-property-mixins": "^0.10.3",
-    "instantsearch.js": "^4.4.0",
-    "listbox-combobox": "^1.1.1",
     "lit-html": "^1.2.1",
     "pwa-helpers": "^0.9.1"
   },
   "devDependencies": {
-    "es-dev-server": "^1.46.0",
+    "@open-wc/building-rollup": "^1.0.0",
+    "@open-wc/eslint-config": "^2.0.0",
     "concurrently": "^5.1.0",
-    "stylus": "^0.54.7"
+    "deepmerge": "^4.2.2",
+    "del-cli": "^3.0.0",
+    "es-dev-server": "^1.46.5",
+    "eslint": "^6.1.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "gulp": "^4.0.2",
+    "gulp-rename": "^2.0.0",
+    "gulp-stylus": "^2.7.0",
+    "gulp-transform": "^3.0.5",
+    "husky": "^1.0.0",
+    "lint-staged": "^8.0.0",
+    "prettier": "^2.0.4",
+    "replace-in-file": "^5.0.2",
+    "rimraf": "^2.6.3",
+    "rollup": "^2.3.4",
+    "rollup-plugin-copy": "^3.3.0",
+    "stylus": "^0.54.7",
     "yargs": "^15.3.1"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@open-wc/eslint-config",
+      "eslint-config-prettier"
+    ]
+  },
+  "prettier": {
+    "singleQuote": true,
+    "arrowParens": "avoid"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write",
+      "git add"
+    ]
   }
 }
