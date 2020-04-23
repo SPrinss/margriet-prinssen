@@ -4,18 +4,12 @@
   "description": "Site of Margriet Prinssen",
   "main": "index.html",
   "scripts": {
-    "start": "concurrently --kill-others \"npm run start:server::watch\" \"npm run compile:styles::watch\"",
-    "start:server::watch": "es-dev-server --app-index ./demo/index.html --http2 --node-resolve --watch --open",
-    "compile:styles": "npm run compile:styles::src && npm run compile:styles::demo && npm run compile:styles::app",
-    "compile:styles::app": "stylus ./*.styl",
-    "compile:styles::src": "stylus src/**/*.styl",
-    "compile:styles::demo": "stylus demo/**/*.styl",
-    "compile:styles::dist": "stylus dist/**/*.styl",
-    "compile:styles::watch": "concurrently --kill-others \"npm run compile:styles::src:watch\" \"npm run compile:styles::demo:watch\" \"npm run compile:styles::app:watch\"",
-    "compile:styles::app:watch": "stylus ./*.styl -w",
-    "compile:styles::src:watch": "stylus src/**/*.styl -w",
-    "compile:styles::demo:watch": "stylus demo/**/*.styl -w",
     "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "concurrently --kill-others \"npm run start:server::watch\" \"npm run watch:styles\"",
+    "start:server::watch": "es-dev-server --app-index index.html --http2 --node-resolve --watch --open",
+    "watch:styles": "concurrently --kill-others \"npm run watch:styles:src\" \"npm run watch:styles:demo\"",
+    "watch:styles:src": "gulp watch-styles --folder src",
+    "watch:styles:demo": "gulp watch-styles --folder demo"
   },
   "repository": {
     "type": "git",
@@ -46,5 +40,6 @@
     "es-dev-server": "^1.46.0",
     "concurrently": "^5.1.0",
     "stylus": "^0.54.7"
+    "yargs": "^15.3.1"
   }
 }
