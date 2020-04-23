@@ -3,6 +3,7 @@ import '../mp-select/mp-select'
 import '../mp-button/mp-button'
 import '../mp-input/mp-input'
 import '../mp-combobox/mp-combobox';
+import '../mp-checkbox/mp-checkbox';
 import { StringConverter, NumberConverter, BooleanConverter, ObjectConverter } from 'html-element-property-mixins/src/utils/attribute-converters';
 import algoliasearch from 'https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.esm.browser.js';
 
@@ -169,19 +170,18 @@ class MPSearch extends MPElement {
 				this.shadowRoot.querySelector('mp-combobox').reset();
 			}
 		}
-		>Gebruik als filter</mp-button>
-
-		<div id="titles-checkbox-container">
-			<mp-input 
-				id="titles-checkbox"
-				type="checkbox"
-				@input=${e => {
-					this.searchForFacetValues = !this.searchForFacetValues;
-					this.runQuery(this.searchInput)
-				}}
-				></mp-input>
-				<label for="titles-checkbox">Zoek alleen titels</label>
-		</div>
+				>Gebruik als filter</mp-button>
+			</section>
+			
+			<section>
+				<div id="titles-checkbox-container">
+					<mp-checkbox @input=${e => {
+							this.searchForFacetValues = !this.searchForFacetValues;
+							this.runQuery(this.searchInput)
+						}}
+					></mp-checkbox><span>Zoek alleen titels</span>
+				</div>
+			</section>
 		`
 	}
 }
