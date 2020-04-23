@@ -29,8 +29,8 @@ class MPRecensie extends MPElement {
       <header>
 
         <div id="header-content-wrapper">
-          <h1>${this.recensie.title}</h1>
-          <h5>${this.recensie.reviewDate ? this.recensie.reviewDate : ''} - ${this.recensie.theater ? this.recensie.theater.name : ''} - ${this.recensie.city ? this.recensie.city.name : ''}</h5>
+          <h1>${(this.recensie && this.recensie.title) ? this.recensie.title : ''}</h1>
+          <h5>${this.recensie && this.recensie.reviewDate ? this.recensie.reviewDate : ''} - ${this.recensie.theater ? this.recensie.theater.name : ''} - ${this.recensie.city ? this.recensie.city.name : ''}</h5>
         </div>
       </header>
 
@@ -46,7 +46,7 @@ class MPRecensie extends MPElement {
         </div>
         <div id="aside-right-content-wrapper">
 
-          <h3>${this.recensie.name}</h3>
+          <h3>${this.recensie && this.recensie.name ? this.recensie.name : ''}</h3>
           ${this.recensie.groups ? this.recensie.groups.map(value => html`<h5>${value.name}</h5>`) : ''}
           ${this._getListBlock(this.recensie.writers, 'Tekst')}
           ${this._getListBlock(this.recensie.directors, 'Regie')}
