@@ -1,5 +1,6 @@
 import { MPElement, html } from '../mp-element/mp-element';
 import { StringConverter, NumberConverter, BooleanConverter, ObjectConverter } from 'html-element-property-mixins/src/utils/attribute-converters';
+import { css } from './interview-preview.css.js';
 
 class InterviewPreview extends MPElement {
 
@@ -36,9 +37,13 @@ class InterviewPreview extends MPElement {
     }
   }
 
+  get styles() {
+    return html`<style>${css}</style>`;
+  }
+
   get template() {
     return html`
-      <link rel="stylesheet" href="/src/interview-preview/interview-preview.css">
+      ${this.styles}
 
     <header>
       <figure><img src="${this.imageSrc}" alt="Foto van geïnterviewde"></figure>

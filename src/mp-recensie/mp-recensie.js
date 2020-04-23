@@ -1,4 +1,5 @@
 import { MPElement, html } from '../mp-element/mp-element';
+import { css } from './mp-recensie.css.js';
 
 class MPRecensie extends MPElement {
 
@@ -22,9 +23,13 @@ class MPRecensie extends MPElement {
     
   }
 
+  get styles() {
+    return html`<style>${css}</style>`;
+  }
+
   get template() {
     return html`
-      <link rel="stylesheet" href="/src/mp-recensie/mp-recensie.css">
+      ${this.styles}
 
       <header>
 

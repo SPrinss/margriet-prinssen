@@ -1,10 +1,14 @@
 import { MPElement, html } from '../mp-element/mp-element';
+import { css } from './mp-interview.css.js';
 
 class MPInterview extends MPElement {
+  get styles() {
+    return html`<style>${css}</style>`;
+  }
 
   get template() {
     return html`
-      <link rel="stylesheet" href="/src/mp-interview/mp-interview.css">
+      ${this.styles}
 
       <header><div id="header-content-wrapper"><slot name="header"></slot></div></header>
       <main>

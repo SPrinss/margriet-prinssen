@@ -1,5 +1,6 @@
 import { HTMLButtonElement, html } from '@html-element-wrappers/button';
 import { enableFocusVisible } from '../utils/focus-visible-polyfill.js';
+import { css } from './mp-button.css.js';
 
 /**
  * MP button element
@@ -14,9 +15,7 @@ export class MPButton extends HTMLButtonElement {
   }
 
   get styles() {
-    return html`
-      <link rel="stylesheet" href="/src/mp-button/mp-button.css">
-    `;
+    return html`<style>${css}</style>`;
   }
 
 }

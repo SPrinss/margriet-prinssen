@@ -1,4 +1,6 @@
 import { html, LitElement } from 'lit-element';
+import { css } from './mp-combobox.css.js';
+
 class MPCombobox extends LitElement {
 
   static get properties() {
@@ -18,9 +20,13 @@ class MPCombobox extends LitElement {
     };
   }
 
+  get styles() {
+    return html`<style>${css}</style>`;
+  }
+
   render() {
     return html`
-    <link rel="stylesheet" href="/src/mp-combobox/mp-combobox.css">
+    ${this.styles}
     <label for="ex1-input" id="ex1-label" class="combobox-label">${this.label}</label>
     <div class="combobox-wrapper">
       <div role="combobox" aria-expanded="false" aria-owns="ex1-listbox" aria-haspopup="listbox" id="ex1-combobox">

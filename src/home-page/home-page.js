@@ -24,12 +24,16 @@ for (let i = 0; i < 2; i++) {
   );
 }
 
+import { css } from './home-page.css.js';
 
 class HomePage extends MPElement {
+  get styles() {
+    return html`<style>${css}</style>`;
+  }
 
   get template() {
     return html`
-    <link rel="stylesheet" href="/src/home-page/home-page.css">
+      ${this.styles}
 
     <mp-page>
       <header slot="header">

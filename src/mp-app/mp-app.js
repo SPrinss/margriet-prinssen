@@ -2,6 +2,9 @@ import { MPElement, html } from '../mp-element/mp-element';
 import { installRouter } from 'pwa-helpers/router.js';
 import { logo } from '../logo/logo.js';
 import {unsafeSVG} from 'lit-html/directives/unsafe-svg'
+import { css } from './mp-app.css.js';
+
+
 class MPApp extends MPElement {
 
   static get properties() {
@@ -34,11 +37,13 @@ class MPApp extends MPElement {
     if(!newPage) return;
     const visiblePage = `${newPage}-page`;
     import(`../${visiblePage}/${visiblePage}.js`)
+  get styles() {
+    return html`<style>${css}</style>`;
   }
 
   get template() {
     return html`
-      <link rel="stylesheet" href="/src/mp-app/mp-app.css">
+      ${this.styles}
 
       <main>
       <nav>

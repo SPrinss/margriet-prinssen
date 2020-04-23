@@ -1,5 +1,6 @@
 import { HTMLInputElement, html } from '@html-element-wrappers/input';
 import { enableFocusVisible } from '../utils/focus-visible-polyfill.js';
+import { css } from './mp-input.css.js';
 
 /**
  * MP Input element
@@ -14,10 +15,9 @@ export class MPInput extends HTMLInputElement {
   }
 
   get styles() {
-    return html`
-      <link rel="stylesheet" href="/src/mp-input/mp-input.css">
-    `;
+    return html`<style>${css}</style>`;
   }
+
 
 }
 

@@ -1,10 +1,11 @@
 import { MPElement, html } from '../mp-element/mp-element';
-import '../mp-select/mp-select'
 import '../mp-button/mp-button'
 import '../mp-input/mp-input'
 import '../mp-combobox/mp-combobox';
 import '../mp-checkbox/mp-checkbox';
 import { StringConverter, NumberConverter, BooleanConverter, ObjectConverter } from 'html-element-property-mixins/src/utils/attribute-converters';
+import { css } from './mp-search.css.js';
+
 import algoliasearch from 'https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.esm.browser.js';
 
 class MPSearch extends MPElement {
@@ -138,11 +139,13 @@ class MPSearch extends MPElement {
 		});
 	}
 
-
+  get styles() {
+    return html`<style>${css}</style>`;
+  }
 
 	get template() {
 		return html`
-		<link rel="stylesheet" href="/src/mp-search/mp-search.css">
+      ${this.styles}
 
 		<main>
 			<section>

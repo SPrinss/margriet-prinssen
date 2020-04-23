@@ -1,5 +1,6 @@
 import { HTMLInputElement, html } from '@html-element-wrappers/input';
 import { enableFocusVisible } from '../utils/focus-visible-polyfill.js';
+import { css } from './mp-checkbox.css.js';
 
 /**
  * Con Amore checkbox element
@@ -19,6 +20,10 @@ export class MPCheckboxElement extends HTMLInputElement {
     return html`
       <link rel="stylesheet" href="/src/mp-checkbox/mp-checkbox.css">
     `;
+  }
+
+  get styles() {
+    return html`<style>${css}</style>`;
   }
 
   get template() {

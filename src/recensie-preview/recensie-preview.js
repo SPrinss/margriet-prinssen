@@ -1,5 +1,6 @@
 import { MPElement, html } from '../mp-element/mp-element';
 import { StringConverter, NumberConverter, BooleanConverter, ObjectConverter } from 'html-element-property-mixins/src/utils/attribute-converters';
+import { css } from './recensie-preview.css.js';
 
 class RecensiePreview extends MPElement {
 
@@ -52,9 +53,13 @@ class RecensiePreview extends MPElement {
     }
   }
 
+  get styles() {
+    return html`<style>${css}</style>`;
+  }
+
   get template() {
     return html`
-      <link rel="stylesheet" href="/src/recensie-preview/recensie-preview.css">
+    ${this.styles}
 
     <header>
       <div class="header-main">

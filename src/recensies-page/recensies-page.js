@@ -5,6 +5,7 @@ import '../mp-page/mp-page';
 import '../mp-search/mp-search';
 import FireStoreParser from 'firestore-parser/index'
 import algoliasearch from 'https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.esm.browser.js';
+import { css } from './recensies-page.css.js';
 
 class RecensiesPage extends MPElement {
 
@@ -40,9 +41,13 @@ class RecensiesPage extends MPElement {
     this.recensie = FireStoreParser(data).fields || {};
   }
 
+  get styles() {
+    return html`<style>${css}</style>`;
+  }
+
   get template() {
     return html`
-    <link rel="stylesheet" href="/src/recensies-page/recensies-page.css">
+    ${this.styles}
 
     <mp-page ?active="${!this.recensieId}">
       <header slot="header"></header>
