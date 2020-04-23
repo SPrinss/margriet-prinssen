@@ -141,35 +141,37 @@ class MPSearch extends MPElement {
 
 
 	get template() {
-		return html
-		`
+		return html`
 		<link rel="stylesheet" href="/src/mp-search/mp-search.css">
 
-		<ul>
+		<main>
+			<section>
+				<ul class="filters-container">
 
-    	${this._selectedFacets.map((item, i) => {
-					return html`
-						<li>${item.value}</li><button @click=${(e) => this._selectedFacets = this._selectedFacets.filter((item, index) => i != index )}>X</button>
-					`
+					${this._selectedFacets.map((item, i) => {
+							return html`
+								<li>${item.value} <button @click=${(e) => this._selectedFacets = this._selectedFacets.filter((item, index) => i != index )}>x</button></li>
+							`
+						}
+						)} 
+
+						<li ?disabled=${this._selectedFacets.length === 0}>Wis<button ?disabled=${this._selectedFacets.length === 0} @click=${(e) => this._selectedFacets = []}>x</button></li>
+				</ul>
+			</section>
+
+			<section>
+				<mp-combobox 
+					.items=${this._items} 
+					@input=${e => this.searchInput = e.target.input.value} 
+					@value-changed=${(e) => this._selectedOption = e.detail.value}
+				></mp-combobox>
+				<mp-button 
+					?disabled=${!this._selectedOption || !this._selectedOption.category || this._selectedOption.category === 'titel' || this._selectedFacets.includes(this._selectedOption.value)} 
+					@click=${() => {
+						this._selectedFacets = [].concat(...this._selectedFacets, this._selectedOption);
+						this.shadowRoot.querySelector('mp-combobox').reset();
+					}
 				}
-				 )} 
-
-				<li ?hidden=${this._selectedFacets.length === 0}>Wis</li><button ?hidden=${this._selectedFacets.length === 0} @click=${(e) => this._selectedFacets = []}>X</button>
-		</ul>
-
-
-		<mp-combobox 
-			.items=${this._items} 
-			@input=${e => this.searchInput = e.target.input.value} 
-			@value-changed=${(e) => this._selectedOption = e.detail.value}
-		></mp-combobox>
-		<mp-button 
-			?disabled=${!this._selectedOption || !this._selectedOption.category || this._selectedOption.category === 'titel' || this._selectedFacets.includes(this._selectedOption.value)} 
-			@click=${() => {
-				this._selectedFacets = [].concat(...this._selectedFacets, this._selectedOption);
-				this.shadowRoot.querySelector('mp-combobox').reset();
-			}
-		}
 				>Gebruik als filter</mp-button>
 			</section>
 			
@@ -182,6 +184,7 @@ class MPSearch extends MPElement {
 					></mp-checkbox><span>Zoek alleen titels</span>
 				</div>
 			</section>
+		</main>
 		`
 	}
 }
