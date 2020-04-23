@@ -35,8 +35,17 @@ class MPApp extends MPElement {
 
   _handlePageChange(oldPage, newPage) {
     if(!newPage) return;
-    const visiblePage = `${newPage}-page`;
-    import(`../${visiblePage}/${visiblePage}.js`)
+    if(newPage.includes('home')) {
+      import(`../home-page/home-page.js`);
+    } else if (newPage.includes('recensies')) {
+      import(`../recensies-page/recensies-page.js`);
+    } else if (newPage.includes('interviews')) {
+      // import(`../interviews-page/interviews-page.js`);
+    } else if (newPage.includes('over')) {
+      import(`../over-page/over-page.js`);
+    }
+  }
+
   get styles() {
     return html`<style>${css}</style>`;
   }
