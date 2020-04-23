@@ -54,7 +54,7 @@ class MPApp extends MPElement {
       <div id="hor-line-bottom"></div>
 
       <home-page ?visible="${this.page === 'home'}" class="page"></home-page>
-      <recensies-page ?visible="${this.page.includes('recensies')}" .recensieId=${this.page.includes('recensies/') ? this.page.substring(this.page.indexOf('recensies/') + 1, this.page.length) : ''} class="page"></recensies-page>
+      <recensies-page ?visible="${this.page.includes('recensies')}" .recensieId=${this.page.includes('recensies/') ? this.page.substring(this.page.indexOf('recensies/') + 10, this.page.length) : ''} class="page"></recensies-page>
       <interviews-page ?visible="${this.page === 'interviews'}" class="page"></interviews-page>
       <over-page ?visible="${this.page === 'over'}" class="page"></over-page>
       
