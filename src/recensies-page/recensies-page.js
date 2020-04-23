@@ -20,7 +20,7 @@ class RecensiesPage extends MPElement {
         defaultValue: '',
         changedHandler: '_handleRecensieIdChanged'
       },
-      weqqwe: {
+      recensie: {
         observe: true,
         defaultValue: {}
       }
@@ -35,7 +35,9 @@ class RecensiesPage extends MPElement {
     if(!id) return;
     const resp = await fetch(`https://firestore.googleapis.com/v1/projects/margriet-prinssen/databases/(default)/documents/reviews/${id}`);
     const data = await resp.json();
+    console.log(id, resp, data)
     this.weqqwe = FireStoreParser(data).fields;
+    this.recensie = FireStoreParser(data).fields || {};
   }
 
   get template() {
@@ -44,9 +46,9 @@ class RecensiesPage extends MPElement {
 
     <mp-page ?active="${!this.recensieId}">
       <header slot="header"></header>
-      <h1 slot="header-content">recensies</h1>
+      <h2 slot="header-content">Doorzoek recensies</h2>
 
-      <section>
+      <section id="search-section">
         <mp-search 
           algolia-config='{"applicationId": "QZ9LK09320","searchOnlyAPIKey": "5fe26edd91681f874040eb6110bf8a7f","index": "reviews"}'
           facet-attributes='["actors", "groups", "theater", "writers", "directors", "year", "city"]'
@@ -78,7 +80,7 @@ class RecensiesPage extends MPElement {
 
     </mp-page>
 
-    <mp-recensie ?active="${this.recensieId}" .recensie=${this.weqqwe}>
+    <mp-recensie ?active="${this.recensieId}" .recensie=${this.recensie}>
 
     </mp-recensie>
 
