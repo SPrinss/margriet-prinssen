@@ -3,7 +3,7 @@ import '../recensie-preview/recensie-preview';
 import '../interview-preview/interview-preview';
 import '../mp-page/mp-page';
 import '../mp-button/mp-button';
-import FireStoreParser from 'firestore-parser/index';
+import FireStoreParser from '/web_modules/firestore-parser.js';
 
 const arr = [1, 2, 3]
 const itemTemplates = [];
@@ -92,21 +92,13 @@ class HomePage extends MPElement {
       ${this.styles}
 
     <mp-page>
-      <header slot="header">
-        <div id="overlay" slot="header">
-        </div>
 
-      </header>
-      <div slot="header-content" id="header-content">
-        <h1>Margriet Prinssen</h1>
-      
-        <h2>Theater journalist</h2>
-      </div>
+      <h1 slot="header">Margriet Prinssen</h1>
+      <h2 slot="header">Theater journalist</h2>
 
       <section>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error magnam cum illo incidunt dicta eos, fuga repudiandae voluptates nulla accusamus non qui, delectus laudantium optio vitae hic quisquam. Culpa, aperiam.</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error magnam cum illo incidunt dicta eos, fuga repudiandae voluptates nulla accusamus non qui, delectus laudantium optio vitae hic quisquam. Culpa, aperiam.</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error magnam cum illo incidunt dicta eos, fuga repudiandae voluptates nulla accusamus non qui, delectus laudantium optio vitae hic quisquam. Culpa, aperiam.</p>
+        <p>Op deze site vind je recensies en interviews over met name theater, maar ook opera en dans vanaf de jaren negentig.</p>
+        <p>Vanaf 1989 schrijf ik recensies voor Haarlems Dagblad en wat achtereenvolgens De GPD-bladen, TMG Media en Mediahuis (Noordhollands Dagblad, Haarlems Dagblad, Leidsch Dagblad, De Gooi- en Eemlander en IJmuider Courant) heette; sinds 2011 artikelen over theater voor de Amsterdamse Uitkrant, sinds het eerste nummer voor theaterblad Scenes en daarnaast voor Odeon, het blad van Nationale Opera & Ballet. </p>
       </section>
 
       <section>

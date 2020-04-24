@@ -5,9 +5,9 @@ import '../mp-combobox/mp-combobox';
 import '../mp-checkbox/mp-checkbox';
 import { StringConverter, NumberConverter, BooleanConverter, ObjectConverter } from 'html-element-property-mixins/src/utils/attribute-converters';
 import { css } from './mp-search.css.js';
+import algoliasearch from '/web_modules/algoliasearch.js';
 
-import algoliasearch from 'https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.esm.browser.js';
-
+// https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.esm.browser.js
 class MPSearch extends MPElement {
 
 	static get properties() {

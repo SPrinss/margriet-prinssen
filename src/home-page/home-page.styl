@@ -29,8 +29,17 @@ a[arrow]
   margin-top var(--mp-size--4)
   display: inline-block;
 
+h1[slot="header"]
+  margin-bottom var(--mp-size--6)
+  
 @media (prefers-color-scheme: dark) 
   header
     background-color var(--mp-color-dark--80)
-    color var(--mp-color-light--100)@media only screen and (max-width: 660px)
+    color var(--mp-color-light--100)
+
+@media only screen and (max-width: 660px)
   $$text-font-size-mobile-styles()
+
+  .recensie-grid
+  .interview-grid
+    grid-template-columns: 1fr;

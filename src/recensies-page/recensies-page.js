@@ -3,8 +3,7 @@ import '../recensie-preview/recensie-preview';
 import '../mp-recensie/mp-recensie';
 import '../mp-page/mp-page';
 import '../mp-search/mp-search';
-import FireStoreParser from 'firestore-parser/index'
-import algoliasearch from 'https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.esm.browser.js';
+import FireStoreParser from '/web_modules/firestore-parser.js'
 import { css } from './recensies-page.css.js';
 
 class RecensiesPage extends MPElement {
@@ -48,8 +47,7 @@ class RecensiesPage extends MPElement {
     ${this.styles}
 
     <mp-page ?active="${!this.recensieId}">
-      <header slot="header"></header>
-      <h2 slot="header-content">Doorzoek recensies</h2>
+      <h2 slot="header">Doorzoek recensies</h2>
 
       <section id="search-section">
         <mp-search 

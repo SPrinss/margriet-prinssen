@@ -36,25 +36,25 @@ figure, img {
   margin: 0;
 }
 
-#hor-line-top
-#hor-line-bottom
-  // position absolute
-  // left 0 
-  // right 0
-  // width 100%
-  // height: 3px
-  // z-index 3
+// #hor-line-top
+// #hor-line-bottom
+//   position absolute
+//   left 0 
+//   right 0
+//   width 100%
+//   height: 3px
+//   z-index 3
   
 
-#hor-line-top
-  background: rgb(178,205,255);
-  background: linear-gradient(90deg, var(--mp-color-main--100) 39%, transparent 39%);
-  // top var(--mp-size--11)
+// #hor-line-top
+//   background: rgb(178,205,255);
+//   background: linear-gradient(90deg, var(--mp-color-main--100) 39%, transparent 39%);
+//   top var(--mp-size--11)
 
-#hor-line-bottom
-  background: rgb(244,209,143);
-  background: linear-gradient(90deg, var(--mp-color-secondary--100) 29%, transparent 29%);
-  // top var(--mp-size--12)
+// #hor-line-bottom
+//   background: rgb(244,209,143);
+//   background: linear-gradient(90deg, var(--mp-color-secondary--100) 29%, transparent 29%);
+//   top var(--mp-size--12)
 
 nav a 
   fill: currentColor;
@@ -83,6 +83,8 @@ nav ul li a
   display block
   flex 1
   background-color var(--mp-color-secondary--20)
+  padding-top var(--mp-size--11)
+  padding-bottom var(--mp-size--6)
 
 .page:not([visible]) {
   display none
@@ -110,7 +112,7 @@ nav ul li a
 footer
   min-height var(--mp-size--10)
   background-color var(--mp-color-main--100)
-  color var(--mp-color-light--100)
+  color var(--mp-color-dark--100)
   display flex
   align-items center
 
@@ -135,3 +137,12 @@ footer > *
 @media only screen and (max-width: 660px)
   $$text-font-size-mobile-styles()        
 
+  nav
+    flex-wrap: wrap;
+    justify-content: center;
+  
+  nav a 
+    margin-top var(--mp-size--6)
+  
+  .page
+    padding-top var(--mp-size--13)

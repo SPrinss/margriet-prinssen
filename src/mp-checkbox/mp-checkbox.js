@@ -1,4 +1,4 @@
-import { HTMLInputElement, html } from '@html-element-wrappers/input';
+import { HTMLInputElement, html } from '/web_modules/@html-element-wrappers/input.js';
 import { enableFocusVisible } from '../utils/focus-visible-polyfill.js';
 import { css } from './mp-checkbox.css.js';
 

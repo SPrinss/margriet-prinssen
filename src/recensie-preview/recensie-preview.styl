@@ -56,6 +56,7 @@ header
 header ul
   text-align right
   flex 1
+  align-self: center;
 
 .persons-grid ul li:first-of-type {
   margin-bottom: var(--mp-size--1);
@@ -94,3 +95,9 @@ header ul
   ul
     text-align left
     margin-top var(--mp-size--4)
+
+  .persons-grid ul:first-of-type
+    margin-top 0
+
+  header ul li
+    mp-text-c2()

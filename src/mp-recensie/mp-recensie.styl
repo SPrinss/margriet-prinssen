@@ -61,6 +61,9 @@ ul
   margin-top var(--mp-size--3)
   margin-bottom var(--mp-size--2)
 
+article p
+  margin var(--mp-size--4) 0 
+
 article p:first-of-type 
   padding-top 0
   margin-top 0
@@ -72,11 +75,16 @@ figure, img {
   margin: 0;
 }  
 
+h1[slot="header"]
+  margin-bottom var(--mp-size--6)
+
 @media (prefers-color-scheme: dark) 
   .list li:first-of-type 
     color: var(--mp-color-secondary--100);
 
 @media only screen and (max-width: 660px)
+  $$text-font-size-mobile-styles()   
+
   header 
     padding-top var(--mp-size--6)
 
@@ -114,7 +122,3 @@ figure, img {
     padding 0 var(--mp-size--3)
     width 100%
     border-bottom 1px solid black
-
-  
-@media only screen and (max-width: 660px)
-  $$text-font-size-mobile-styles()    

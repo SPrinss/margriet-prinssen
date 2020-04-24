@@ -1,0 +1,43 @@
+@import '../../src/styles/theme/reset'
+@import '../../src/styles/theme/main'
+@import '../../src/styles/theme/text-styles'
+@import '../../src/styles/mixins/base-styles'
+
+$$text-styles()
+$$a-link()
+
+#intro-section img
+  margin-right: var(--mp-size--6);
+
+#intro-section
+  display flex
+  flex-direction: row
+  justify-content: space-between
+  align-items: center
+  margin-top var(--mp-size--10)
+
+blockquote
+  margin-top var(--mp-size--10)
+  margin-bottom var(--mp-size--10)
+  
+h5
+  margin-top var(--mp-size--7)
+  margin-bottom var(--mp-size--4)
+
+p
+  margin var(--mp-size--4) 0 
+
+@media (prefers-color-scheme: dark) 
+  header
+    background-color var(--mp-color-dark--80)
+    color var(--mp-color-light--100)
+
+@media only screen and (max-width: 660px)
+  $$text-font-size-mobile-styles()
+
+  #intro-section
+    flex-wrap: wrap;
+    align-items: flex-end
+  
+  h5
+    margin-top var(--mp-size--5)

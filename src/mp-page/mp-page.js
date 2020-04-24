@@ -9,15 +9,17 @@ class MPPage extends MPElement {
   get template() {
     return html`
       ${this.styles}
+      <div id="top-hor-line-top"></div>
+      <div id="top-hor-line-bottom"></div>
       <header>
         <slot name="header"></slot>
-        <div class="header-content-container">
+        <!-- <div class="header-content-container">
           <slot name="header-content"></slot>
-        </div>
-        <div id="hor-line-top"></div>
-        <div id="hor-line-bottom"></div>
-      </header>
+        </div> -->
 
+      </header>
+      <div id="bottom-hor-line-top"></div>
+      <div id="bottom-hor-line-bottom"></div>
       <main>
         <slot></slot>
       </main>

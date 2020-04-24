@@ -1,4 +1,4 @@
-import { HTMLSelectElement, html } from '@html-element-wrappers/select';
+import { HTMLSelectElement, html } from '/web_modules/@html-element-wrappers/select.js';
 import { enableFocusVisible } from '../utils/focus-visible-polyfill.js';
 
 /**

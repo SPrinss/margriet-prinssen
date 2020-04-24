@@ -1,6 +1,8 @@
 import { MPElement, html } from '../mp-element/mp-element';
 import { css } from './mp-recensie.css.js';
 import '../mp-page/mp-page'
+import {unsafeHTML} from 'lit-html/directives/unsafe-html'
+
 class MPRecensie extends MPElement {
 
   static get properties() {
@@ -23,6 +25,11 @@ class MPRecensie extends MPElement {
     
   }
 
+  parseReview(str) {
+    const parsedArr = str.replace(/↵/g, '\n').split('\n').map(paragraph => !!paragraph.replace(/ /g, '') ? `<p>${paragraph}</p>` : '');
+    return unsafeHTML(parsedArr.join(''));
+  }
+
   get styles() {
     return html`<style>${css}</style>`;
   }
@@ -32,9 +39,8 @@ class MPRecensie extends MPElement {
       ${this.styles}
 
       <mp-page>
-        <header slot="header"></header>
-        <h1 class="header-content" slot="header-content">${(this.recensie && this.recensie.title) ? this.recensie.title : this.recensie.name}</h1>
-        <h5 class="header-content" slot="header-content">${this.recensie && this.recensie.reviewDate ? this.recensie.reviewDate : ''} - ${this.recensie.theater ? this.recensie.theater.name : ''} - ${this.recensie.city ? this.recensie.city.name : ''}</h5>
+        <h1 slot="header">${(this.recensie && this.recensie.title) ? this.recensie.title : this.recensie.name}</h1>
+        <h5 slot="header">${this.recensie && this.recensie.reviewDate ? this.recensie.reviewDate : ''} - ${this.recensie.theater ? this.recensie.theater.name : ''} - ${this.recensie.city ? this.recensie.city.name : ''}</h5>
 
         <main>
           <div id="aside-left-content-wrapper">
@@ -43,7 +49,7 @@ class MPRecensie extends MPElement {
 
           <div id="main-content-wrapper">
             <article>
-              ${this.recensie.review ? this.recensie.review.replace(/↵/g, '\n') : ''}
+              ${this.recensie.review ? this.parseReview(this.recensie.review) : ''}
             </article>
           </div>
           <div id="aside-right-content-wrapper">
