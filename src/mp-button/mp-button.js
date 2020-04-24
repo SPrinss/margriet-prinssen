@@ -1,4 +1,4 @@
-import { HTMLButtonElement, html } from '@html-element-wrappers/button.js';
+import { HTMLButtonElement, html } from '@html-element-wrappers/button';
 import { enableFocusVisible } from '../utils/focus-visible-polyfill.js';
 import { css } from './mp-button.css.js';
 

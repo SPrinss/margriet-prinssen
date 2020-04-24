@@ -3,7 +3,7 @@ import '../recensie-preview/recensie-preview';
 import '../interview-preview/interview-preview';
 import '../mp-page/mp-page';
 import '../mp-button/mp-button';
-import FireStoreParser from '/web_modules/firestore-parser.js';
+import FireStoreParser from 'firestore-parser/index';
 
 const arr = [1, 2, 3]
 const itemTemplates = [];

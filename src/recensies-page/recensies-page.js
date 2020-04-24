@@ -3,7 +3,7 @@ import '../recensie-preview/recensie-preview';
 import '../mp-recensie/mp-recensie';
 import '../mp-page/mp-page';
 import '../mp-search/mp-search';
-import FireStoreParser from '/web_modules/firestore-parser.js'
+import FireStoreParser from 'firestore-parser/index';
 import { css } from './recensies-page.css.js';
 
 class RecensiesPage extends MPElement {
