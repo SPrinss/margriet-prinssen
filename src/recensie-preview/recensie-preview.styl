@@ -26,7 +26,7 @@ figure
 
 .header-main
   display flex
-  flex-direction  column
+  flex-direction column
   justify-content flex-end
   flex 1
 
@@ -58,7 +58,7 @@ header ul
   flex 1
 
 .persons-grid ul li:first-of-type {
-  margin-bottom: var(--mp-size--2);
+  margin-bottom: var(--mp-size--1);
   color var(--mp-color-dark--60)
 }
 
@@ -73,3 +73,24 @@ header ul
   header
     background-color var(--mp-color-main--50);
     color var(--mp-color-dark--90);
+
+  .persons-grid ul li:first-of-type
+    color var(--mp-color-light--60)
+
+
+@media only screen and (max-width: 660px)
+  $$text-font-size-mobile-styles()        
+
+  header
+    flex-direction: column;
+    align-items: flex-start;
+
+  header ul
+    text-align: left;
+
+  .persons-grid
+    display block
+
+  ul
+    text-align left
+    margin-top var(--mp-size--4)

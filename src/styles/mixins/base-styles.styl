@@ -81,6 +81,50 @@ $$text-styles()
   blockquote > span
     margin-top var(--mp-size--5)
 
+$$text-font-size-mobile-styles()
+  p
+    font-size var(--mp-text-b2-mobile-font-size)
+  h1
+    font-size var(--mp-text-h1-mobile-font-size)
+  h2
+    font-size var(--mp-text-h2-mobile-font-size)
+  blockquote > p,
+  h3
+    font-size var(--mp-text-h3-mobile-font-size)
+  h4
+    font-size var(--mp-text-h4-mobile-font-size)
+  blockquote > span,
+  h5
+    font-size var(--mp-text-h5-mobile-font-size)
+  h6
+    font-size var(--mp-text-h6-mobile-font-size)
+  article
+    font-size var(--mp-text-b2-mobile-font-size)
+  span
+    font-size var(--mp-text-b3-mobile-font-size)
+  li
+    font-size var(--mp-text-h6-mobile-font-size)
+
+  ::slotted(h1) 
+    font-size var(--mp-text-h1-mobile-font-size)
+  ::slotted(h2)
+    font-size var(--mp-text-h2-mobile-font-size)
+  ::slotted(h3)
+    font-size var(--mp-text-h3-mobile-font-size)
+  ::slotted(h4)
+    font-size var(--mp-text-h4-mobile-font-size)
+  ::slotted(h5)
+    font-size var(--mp-text-h5-mobile-font-size)
+  ::slotted(h6)
+    font-size var(--mp-text-h6-mobile-font-size)
+  ::slotted(article)
+  ::slotted(p)
+    font-size var(--mp-text-b2-mobile-font-size)
+  ::slotted(span)
+    font-size var(--mp-text-b3-mobile-font-size)
+  ::slotted(li)
+    font-size var(--mp-text-h6-mobile-font-size)
+
 $$a-link()
   a[arrow-back]
   a[arrow]

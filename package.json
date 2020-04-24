@@ -15,9 +15,11 @@
     "lint": "npm run lint:eslint && npm run lint:prettier",
     "format": "npm run format:eslint && npm run format:prettier",
     "build:styles": "gulp modulize-styles --folder src && gulp modulize-styles --folder demo",
-    "watch:styles": "concurrently --kill-others \"npm run watch:styles:src\" \"npm run watch:styles:demo\"",
+    "watch:styles": "concurrently --kill-others \"npm run watch:styles:src\" \"npm run watch:styles:demo\" \"npm run compile:styles::app:watch\"",
     "watch:styles:src": "gulp watch-styles --folder src",
-    "watch:styles:demo": "gulp watch-styles --folder demo"
+    "watch:styles:demo": "gulp watch-styles --folder demo",
+    "compile:styles::app": "stylus ./*.styl",
+    "compile:styles::app:watch": "stylus ./*.styl -w"
   },
   "repository": {
     "type": "git",
