@@ -17,12 +17,12 @@ $$a-link()
   margin-top var(--mp-size--10)
 
 blockquote
-  margin-top var(--mp-size--10)
-  margin-bottom var(--mp-size--10)
+  margin var(--mp-size--10) 0
   
+h4
 h5
   margin-top var(--mp-size--7)
-  margin-bottom var(--mp-size--4)
+  margin-bottom var(--mp-size--3)
 
 p
   margin var(--mp-size--4) 0 
@@ -53,7 +53,15 @@ p
 
   #intro-section
     flex-wrap: wrap;
+    justify-content: center;
     align-items: flex-end
+    margin-top var(--mp-size--7)
+
+  #intro-section img
+    margin-right: 0;
   
-  h5
+  h4
     margin-top var(--mp-size--5)
+
+  blockquote
+    margin var(--mp-size--7) 0    

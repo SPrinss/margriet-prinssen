@@ -18,12 +18,14 @@ $$text-styles()
     mp-text-h1()
   h2
     mp-text-h2()
-  blockquote > p,
   h3
     mp-text-h3()
+  blockquote p
+    mp-text-h4()
   h4
     mp-text-h4()
-  blockquote > span,
+  blockquote span
+    mp-text-h5()
   h5
     mp-text-h5()
   h6
@@ -78,7 +80,7 @@ $$text-styles()
     margin 0
     padding 0
 
-  blockquote > span
+  blockquote span
     margin-top var(--mp-size--5)
 
 $$text-font-size-mobile-styles()
@@ -88,13 +90,15 @@ $$text-font-size-mobile-styles()
     font-size var(--mp-text-h1-mobile-font-size)
   h2
     font-size var(--mp-text-h2-mobile-font-size)
-  blockquote > p,
   h3
     font-size var(--mp-text-h3-mobile-font-size)
   h4
     font-size var(--mp-text-h4-mobile-font-size)
-  blockquote > span,
+  blockquote p
+    font-size var(--mp-text-h4-mobile-font-size)
   h5
+    font-size var(--mp-text-h5-mobile-font-size)
+  blockquote span
     font-size var(--mp-text-h5-mobile-font-size)
   h6
     font-size var(--mp-text-h6-mobile-font-size)

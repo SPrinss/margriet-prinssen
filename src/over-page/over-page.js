@@ -26,7 +26,7 @@ class OverPage extends MPElement {
 
         <section>
           <article>
-            <h5>Interview ter gelegenheid van haar afscheid bij de Nationale Opera & Ballet</h5>
+            <h4>Interview ter gelegenheid van haar afscheid bij de Nationale Opera & Ballet</h4>
             <h6>Laura Roling - mei 2019</h6>
 
             <p>In oktober 1992 stapte Margriet Prinssen voor het eerst Nationale Opera & Ballet binnen, toen nog het Muziektheater. Nu, ruim 25 jaar later, neemt ze afscheid. Alhoewel, afscheid? ‘Ik blijf gewoon schrijven als freelancer, hopelijk ook voor jullie, dus ik verdwijn niet helemaal.’</p>
