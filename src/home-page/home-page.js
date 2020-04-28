@@ -97,8 +97,7 @@ class HomePage extends MPElement {
       <h2 slot="header">Theater journalist</h2>
 
       <section>
-        <p>Op deze site vind je recensies en interviews over met name theater, maar ook opera en dans vanaf de jaren negentig.</p>
-        <p>Vanaf 1989 schrijf ik recensies voor Haarlems Dagblad en wat achtereenvolgens De GPD-bladen, TMG Media en Mediahuis (Noordhollands Dagblad, Haarlems Dagblad, Leidsch Dagblad, De Gooi- en Eemlander en IJmuider Courant) heette; sinds 2011 artikelen over theater voor de Amsterdamse Uitkrant, sinds het eerste nummer voor theaterblad Scenes en daarnaast voor Odeon, het blad van Nationale Opera & Ballet. </p>
+        <p>Vanaf 1989 schrijf ik theater en dans recensies voor diverse dagbladen; sinds 2011 artikelen over theater voor de Amsterdamse Uitkrant, sinds het eerste nummer voor theaterblad Scenes en daarnaast voor Odeon, het blad van Nationale Opera & Ballet. Op deze site vind je recensies en interviews over met name theater, maar ook opera en dans.</p>
       </section>
 
       <section>
