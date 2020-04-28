@@ -119,6 +119,8 @@ class HomePage extends MPElement {
 
       <section>
         <p>Vanaf 1989 schrijf ik theater en dans recensies voor diverse dagbladen; sinds 2011 artikelen over theater voor de Amsterdamse Uitkrant, sinds het eerste nummer voor theaterblad Scenes en daarnaast voor Odeon, het blad van Nationale Opera & Ballet. Op deze site vind je recensies en interviews over met name theater, maar ook opera en dans.</p>
+        <a href="/over" arrow>Over mij</a>
+
       </section>
 
       <section>
