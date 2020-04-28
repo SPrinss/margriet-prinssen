@@ -132,7 +132,7 @@ class MPCombobox extends LitElement {
   search(searchString) {
     var callback = function(item) {
       if(!item || !item.value) return true;
-      return `${item.value ? item.value : item}`.toLowerCase().indexOf(searchString.toLowerCase()) === 0;
+      return `${item.value ? item.value : item}`.toLowerCase().indexOf(searchString.toLowerCase()) >= 0;
     };
     var returnValue = function(item) {
       return item;

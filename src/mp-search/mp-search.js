@@ -48,7 +48,7 @@ class MPSearch extends MPElement {
 			},
 			hitsPerPage: {
 				observe: true,
-				defaultValue: 10
+				defaultValue: 6
 			},
 			pages: {
 				observe: true,
@@ -79,6 +79,7 @@ class MPSearch extends MPElement {
 	async _handleSelectedOptionChanged(oldVal, newVal) {
 		if(!newVal && this.facetFilters.length === 0) return;
 		this.pages = [];
+		this._items = [];
 		if(!newVal && this.facetFilters.length !== 0) {			
 			const titles = await this.getTitles('', [].concat(...this.facetFilters));
 			this.searchResults = titles;
@@ -119,7 +120,7 @@ class MPSearch extends MPElement {
 	}
 
 	async runQuery(query, options = {}) {
-		if(!query) return;
+		if(!query || query.length < 2) return;
 
 		let facets = [];
 		if(this.searchForFacetValues) {
