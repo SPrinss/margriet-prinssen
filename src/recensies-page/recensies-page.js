@@ -49,6 +49,10 @@ class RecensiesPage extends MPElement {
     <mp-page ?active="${!this.recensieId}">
       <h2 slot="header">Doorzoek recensies</h2>
 
+      <section>
+        <p>Doorzoek recensies vanaf 1993. Zoeken is mogelijk op theater groepen, personen, theaters, jaartallen, steden en titels. Als je binnen een categorie (e.g. Toneelschuur) wil zoeken kan je op "Gebruik als filter" klikken.</p>
+      </section>
+
       <section id="search-section">
         <mp-search 
           placeholder="Toneelschuur, Sander Plukaard, 1997, Macbeth ... "
