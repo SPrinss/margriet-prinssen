@@ -87,7 +87,7 @@ class RecensiePreview extends MPElement {
     <main>
       <div class="persons-grid">
         <ul>
-          <li>Actors</li>
+          <li>Spelers</li>
           ${this.actors && this.actors.length > 0 ? this.actors.map(actor => {
             return html`
               <li>${actor}</li>
@@ -97,7 +97,7 @@ class RecensiePreview extends MPElement {
         </ul>
 
         <ul>
-          <li>Directors</li>
+          <li>Regisseurs</li>
           ${this.directors && this.directors.length > 0 ? this.directors.map(director => {
               return html`
                 <li>${director}</li>
@@ -107,7 +107,7 @@ class RecensiePreview extends MPElement {
         </ul>
         <ul>
         
-        <li>Writers</li>
+        <li>Schrijvers</li>
           ${this.writers && this.writers.length > 0 ? this.writers.map(writer => {
               return html`
                 <li>${writer}</li>

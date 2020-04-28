@@ -74,7 +74,7 @@ class MPApp extends MPElement {
       <over-page ?visible="${this.page === 'over'}" class="page"></over-page>
       
       <footer>
-        <p>Made with love by Sam Prinssen, Tijl Prinssen & Lex van der Slot</p>
+        <p>Met liefde gemaakt door Sam Prinssen, Tijl Prinssen & Lex van der Slot</p>
       </footer>
       </main>
     `
