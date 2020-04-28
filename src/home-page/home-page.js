@@ -125,7 +125,7 @@ class HomePage extends MPElement {
 
       <section>
         <h3>Recente publicaties</h3>
-        <div class="recensie-grid">
+        <div class="grid">
           ${this.reviews.map(item => {
               return html`
                 <a href="/recensies/${item.objectID}">
@@ -143,7 +143,7 @@ class HomePage extends MPElement {
           </div>
           <a href="/recensies" arrow>Doorzoek recensies</a>
           
-          <div class="recensie-grid">
+          <div class="grid">
 
             ${this.interviews.map(item => {
               return html`

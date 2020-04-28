@@ -6,11 +6,9 @@
 $$text-styles()
 $$a-link()
 
-.recensie-grid
+.grid
   $grid(2)
   
-.interview-grid
-  $grid(3)
 
 recensie-preview:hover 
 basic-preview:hover 
@@ -21,12 +19,12 @@ ul li:first-of-type
   margin-bottom: var(--mp-size--2);
   color var(--mp-color-dark--60)
 
-
 a[arrow]
   margin var(--mp-size--6) 0
   display: inline-block;
 
 h1[slot="header"]
+h3
   margin-bottom var(--mp-size--6)
 
 basic-preview[data-type="review"]
@@ -43,6 +41,5 @@ basic-preview[data-type="interview"]
 @media only screen and (max-width: 660px)
   $$text-font-size-mobile-styles()
 
-  .recensie-grid
-  .interview-grid
+  .grid
     grid-template-columns: 1fr;
