@@ -158,7 +158,7 @@ class MPSearch extends MPElement {
 						}
 						)} 
 
-						<li ?disabled=${this._selectedFacets.length === 0}>Wis<button ?disabled=${this._selectedFacets.length === 0} @click=${(e) => this._selectedFacets = []}>x</button></li>
+						<li id="filters-erase-button" ?disabled=${this._selectedFacets.length === 0}>Wis<button ?disabled=${this._selectedFacets.length === 0} @click=${(e) => this._selectedFacets = []}>x</button></li>
 				</ul>
 			</section>
 
