@@ -1,8 +1,8 @@
 import { MPElement, html } from '../mp-element/mp-element';
 import { StringConverter, NumberConverter, BooleanConverter, ObjectConverter } from 'html-element-property-mixins/src/utils/attribute-converters';
-import { css } from './interview-preview.css.js';
+import { css } from './basic-preview.css.js';
 
-class InterviewPreview extends MPElement {
+class BasicPreview extends MPElement {
 
   static get properties() {
     return {
@@ -11,16 +11,16 @@ class InterviewPreview extends MPElement {
         DOM: true,
         fromAttributeConverter: StringConverter.fromAttribute
       },
-      persons: {
+      featureList: {
         observe: true,
         DOM: true,
         defaultValue: [],
         fromAttributeConverter: ObjectConverter.fromAttribute
       },
-      timeInterviewed: {
+      timePublished: {
         observe: true,
         DOM: true,
-        attributeName: 'time-interviewed',
+        attributeName: 'time-published',
         fromAttributeConverter: StringConverter.fromAttribute
       },
       outlet: {
@@ -46,21 +46,21 @@ class InterviewPreview extends MPElement {
       ${this.styles}
 
     <header>
-      <figure><img src="${this.imageSrc}" alt="Foto van geïnterviewde"></figure>
+      <figure><img src="${this.imageSrc}" alt="Foto van stuk/geïnterviewde"></figure>
     </header>
     <main>
       <h4>${this.title}</h4>
       
       <ul>
-        ${this.persons.map(person => {
+        ${this.featureList.map(item => {
           return html`
-            <li>${person}</li>
+            <li>${item}</li>
           `
         })
         }
       </ul>
 
-      <span>${this.timeInterviewed}</span>
+      <span>${this.timePublished}</span>
       <span>${this.outlet}</span>
 
     </main>
@@ -69,4 +69,4 @@ class InterviewPreview extends MPElement {
 
 }
 
-window.customElements.define('interview-preview', InterviewPreview);
+window.customElements.define('basic-preview', BasicPreview);

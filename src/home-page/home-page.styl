@@ -13,7 +13,7 @@ $$a-link()
   $grid(3)
 
 recensie-preview:hover 
-interview-preview:hover 
+basic-preview:hover 
   box-shadow var(--mp-box-shadow--3)
   cursor pointer
 
@@ -26,11 +26,17 @@ section > *:first-child
   margin var(--mp-size--6) 0
 
 a[arrow]
-  margin-top var(--mp-size--4)
+  margin var(--mp-size--6) 0
   display: inline-block;
 
 h1[slot="header"]
   margin-bottom var(--mp-size--6)
+
+basic-preview[data-type="review"]
+  border-top 4px solid var(--mp-color-main--100)
+
+basic-preview[data-type="interview"]
+  border-top 4px solid var(--mp-color-secondary--100)
   
 @media (prefers-color-scheme: dark) 
   header
