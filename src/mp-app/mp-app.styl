@@ -17,44 +17,17 @@ nav
   flex-direction row
   justify-content space-between
   align-items center
-  background-color transparent
   max-width 1080px
   margin auto
   padding 0 var(--mp-size--5)
-  height var(--mp-size--11)
   z-index 2
-  color var(--mp-color-dark--100)
-  position absolute
-  top 0
-  left 0 
-  right 0
-  
+  color var(--mp-color-dark--100)  
 
 figure, img {
   object-fit: contain;
   padding: 0;
   margin: 0;
 }
-
-// #hor-line-top
-// #hor-line-bottom
-//   position absolute
-//   left 0 
-//   right 0
-//   width 100%
-//   height: 3px
-//   z-index 3
-  
-
-// #hor-line-top
-//   background: rgb(178,205,255);
-//   background: linear-gradient(90deg, var(--mp-color-main--100) 39%, transparent 39%);
-//   top var(--mp-size--11)
-
-// #hor-line-bottom
-//   background: rgb(244,209,143);
-//   background: linear-gradient(90deg, var(--mp-color-secondary--100) 29%, transparent 29%);
-//   top var(--mp-size--12)
 
 nav a 
   fill: currentColor;
@@ -82,9 +55,11 @@ nav ul li a
 .page
   display block
   flex 1
+
+main
+.page
+nav
   background-color var(--mp-color-secondary--20)
-  padding-top var(--mp-size--11)
-  padding-bottom var(--mp-size--6)
 
 .page:not([visible]) {
   display none
@@ -110,7 +85,7 @@ nav ul li a
   padding 0 var(--mp-size--5)
 
 footer
-  min-height var(--mp-size--10)
+  // min-height var(--mp-size--10)
   background-color var(--mp-color-main--100)
   color var(--mp-color-dark--100)
   display flex
@@ -119,7 +94,7 @@ footer
 footer > * 
   max-width 1080px
   margin auto
-  padding 0 var(--mp-size--5)
+  padding var(--mp-size--5)
 
 
 @media (prefers-color-scheme: dark) 
@@ -141,8 +116,13 @@ footer > *
     flex-wrap: wrap;
     justify-content: center;
   
+  nav ul
+    justify-content: space-between;
+    width 100%
+
+  nav ul li
+    margin 0
+    padding 0
+
   nav a 
     margin-top var(--mp-size--6)
-  
-  .page
-    padding-top var(--mp-size--13)
