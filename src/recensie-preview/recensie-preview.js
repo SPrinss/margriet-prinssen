@@ -68,7 +68,7 @@ class RecensiePreview extends MPElement {
 
     <header>
       <div class="header-main">
-        <h4>${this.name}</h4>
+        <h4>${this.name || this.title}</h4>
         ${this.groups && this.groups.length > 0 ? this.groups.map(group => {
           return html`
             <h5>${group}</h5>
