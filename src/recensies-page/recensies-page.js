@@ -68,6 +68,7 @@ class RecensiesPage extends MPElement {
             return html`
               <a href="/recensies/${item.objectID}">
               <recensie-preview
+                .name=${item.name}
                 .title=${item.title}
                 .groups=${item.groups}
                 .reviewDate=${item.reviewDate}
