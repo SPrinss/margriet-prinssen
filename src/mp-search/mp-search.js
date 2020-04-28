@@ -162,7 +162,7 @@ class MPSearch extends MPElement {
 				</ul>
 			</section>
 
-			<section>
+			<section id="search-section">
 				<mp-combobox 
 					.items=${this._items} 
 					@input=${e => this.searchInput = e.target.input.value} 

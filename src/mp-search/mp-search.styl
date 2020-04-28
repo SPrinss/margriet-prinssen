@@ -62,6 +62,7 @@ mp-combobox
   border-radius var(--mp-combobox-border-radius, var(--mp-border-radius--1))
   --mp-combobox-border-radius var(--mp-border-radius--1) 0 0 var(--mp-border-radius--1)
   background-color: var(--mp-color-light--100)
+  width 100%
 
 mp-checkbox
   margin-top var(--mp-size--3)
@@ -77,3 +78,6 @@ mp-button
   margin-left var(--mp-size--3)
   align-self center
 
+@media only screen and (max-width: 660px)
+  #search-section
+    display block
