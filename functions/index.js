@@ -8,6 +8,7 @@ const interviewsIndex = algoliaClient.initIndex('interviews');
 function parseSearchableReviewData(dbData) {
   // get relevant data from all dbData
   const searchableData = (({ groups, name, theater, writers, directors, title, reviewDate, actors, city, year }) => ({ groups, name, theater, writers, directors, title, reviewDate, actors, city, year }))(dbData);
+  searchableData.persons = [].concat(...searchableData.writers, ...searchableData.directors, ...searchableData.actors);
 
   // remove empty values since Firestore won't accept them
   Object.keys(searchableData).forEach((key) => (searchableData[key] === null || typeof searchableData[key] === 'undefined') && delete searchableData[key]);
