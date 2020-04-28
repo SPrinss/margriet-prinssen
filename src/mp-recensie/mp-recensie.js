@@ -39,7 +39,7 @@ class MPRecensie extends MPElement {
       ${this.styles}
 
       <mp-page>
-        <h1 slot="header">${(this.recensie && this.recensie.title) ? this.recensie.title : this.recensie.name}</h1>
+        <h2 slot="header">${(this.recensie && this.recensie.title) ? this.recensie.title : this.recensie.name}</h2>
         <h5 slot="header">${this.recensie && this.recensie.reviewDate ? this.recensie.reviewDate : ''} - ${this.recensie.theater ? this.recensie.theater.name : ''} - ${this.recensie.city ? this.recensie.city.name : ''}</h5>
 
         <main>
