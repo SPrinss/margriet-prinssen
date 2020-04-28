@@ -93,14 +93,14 @@ h2[slot="header"]
 
   #header-content-wrapper h1,
   #aside-left-content-wrapper h3
-    margin-bottom var(--mp-size--3)
+    margin-bottom var(--mp-size--6)
 
   main, header 
     grid-template-columns: 1fr;
     grid-template-rows: auto auto auto;
     justify-items start
     align-items start
-    gap var(--mp-size--3)
+    gap var(--mp-size--6)
 
   main 
     grid-template-areas: 
@@ -113,12 +113,16 @@ h2[slot="header"]
       "."\
       "header"\
       ".";
-    padding 0 var(--mp-size--3)
+    padding 0 var(--mp-size--6)
+
+  #aside-left-content-wrapper
+    justify-self center
+    margin-bottom var(--mp-size--6)
+
 
   #aside-right-content-wrapper
     grid-area aside-left
-    justify-self start
-    text-align left
-    padding 0 var(--mp-size--3)
+    justify-self center
+    text-align center
+    padding 0 var(--mp-size--6)
     width 100%
-    border-bottom 1px solid black
