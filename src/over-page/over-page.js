@@ -21,6 +21,9 @@ class OverPage extends MPElement {
           <p>Margriet Prinssen is theaterjournalist. Ze schrijft recensies en interviews voor Mediahuis, Haarlems Dagblad, de Uitkrant, Scenes, Odeon en de Theaterkrant. Tot en met 2019 werkte ze ook als eindredacteur bij Nationale Opera & Ballet. </p>
         </section>
 
+        <div id="top-hor-line"></div>
+        <div id="bottom-hor-line"></div>
+
         <section>
           <article>
             <h5>Interview ter gelegenheid van haar afscheid bij de Nationale Opera & Ballet</h5>
