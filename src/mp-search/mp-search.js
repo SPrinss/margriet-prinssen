@@ -46,6 +46,19 @@ class MPSearch extends MPElement {
 				observe: true,
 				DOM: true
 			},
+			hitsPerPage: {
+				observe: true,
+				defaultValue: 10
+			},
+			pages: {
+				observe: true,
+				defaultValue: []
+			},
+			page: {
+				observe: true,
+				defaultValue: 1,
+				changedHandler: "_handleSelecedPageChanged"
+			},
 			_items: {
 				observe: true,
 				defaultValue: []
@@ -65,10 +78,13 @@ class MPSearch extends MPElement {
 
 	async _handleSelectedOptionChanged(oldVal, newVal) {
 		if(!newVal && this.facetFilters.length === 0) return;
-		if(!newVal && this.facetFilters.length !== 0) {
+		this.pages = [];
+		if(!newVal && this.facetFilters.length !== 0) {			
 			const titles = await this.getTitles('', [].concat(...this.facetFilters));
 			this.searchResults = titles;
 		} else if(!!newVal.category) {
+			const pagesAmount = Math.ceil(newVal.count / this.hitsPerPage);
+			if(pagesAmount > 1) this.pages = [ ...Array(pagesAmount).keys() ].map( i => i+1);
 			const titles = await this.getTitles('', [].concat(...this.facetFilters, `${newVal.category}:${newVal.value}`));
 			this.searchResults = titles;
 		} else {
@@ -93,6 +109,13 @@ class MPSearch extends MPElement {
 		if(!newVal || newVal.length === 0) return;
 		const titles = await this.getTitles('', this.facetFilters);
 		this.searchResults = titles;
+	}
+
+	async _handleSelecedPageChanged(oldVal, newVal) {
+		if(oldVal !== newVal && (newVal !== 1 || newVal === 1 && oldVal > 1)) {
+			const titles = await this.getTitles("", [].concat(...this.facetFilters, `${this._selectedOption.category}:${this._selectedOption.value}`), newVal - 1);
+			this.searchResults = titles;
+		}
 	}
 
 	async runQuery(query, options = {}) {
@@ -191,6 +214,17 @@ class MPSearch extends MPElement {
 						}}
 					></mp-checkbox><span>Zoek alleen titels</span>
 				</div>
+			</section>
+
+			<section >
+				<ul id="pagination-list">
+					${this.pages.map((item, i) => {
+							return html`
+								<li class="pagination-item" ?active=${item === this.page} @click=${() => this.page = item}>${item}</li>
+							`
+						}
+					)} 
+				</ul>
 			</section>
 		</main>
 		`

@@ -26,8 +26,10 @@ ul li
   mp-text-b2()
   margin var(--mp-size--2) var(--mp-size--3) 0 0
   padding var(--mp-size--2)
-  background var(--mp-color-main--100)
   color var(--mp-color-dark--100)
+
+.filters-container li
+  background var(--mp-color-main--100)
   border-radius var(--mp-border-radius--1)
 
 ul li button
@@ -77,6 +79,18 @@ mp-button
 #titles-checkbox-container span 
   margin-left var(--mp-size--3)
   align-self center
+
+#pagination-list
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width 100%
+
+.pagination-item 
+  cursor pointer 
+
+.pagination-item[active]  
+  color var(--mp-color-main--100)
 
 @media only screen and (max-width: 660px)
   #search-section
