@@ -12,39 +12,40 @@ page-content-spacing()
   
 #bottom-hor-line-bottom
 main ::slotted(section)
-  margin-bottom var(--mp-size--11)
+  margin-bottom var(--mp-size--9)
 
 header 
   text-align: center
-  padding var(--mp-size--11)
+  padding var(--mp-size--8)
 
 main
   page-content-spacing()
 
 #top-hor-line-top
 #top-hor-line-bottom
+#bottom-hor-line-top
+#bottom-hor-line-bottom
   width 100%
-  height: 3px  
+  height: 2px  
+
+#top-hor-line-top
+#bottom-hor-line-top
+  margin-top var(--mp-size--4)
 
 #top-hor-line-top
   background: linear-gradient(90deg, var(--mp-color-main--100) 39%, transparent 39%);
-  margin-top var(--mp-size--4)
-
-#top-hor-line-bottom
-  margin-top: calc(var(--mp-size--11) - var(--mp-size--10))
-  background: linear-gradient(90deg, var(--mp-color-secondary--100) 29%, transparent 29%);
-
-#bottom-hor-line-top
-#bottom-hor-line-bottom
-  width 100%
-  height: 3px  
 
 #bottom-hor-line-top
   background: linear-gradient(90deg, transparent 61%, var(--mp-color-main--100) 61%);
-  margin-top var(--mp-size--4)
+
+#top-hor-line-bottom
+#bottom-hor-line-bottom
+  margin-top var(--mp-size--2);
+
+#top-hor-line-bottom
+  background: linear-gradient(90deg, var(--mp-color-secondary--100) 29%, transparent 29%);
 
 #bottom-hor-line-bottom
-  margin-top: calc(var(--mp-size--11) - var(--mp-size--10))
   background: linear-gradient(90deg, transparent 64%, var(--mp-color-secondary--100) 64% , var(--mp-color-secondary--100) 93%, transparent 93%);
 
 @media (prefers-color-scheme: dark) 
