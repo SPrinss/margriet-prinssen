@@ -51,6 +51,7 @@ class RecensiesPage extends MPElement {
 
       <section id="search-section">
         <mp-search 
+          placeholder="Toneelschuur, Sander Plukaard, 1997, Macbeth ... "
           algolia-config='{"applicationId": "QZ9LK09320","searchOnlyAPIKey": "5fe26edd91681f874040eb6110bf8a7f","index": "reviews"}'
           facet-attributes='["actors", "groups", "theater", "writers", "directors", "year", "city"]'
           @search-results-changed=${(e) => this.items = e.detail.value}

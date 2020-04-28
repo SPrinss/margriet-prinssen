@@ -42,6 +42,10 @@ class MPSearch extends MPElement {
 				defaultValue: [],
 				changedHandler: '_handleSearchResultsChanged'
 			},
+			placeholder: {
+				observe: true,
+				DOM: true
+			},
 			_items: {
 				observe: true,
 				defaultValue: []
@@ -163,7 +167,8 @@ class MPSearch extends MPElement {
 			</section>
 
 			<section id="search-section">
-				<mp-combobox 
+				<mp-combobox
+					placeholder="${this.placeholder}"
 					.items=${this._items} 
 					@input=${e => this.searchInput = e.target.input.value} 
 					@value-changed=${(e) => this._selectedOption = e.detail.value}

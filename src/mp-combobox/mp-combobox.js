@@ -11,6 +11,7 @@ class MPCombobox extends LitElement {
       label: { type: String },
       resultsCount: { type: Number },
       selected: { type: String },
+      placeholder: { type: String },
       shouldAutoSelect: {
         attribute: 'should-auto-select',
         type: Boolean,
@@ -31,6 +32,7 @@ class MPCombobox extends LitElement {
     <div class="combobox-wrapper">
       <div role="combobox" aria-expanded="false" aria-owns="ex1-listbox" aria-haspopup="listbox" id="ex1-combobox">
         <input type="text"
+          placeholder=${this.placeholder}
           @keyup="${this.checkKeyHandler}"
           @keydown="${this.setActiveItemHandler}"
           @focus="${this.checkShowHandler}"
