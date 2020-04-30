@@ -57,7 +57,7 @@ class MPApp extends MPElement {
 
       <main>
       <nav>
-        <a href="/"><svg viewBox="0 0 176.1 34" xmlns="http://www.w3.org/2000/svg" version="1.1" fill="currentColor">${unsafeSVG(`${logo}`)}</svg></a>
+        <a href="/"><svg viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" version="1.1" fill="currentColor">${unsafeSVG(`${logo}`)}</svg></a>
         <ul>
           <li><a ?data-active="${this.page.toLowerCase() === 'recensies'}" href="/recensies">Recensies</a></li>
           <li><a ?data-active="${this.page.toLowerCase() === 'interviews'}" href="/interviews">Interviews</a></li>
