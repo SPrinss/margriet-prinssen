@@ -149,9 +149,28 @@ class MPSearch extends MPElement {
 				value: hit.value, 
 				count: hit.count, 
 				category: category, 
-				formatter: (item) => `<span class="result-category">${item.category}:</span> <span>${item.value}<span> <span class="result-count">(${item.count})</span>` 
+				formatter: (item) => `<span class="result-category">${this.toDutch(item.category)}:</span> <span>${item.value}<span> <span class="result-count">(${item.count})</span>` 
 			}
 		});
+	}
+
+	// Yes, pretty ugly. 
+	toDutch(str) {
+		switch (str) {
+			case 'persons':
+				return 'Persoon'
+			case 'groups':
+				return 'Gezelschap';
+			case 'theater':
+				return 'Theater';
+			case 'year':
+				return 'Jaar'
+			case 'city':
+				return 'Stad'
+			default:
+				return `${str[0].toUpperCase()}${str.substring(1, str.length)}`
+		}
+
 	}
 
 	async getTitles(query, facetFilters = [], page = 0) {
