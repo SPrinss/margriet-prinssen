@@ -139,11 +139,20 @@ $$a-link()
     border-bottom 1px solid var(--mp-color-dark--100)
 
   a[arrow]
-    padding 0 var(--mp-size--8) var(--mp-size--3) 0
-    background-position 100% -1px
-    background-image url("data:image/svg+xml,%3Csvg fill='none' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M0 16h27' stroke='%23000'/%3E%3Cpath d='M32 16l-10 6V10l10 6z' fill='%23000'/%3E%3C/svg%3E")
+    padding 0 0 var(--mp-size--3) 0
+
+  a[arrow]:after
+    content: '->'
+    padding-left var(--mp-size--3)
 
   a[arrow-back]
-    padding 0 0 var(--mp-size--3) var(--mp-size--8)
-    background-position 0% +1px
-    background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMmpzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTUgMTZIMzIiIHN0cm9rZT0iYmxhY2siLz4KPHBhdGggZD0iTTIuNjIyNjhlLTA3IDE2TDEwIDIyTDEwIDEwTDIuNjIyNjhlLTA3IDE2WiIgZmlsbD0iYmxhY2siLz4KPC9zdmc+Cg==")
+    padding 0 0 var(--mp-size--3) 0
+
+  a[arrow-back]:before
+    content: '<-'
+    padding-right var(--mp-size--3)
+
+  @media (prefers-color-scheme: dark) 
+    a[arrow-back]
+    a[arrow]
+      border-bottom 1px solid var(--mp-color-light--100)
