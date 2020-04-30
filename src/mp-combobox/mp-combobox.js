@@ -279,7 +279,7 @@ class MPCombobox extends LitElement {
       return;
     }
     // TODO
-    // this.hideListbox();
+    this.hideListbox();
   }
 
   hideListbox() {
