@@ -1,6 +1,6 @@
 import { MPElement, html } from '../mp-element/mp-element';
 import { installRouter } from 'pwa-helpers/router.js';
-import { logo } from '../logo/logo.js';
+import { logo } from '../logo/logo-small.js';
 import {unsafeSVG} from 'lit-html/directives/unsafe-svg'
 import { css } from './mp-app.css.js';
 
