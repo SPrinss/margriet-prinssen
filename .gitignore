@@ -5,3 +5,4 @@ node_modules
 dist/
 web_modules
 .vscode
+.firebase
