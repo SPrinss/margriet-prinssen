@@ -1,4 +1,4 @@
-const logo = `<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 176.1 34" xml:space="preserve">
+const logo = `<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 34 34" xml:space="preserve">
 <style>
   .st2{opacity:1}
 </style>
