@@ -47,10 +47,9 @@ header
 
 .persons-grid {
   width 100%
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--mp-size--3);
 }
 
 header ul
@@ -90,11 +89,11 @@ header ul
     text-align: left;
 
   .persons-grid
-    display block
+    grid-template-columns: 1fr;
 
   ul
     text-align left
-    margin-top var(--mp-size--4)
+    // margin-top var(--mp-size--4)
 
   .persons-grid ul:first-of-type
     margin-top 0

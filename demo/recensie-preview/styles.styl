@@ -21,10 +21,9 @@ recensie-preview {
 
 .persons-grid {
   width 100%
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--mp-size--3);
 }
 
 .persons-grid ul li:first-of-type {
@@ -34,3 +33,7 @@ recensie-preview {
 
 .persons-grid ul li
   mp-text-c1()
+
+@media only screen and (max-width: 660px)
+  .persons-grid
+    grid-template-columns: 1fr;
