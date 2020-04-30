@@ -4,3 +4,4 @@ node_modules
 *.css.js
 dist/
 web_modules
+.vscode
