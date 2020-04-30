@@ -120,7 +120,7 @@ class MPSearch extends MPElement {
 	}
 
 	async runQuery(query, options = {}) {
-		if(!query || query.length < 2) return;
+		if(!query) return;
 
 		let facets = [];
 		if(this.searchForFacetValues) {
