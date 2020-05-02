@@ -7,6 +7,13 @@ import copy from 'rollup-plugin-copy';
 // import { createBasicConfig } from '@open-wc/building-rollup';
 
 const baseConfig = createSpaConfig({
+  legacyBuild: true,
+  html: {
+    publicPath: '/'
+
+  },
+
+
   // use the outputdir option to modify where files are output
   // outputDir: 'dist',
 
