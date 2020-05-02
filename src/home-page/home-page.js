@@ -21,30 +21,7 @@ class HomePage extends MPElement {
       },
       interviews: {
         observe: true,
-        defaultValue: [{images: [
-          'https://firebasestorage.googleapis.com/v0/b/margriet-prinssen.appspot.com/o/marcel_musters.png?alt=media&token=1193d3ec-b024-4eee-bd9b-5cd511393b29'
-        ], title: "‘Theatermaken gaat altijd over het persoonlijke én het politieke’", 
-        actors: ["Marcel Musters"], 
-        interviewDate: "06-2019"
-      },
-        {
-          images: ["https://firebasestorage.googleapis.com/v0/b/margriet-prinssen.appspot.com/o/de_thuiskomst.jpg?alt=media&token=b5c838e7-449b-46c3-ab01-9416fa23d855"], 
-          title: "Grappig en gruwelijk tegelijk", 
-          actors: ["Maria Kraakman", "Nanouk Leopold"], 
-          interviewDate: "10-2019"
-        }, 
-        {
-          images: ["https://firebasestorage.googleapis.com/v0/b/margriet-prinssen.appspot.com/o/whos_afraid_of.jpg?alt=media&token=adab07d5-479f-4b67-b0c3-e8686a1fe235"], 
-          title: "‘Who’s afraid of …?’", 
-          actors: ["Jacob Derwig", "Erik Whien"], 
-          interviewDate: "05-2013"
-        }, 
-        {
-          images: ["https://firebasestorage.googleapis.com/v0/b/margriet-prinssen.appspot.com/o/Lucas-De-Man-Fotograaf-Anne-Harbers-2-1024x683-960x514.jpg?alt=media&token=e6e2df0b-0d6e-40b2-ab30-701037c6618b"], 
-          title: "Een pleidooi voor empathie", 
-          actors: ["Lucas De Man"], 
-          interviewDate: "09-2017"
-        }]
+        defaultValue: []
       }
     }
   }
@@ -56,10 +33,8 @@ class HomePage extends MPElement {
 
   async getRecentReviewsAndInterviews() {
     const reviewsPromise = this.getRecentCollection('reviews');
-    // const interviewsPromise = this.getRecentCollection('interviews');
-    const reviews = await reviewsPromise // , interviews = await interviewsPromise;
-    this.reviews = reviews;
-
+    const interviewsPromise = this.getRecentCollection('interviews');
+    this.reviews = await reviewsPromise; this.interviews = await interviewsPromise;
   }
 
   async getRecentCollection(collection) {
@@ -108,6 +83,11 @@ class HomePage extends MPElement {
     return html`<style>${css}</style>`;
   }
 
+  getNames(persons) {
+    if(!persons) return []
+    return persons.map(person => person.name);
+  }
+
   get template() {
     return html`
       ${this.styles}
@@ -153,7 +133,7 @@ class HomePage extends MPElement {
                   data-type="interview"
                   .imageSrc=${item.images ? item.images[0] : ''}
                   .title=${item.title}
-                  .featureList=${item.actors}
+                  .featureList=${this.getNames(item.persons)}
                   .timePublished=${item.interviewDate}
                 >
                 </basic-preview>
