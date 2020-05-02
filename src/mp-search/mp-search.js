@@ -61,12 +61,16 @@ class MPSearch extends MPElement {
 			},
 			allowFilters: {
 				observe: true,
+				DOM: true,
 				attributeName: "allow-filters",
+        fromAttributeConverter: BooleanConverter.fromAttribute,
 				defaultValue: false
 			},
 			allowSearchTitles: {
 				observe: true,
+				DOM: true,
 				attributeName: "allow-seach-titles",
+        fromAttributeConverter: BooleanConverter.fromAttribute,
 				defaultValue: false
 			},
 			_items: {
