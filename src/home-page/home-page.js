@@ -100,7 +100,7 @@ class HomePage extends MPElement {
       <section>
         <p>Vanaf 1989 schrijf ik over theater, dans en opera: theaterrecensies voor diverse dagbladen, artikelen voor de Uitkrant, Scenes, theaterkrant.nl, programmaboeken van Nationale Opera &amp; Ballet en Odeon.</p>
         <p>Op deze site kun je in de recensies zoeken op titel of op naam van de theatermaker of het gezelschap.</p>
-        <a href="/over" arrow>Over mij</a>
+        <a href="/over" aria-label="Navigeer naar over" arrow>Over mij</a>
 
       </section>
 
@@ -109,7 +109,7 @@ class HomePage extends MPElement {
         <div class="grid">
           ${this.reviews.map(item => {
               return html`
-                <a href="/recensies/${item.objectID}">
+                <a href="/recensies/${item.objectID}" aria-label="Navigeer naar ${item.title || item.name}">
                 <basic-preview
                   data-type="review"
                   .imageSrc=${item.images ? item.images[0] : ''}
@@ -122,13 +122,13 @@ class HomePage extends MPElement {
               `
             })}
           </div>
-          <a href="/recensies" arrow>Doorzoek recensies</a>
+          <a href="/recensies" aria-label="Navigeer naar interviews" arrow>Doorzoek recensies</a>
           
           <div class="grid">
 
             ${this.interviews.map(item => {
               return html`
-                <a href="/interviews/${item.objectID}">
+                <a href="/interviews/${item.objectID}" aria-label="Navigeer naar ${item.title}">
                 <basic-preview
                   data-type="interview"
                   .imageSrc=${item.images ? item.images[0] : ''}
@@ -142,7 +142,7 @@ class HomePage extends MPElement {
             })}
           </div>
 
-          <a href="/interviews" arrow>Doorzoek interviews</a>
+          <a href="/interviews" aria-label="Navigeer naar interviews" arrow>Doorzoek interviews</a>
 
       </section>
 

@@ -73,7 +73,7 @@ class InterviewsPage extends MPElement {
         <div class="recensie-grid">
           ${this.items.map(item => {
             return html`
-              <a href="/interviews/${item.objectID}">
+              <a href="/interviews/${item.objectID}" aria-label="Navigeer naar ${item.title}">
               <basic-preview
                   data-type="interview"
                   .imageSrc=${item.images ? item.images[0] : ''}

@@ -68,7 +68,7 @@ class RecensiesPage extends MPElement {
         <div class="recensie-grid">
           ${this.items.map(item => {
             return html`
-              <a href="/recensies/${item.objectID}">
+              <a href="/recensies/${item.objectID}" aria-label="Navigeer naar ${item.title}">
               <recensie-preview
                 .name=${item.name}
                 .title=${item.title}
