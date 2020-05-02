@@ -41,7 +41,9 @@ class MPApp extends MPElement {
       const res = await import(`../recensies-page/recensies-page.js`);
       this.shadowRoot.querySelector('recensies-page').recensieId = this.page.substring(this.page.indexOf('recensies/') + 10, this.page.length);
     } else if (newPage.includes('interviews')) {
-      // import(`../interviews-page/interviews-page.js`);
+      await import(`../interviews-page/interviews-page.js`);
+      this.shadowRoot.querySelector('interviews-page').interviewId = this.page.substring(this.page.indexOf('interviews/') + 11, this.page.length);
+
     } else if (newPage.includes('over')) {
       import(`../over-page/over-page.js`);
     }
@@ -70,7 +72,7 @@ class MPApp extends MPElement {
 
       <home-page ?visible="${this.page === 'home'}" class="page"></home-page>
       <recensies-page ?visible="${this.page.includes('recensies')}" .recensieId=${this.page.includes('recensies/') ? this.page.substring(this.page.indexOf('recensies/') + 10, this.page.length) : ''} class="page"></recensies-page>
-      <interviews-page ?visible="${this.page === 'interviews'}" class="page"></interviews-page>
+      <interviews-page ?visible="${this.page.includes('interviews')}" .interviewId=${this.page.includes('interviews/') ? this.page.substring(this.page.indexOf('interviews/') + 11, this.page.length) : ''} class="page"></interviews-page>
       <over-page ?visible="${this.page === 'over'}" class="page"></over-page>
       
       <footer>

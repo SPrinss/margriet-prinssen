@@ -1,0 +1,92 @@
+@import '../../src/styles/theme/reset'
+@import '../../src/styles/theme/main'
+@import '../../src/styles/mixins/base-styles'
+
+:host
+  display block
+
+$$text-styles()
+
+.intro-section
+  text-align: center;
+
+header
+  min-height var(--mp-size--14)
+
+h2[slot="header"]
+  margin-bottom var(--mp-size--6)
+
+mp-page
+  padding-bottom var(--mp-size-6)
+
+.recensie-grid
+  $grid(2)
+
+a > recensie-preview:hover 
+  box-shadow var(--mp-box-shadow--3)
+  cursor pointer
+
+#interview-page
+  --mp-page-max-width: 100%
+  padding-bottom var(--mp-size--6)
+
+main 
+  display grid
+  grid-template-columns 2fr 4fr minmax(0px, 2fr)
+  gap var(--mp-size--8)
+
+main 
+  grid-template-areas: 
+    "aside-left body .";
+  margin-top var(--mp-size--7)
+  justify-items center
+  align-items start
+
+#aside-right-content-wrapper 
+  grid-area aside-left
+  justify-self start
+  text-align start
+
+#main-content-wrapper
+  grid-area body  
+
+mp-page:not([active]) 
+  display: none;
+
+mp-search
+  max-width 660px
+  margin auto
+
+$$a-link()
+
+figure, img {
+  max-width: 100%;
+  object-fit: contain;
+  padding: 0;
+  margin: 0;
+}  
+
+h4
+  margin var(--mp-size--6) 0 var(--mp-size--4) 0 
+
+p
+  margin-bottom var(--mp-size--4)
+
+@media only screen and (max-width: 660px)
+  $$text-font-size-mobile-styles()    
+
+  .recensie-grid
+    grid-template-columns: 1fr;
+
+  main 
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    justify-items start
+    align-items start
+    gap var(--mp-size--6)  
+
+  main 
+    grid-template-areas: 
+      "."\
+      "aside-left"\
+      "body"\;
