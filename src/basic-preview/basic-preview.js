@@ -45,7 +45,7 @@ class BasicPreview extends MPElement {
     return html`
       ${this.styles}
 
-    <header>
+    <header ?hidden=${!this.imageSrc}>
       <figure><img src="${this.imageSrc}" alt="Foto van stuk/geïnterviewde"></figure>
     </header>
     <main>
