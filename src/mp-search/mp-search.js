@@ -112,6 +112,14 @@ class MPSearch extends MPElement {
 		this.algoliaIndex = algoliasearch(config.applicationId, config.searchOnlyAPIKey).initIndex(config.index);
 	}
 
+	connectedCallback() {
+		this._runInitialSearch()
+	}
+
+	async _runInitialSearch() {
+		this.searchResults =  await this.getTitles("");
+	}
+
 	_searchInputChange(oldVal, newVal) {
 		if(newVal) this.runQuery(newVal)
 	}
