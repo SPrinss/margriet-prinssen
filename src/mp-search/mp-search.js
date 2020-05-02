@@ -59,6 +59,16 @@ class MPSearch extends MPElement {
 				defaultValue: 1,
 				changedHandler: "_handleSelecedPageChanged"
 			},
+			allowFilters: {
+				observe: true,
+				attributeName: "allow-filters",
+				defaultValue: false
+			},
+			allowSearchTitles: {
+				observe: true,
+				attributeName: "allow-seach-titles",
+				defaultValue: false
+			},
 			_items: {
 				observe: true,
 				defaultValue: []
@@ -120,8 +130,6 @@ class MPSearch extends MPElement {
 	}
 
 	async runQuery(query, options = {}) {
-		if(!query) return;
-
 		let facets = [];
 		if(this.searchForFacetValues) {
 			const queryFilters = (!this.facetFilters || this.facetFilters.length === 0) ? {} : {
@@ -138,7 +146,7 @@ class MPSearch extends MPElement {
 			facets = facetResults.map((facetResult, i) => this.parseFacetResult(facetResult, this.facetAttributes[i]));
 		}
 
-		const titles = await this.getTitles(query, this.facetFilters);
+		const titles = this.allowSearchTitles ? await this.getTitles(query, this.facetFilters) : [];
 		this._items = [].concat(...facets, titles);
 	}
 	
@@ -173,7 +181,7 @@ class MPSearch extends MPElement {
 
 	}
 
-	async getTitles(query, facetFilters = [], page = 0) {
+	async getTitles(query, facetFilters = ['*'], page = 0) {
 		if(!this.algoliaIndex) return;
 		const res = await this.algoliaIndex.search(query, {"facetFilters": facetFilters, page: page} );
 		if(!res || !res.hits) return [];
@@ -195,7 +203,7 @@ class MPSearch extends MPElement {
       ${this.styles}
 
 		<main>
-			<section>
+			<section ?hidden=${!this.allowFilters}>
 				<ul class="filters-container">
 
 					${this._selectedFacets.map((item, i) => {
@@ -217,6 +225,7 @@ class MPSearch extends MPElement {
 					@value-changed=${(e) => this._selectedOption = e.detail.value}
 				></mp-combobox>
 				<mp-button 
+					?hidden=${!this.allowFilters}
 					?disabled=${!this._selectedOption || !this._selectedOption.category || this._selectedOption.category === 'titel' || this._selectedFacets.includes(this._selectedOption.value)} 
 					@click=${() => {
 						this._selectedFacets = [].concat(...this._selectedFacets, this._selectedOption);
@@ -226,7 +235,7 @@ class MPSearch extends MPElement {
 				>Gebruik als filter</mp-button>
 			</section>
 			
-			<section>
+			<section ?hidden=${!this.allowSearchTitles}>
 				<div id="titles-checkbox-container">
 					<mp-checkbox @input=${e => {
 							this.searchForFacetValues = !this.searchForFacetValues;

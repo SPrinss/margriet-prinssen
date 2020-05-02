@@ -58,6 +58,8 @@ class RecensiesPage extends MPElement {
           placeholder="Toneelschuur, Sander Plukaard, 1997, Macbeth ... "
           algolia-config='{"applicationId": "QZ9LK09320","searchOnlyAPIKey": "5fe26edd91681f874040eb6110bf8a7f","index": "reviews"}'
           facet-attributes='["persons", "groups", "theater", "year", "city"]'
+          allow-filters
+          allow-seach-titles
           @search-results-changed=${(e) => this.items = e.detail.value}
         ></mp-search>
       </section>
