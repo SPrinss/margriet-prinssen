@@ -35,6 +35,13 @@ class MPApp extends MPElement {
 
   async _handlePageChange(oldPage, newPage) {
     if(!newPage) return;
+    if(!!this.shadowRoot && !!this.shadowRoot.querySelector && !!this.shadowRoot.querySelector('main')) {
+      console.log(this.shadowRoot.querySelector('main'))
+        this.shadowRoot.querySelector('main').scrollTo({
+          top: 0,
+          behavior: 'smooth',
+      })
+    }
     if(newPage.includes('home')) {
       import(`../home-page/home-page.js`);
     } else if (newPage.includes('recensies')) {
