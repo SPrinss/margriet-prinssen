@@ -123,6 +123,9 @@ class HomePage extends MPElement {
             })}
           </div>
           <a href="/recensies" aria-label="Navigeer naar interviews" arrow>Doorzoek recensies</a>
+      </section>
+
+      <section>
           
           <div class="grid">
 
