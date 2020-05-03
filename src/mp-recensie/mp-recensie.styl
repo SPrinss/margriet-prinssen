@@ -5,6 +5,9 @@
 :host
   display block
 
+$$text-styles()
+$$a-link()
+
 header
   min-height var(--mp-size--14)
 
@@ -27,26 +30,29 @@ main
   margin-top var(--mp-size--7)
   justify-items center
   align-items start
+  margin-bottom var(--mp-size--9)
 
 header 
   grid-template-areas: 
     ". header .";
   justify-items start
   align-items start
+  overflow: hidden;
 
-#aside-right-content-wrapper 
+*[slot=header]
+main *
+  animation ease-in-opacity 1.25s forwards ease-in-out
+
+#aside-left-content-wrapper 
   grid-area aside-left
-  justify-self start
-  text-align start
 
 #main-content-wrapper
   grid-area body
 
 #aside-right-content-wrapper
   grid-area aside-right
-
-$$text-styles()
-$$a-link()
+  justify-self start
+  text-align start
 
 ul
   padding 0
@@ -78,6 +84,8 @@ figure, img {
 h2[slot="header"]
   margin-bottom var(--mp-size--6)
 
+$$ease-in-opacity()
+
 @media (prefers-color-scheme: dark) 
   .list li:first-of-type 
     color: var(--mp-color-secondary--100);
@@ -93,6 +101,9 @@ h2[slot="header"]
 
   #header-content-wrapper h1,
   #aside-left-content-wrapper h3
+    margin-bottom var(--mp-size--6)
+
+  main 
     margin-bottom var(--mp-size--6)
 
   main, header 
@@ -116,6 +127,7 @@ h2[slot="header"]
     padding 0 var(--mp-size--6)
 
   #aside-left-content-wrapper
+    grid-area aside-right
     justify-self center
     margin-bottom var(--mp-size--6)
 

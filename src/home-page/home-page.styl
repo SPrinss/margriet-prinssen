@@ -9,23 +9,54 @@ $$a-link()
 .grid
   $grid(2)
   
+h1
+h2
+  overflow-x: hidden;
+  white-space: nowrap; 
+  margin: 0 auto var(--mp-size--6) auto;
 
 h1
   animation: 
     typing 1.5s steps(20, end)
+  line-height 76px
+
+h2 
+  width: 0
+  animation: 
+    typing 1.5s steps(20, end) 1.5s forwards
+  line-height 66px
+
+@keyframes horizontal-move
+  100% 
+    transform: translateX(0)
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: orange; }
+}
+
+#intro-section *
+basic-preview
+  animation ease-in-opacity 2s forwards ease-in-out
 
 ul li:first-of-type
   margin-bottom: var(--mp-size--2);
   color var(--mp-color-dark--60)
 
 a[arrow]
-  margin var(--mp-size--6) 0
+  margin var(--mp-size--4) 0
   display: inline-block;
 
 h2[slot="header"]
 h3
 p
-  margin-bottom var(--mp-size--6)
+  margin-bottom var(--mp-size--4)
 
 basic-preview[data-type="review"]
   border-top 4px solid var(--mp-color-main--100)
@@ -33,6 +64,8 @@ basic-preview[data-type="review"]
 basic-preview[data-type="interview"]
   border-top 4px solid var(--mp-color-secondary--100)
   
+$$ease-in-opacity()
+
 @media (prefers-color-scheme: dark) 
   header
     background-color var(--mp-color-dark--80)
@@ -41,5 +74,15 @@ basic-preview[data-type="interview"]
 @media only screen and (max-width: 660px)
   $$text-font-size-mobile-styles()
 
+  h1
+  h3
+    white-space initial
+
+  h1
+    line-height 50px
+  
+  h3
+    line-height 40px
+
   .grid
-    grid-template-columns: 1fr;
+    grid-template-columns 1fr

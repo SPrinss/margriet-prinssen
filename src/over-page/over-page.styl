@@ -19,6 +19,7 @@ $$a-link()
 blockquote
   margin var(--mp-size--10) 0
   
+h3
 h4
 h5
   margin-top var(--mp-size--7)
@@ -42,6 +43,12 @@ p
 #bottom-hor-line
   background: linear-gradient(90deg, transparent 34%, var(--mp-color-secondary--100) 34% , var(--mp-color-secondary--100) 77%, transparent 77%);
 
+*[slot=header]
+article *
+#intro-section *
+  animation ease-in-opacity 1.25s forwards ease-in-out
+  
+$$ease-in-opacity()
 
 @media (prefers-color-scheme: dark) 
   header
