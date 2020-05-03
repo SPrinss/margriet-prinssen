@@ -34,7 +34,7 @@ export default merge(baseConfig, {
   input: './index.html',
   plugins: [
     copy({
-      targets: [{ src: './style.css', dest: './dist' }],
+      targets: [{ src: './style.css', dest: './dist' }, { src: './favicon.ico', dest: './dist' }],
       // set flatten to false to preserve folder structure
       flatten: false,
     }),
