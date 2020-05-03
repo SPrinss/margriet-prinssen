@@ -55,6 +55,9 @@ mp-search
 
 $$a-link()
 
+blockquote
+  margin var(--mp-size--10) 0
+
 figure, img {
   max-width: 100%;
   object-fit: contain;
@@ -68,10 +71,17 @@ h4
 p
   margin-bottom var(--mp-size--4)
 
+#intro-section *
+*[slot=header]
+main *
+  animation ease-in-opacity 1.25s forwards ease-in-out
+
+$$ease-in-opacity()
+
 @media only screen and (max-width: 660px)
   $$text-font-size-mobile-styles()    
 
-  .recensie-grid
+  .interviews-grid
     grid-template-columns: 1fr;
 
   main 
@@ -80,8 +90,7 @@ p
     justify-items start
     align-items start
     gap var(--mp-size--6)  
-
-  main 
+    margin-bottom var(--mp-size--5)
     grid-template-areas: 
       "."\
       "aside-left"\
