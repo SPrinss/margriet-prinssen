@@ -55,7 +55,7 @@ class InterviewsPage extends MPElement {
     <mp-page ?active="${!this.interviewId}">
       <h2 slot="header">Doorzoek Interviews</h2>
 
-      <section class="intro-section">
+      <section id="intro-section">
         <p>Doorzoek interviews vanaf 2012. Zoeken is mogelijk op theater groepen, personen en jaren.</p>
       </section>
 
@@ -70,7 +70,7 @@ class InterviewsPage extends MPElement {
       </section>
 
       <section>
-        <div class="recensie-grid">
+        <div class="interviews-grid">
           ${this.items.map(item => {
             return html`
               <a href="/interviews/${item.objectID}" aria-label="Navigeer naar ${item.title}">

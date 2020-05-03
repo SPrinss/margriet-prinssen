@@ -26,7 +26,7 @@ class OverPage extends MPElement {
 
         <section>
           <article>
-            <h4>Interview ter gelegenheid van haar afscheid bij de Nationale Opera & Ballet</h4>
+            <h3>Interview ter gelegenheid van haar afscheid bij de Nationale Opera & Ballet</h3>
             <h6>Laura Roling - mei 2019</h6>
 
             <p>In oktober 1992 stapte Margriet Prinssen voor het eerst Nationale Opera & Ballet binnen, toen nog het Muziektheater. Nu, ruim 25 jaar later, neemt ze afscheid. Alhoewel, afscheid? ‘Ik blijf gewoon schrijven als freelancer, hopelijk ook voor jullie, dus ik verdwijn niet helemaal.’</p>
@@ -37,10 +37,10 @@ class OverPage extends MPElement {
               <p>“voelde ik heel erg de noodzaak om die liefde door te geven aan nieuwe generaties.”</p>
             </blockquote>
 
-            <h5>Gastprogrammering en Voetnoot</h5>
+            <h4>Gastprogrammering en Voetnoot</h4>
             <p>In 1992 moest het toenmalige hoofd publiciteit van de gastprogrammering van het Muziektheater, Karin Welling, tijdelijk vervangen worden. Margrietwerd gevraagd om het over te nemen. “Dat was een leuke tijd. Ik vind het nog steeds jammer dat Gastprogrammering is opgeheven. Alle belangrijke choreografen en regisseurs kwamen daar voorbij. Zoals Bill T. Jones die volgend jaar associate artist is van het Holland Festival.” Haar waarnemende functie liep ten einde, maar Margriet bleef als freelancer verbonden aan de Gastprogrammering en de afdeling Educatie. Ook nam ze een tijd het personeelsblad Voetnoot voor haar rekening als eindredacteur. “Ik leerde zo de organisatie goed kennen. Het blad verscheen iedere twee weken, dus om de week moest ik een floppy bij de drukker afleveren. Dat waren nog eens andere tijden.” De Voetnoot had een belangrijke functie in de interne communicatie, aldus Margriet. “De communicatie was heel helder en iedereen wist wat er speelde.”</p>
             
-            <h5>Educatie</h5>
+            <h4>Educatie</h4>
             <p>In 1998 vertrok het toenmalige hoofd van de afdeling Educatie, en Margriet werd gevraagd om de functie over te nemen. Eerst ad interim, en vervolgens in vaste dienst. “Ik vond Educatie een heel spannende afdeling. Ik schreef natuurlijk veel over kunst en theater, en dat komt voort uit een enthousiasme voor de kunstvormen. Ook had ik toen jonge kinderen, en voelde ik heel erg de noodzaak om die liefde door te geven aan nieuwe generaties.”</p>
             <p>De afdeling Educatie was toen een stuk kleiner dan anno 2019. “Ik had twee medewerkers, zes rondleiders en een aantal freelance docenten op mijn afdeling.” Een aantal bekende gezichten binnen Nationale Opera & Ballet zijn ooit door Margriet op de afdeling Educatie binnengehaald. “Ik heb Lin van Ellinckhuijsen aangenomen, Bart Hermans (die al rondleider was) en Jappe Groenendijk. Ook operaregisseur Jetske Mijnssen is ooit bij ons begonnen als rondleider en later operadocent.”</p>
             <p>In de loop der jaren werd de afdeling Educatie steeds groter. “In overleg is besloten om de afdeling uit te breiden en ook de positie van hoofd een ‘upgrade’ te geven. Ik vond dat prima, als iemand anders de bestuurlijke rompslomp voor zich zou nemen. Ik zou verder gaan als beleidsmedewerker met volwasseneneducatie, redactie en rondleidingen in mijn pakket.” Dat pakte niet goed uit. “Een leidinggevende van een afdeling is cruciaal voor de sfeer. Laat ik het erop houden dat het niet boterde tussen mij en mijn opvolgster. En ik was zeker niet de enige op de afdeling.”</p>
@@ -49,10 +49,10 @@ class OverPage extends MPElement {
               <p>“Er hangt hier een bijzondere sfeer die je nergens anders vindt”</p>
             </blockquote>
 
-            <h5>MCV</h5>
+            <h4>MCV</h4>
             <p>Toen kwam er bij de fusie een vacature vrij voor een redacteur. “Ook werd besloten dat Sandra aan het hoofd zou staan van de gefuseerde afdeling MCV, en dat gaf voor mij de doorslag om op die functie te reageren.” Margriet maakte de overstap en nam al snel ook de functie van balletredacteur over. In de loop der jaren heeft ze zich ontwikkeld tot de spil van de redactie.</p>
 
-            <h5>Culturele omnivoor</h5>
+            <h4>Culturele omnivoor</h4>
             <p>Daarnaast is ze altijd blijven schrijven over theater, onder meer voor het Haarlems Dagblad, deGPD-bladen, de UITkrant en theatermagazine Scènes. Wat nu haar grootste liefde is? “Ik zou mezelf een culturele omnivoor noemen, ik houd van theater, opera, dans, muziek, maar ook veel van film. Wat ik mooi vind aan opera als kunstvorm is dat het zo direct de ziel kan raken. Theater leunt vaak op woorden die multi-interpretabel zijn, terwijl opera dankzij muziek veel directer binnen kan komen.” Waar ballet in dit verhaal blijft? “Ballet was niet mijn eerste liefde, maar ik heb er in de loop der jaren van leren houden. Ik heb een grote bewondering voor dansers en hun toewijding, en ook door het interviewen van choreografen heb ik de kunstvorm van dichtbij leren kennen. Het nieuwe werk vind ik zelf heel erg bijzonder om bij betrokken te zijn, zoals New Moves en de Choreographic Academy.”</p>
             <p>Margriet gaat Nationale Opera & Ballet missen. “Er hangt hier een bijzondere sfeer die je nergens anders vindt. In de artiestenfoyer kun je zomaar een topdirigent in het wild zien lopen met een flesje cola in de hand, of bij de liften kom je het koor tegen dat een offstage passage uit een grote kooropera oefent. Dat soort dingen maak je op geen enkele andere werkplek mee.”</p>         <p>Wat ze na 5 juli met haar vrije tijd gaat doen? Niet heel veel andere dingen dan nu. “Ik blijf natuurlijk wel werken en schrijven, maar met mijn extra tijd hoop ik nog veel meer tentoonstellingen te kunnen bezoeken, films te kunnen zien en veel boeken te kunnen lezen. Ook ga ik misschien nog een boek schrijven.” Waarover? Voor het eerst in het gesprek doet Margriet er een streng zwijgen toe. “Dat houd ik nog even strikt geheim.”</p>
 

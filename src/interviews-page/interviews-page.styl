@@ -7,7 +7,7 @@
 
 $$text-styles()
 
-.intro-section
+#intro-section
   text-align: center;
 
 header
@@ -19,7 +19,7 @@ h2[slot="header"]
 mp-page
   padding-bottom var(--mp-size-6)
 
-.recensie-grid
+.interviews-grid
   $grid(2)
 
 #interview-page
@@ -30,8 +30,7 @@ main
   display grid
   grid-template-columns 2fr 4fr minmax(0px, 2fr)
   gap var(--mp-size--8)
-
-main 
+  margin-bottom var(--mp-size--9)
   grid-template-areas: 
     "aside-left body .";
   margin-top var(--mp-size--7)
