@@ -1,12 +1,32 @@
 import { MPElement, html } from '../mp-element/mp-element';
 import { css } from './over-page.css.js';
 import '../mp-page/mp-page';
+import '../mp-input/mp-input';
+import '../mp-textarea/mp-textarea.js';
+import '../mp-button/mp-button';
 
 
 class OverPage extends MPElement {
 
   get styles() {
     return html`<style>${css}</style>`;
+  }
+
+	static get properties() {
+    return {
+      name: {
+        observe: true,
+        defaultValue: ''
+      },
+      contactInfo: {
+        observe: true,
+        defaultValue: ''
+      },
+      message: {
+        observe: true,
+        defaultValue: ''
+      },
+    }
   }
 
   get template() {
@@ -21,8 +41,26 @@ class OverPage extends MPElement {
           <p>Margriet Prinssen is theaterjournalist. Ze schrijft recensies en interviews voor Mediahuis, Haarlems Dagblad, de Uitkrant, Scenes, Odeon en de Theaterkrant. Tot en met 2019 werkte ze ook als eindredacteur bij Nationale Opera & Ballet. </p>
         </section>
 
-        <div id="top-hor-line"></div>
-        <div id="bottom-hor-line"></div>
+        <div class="top-hor-line-1"></div>
+        <div class="bottom-hor-line-1"></div>
+
+
+        <h4 class="text-centered">Stuur mij een berichtje</h4>
+        <section id="contact-container">
+          <div id="contact-textarea-container">
+            <mp-textarea placeholder="Bericht" .value=${this.message} @input=${e => this.message = e.target.value}></mp-textarea>
+          </div>
+          <div id="contact-inputs-container">
+            <mp-input placeholder="Naam" .value=${this.name} @input=${e => this.name = e.target.value}></mp-input>
+            <mp-input placeholder="Email/06" .value=${this.contactInfo} @input=${e => this.contactInfo = e.target.value}></mp-input>
+            <mp-button ?disabled=${!(!!this.name && !!this.contactInfo && !!this.message)} @click="${this.storeMessageInDb}">Verstuur</mp-button>
+          </div>
+        </section>
+        <p id="message-succes-indicator"></p>
+
+
+        <div class="top-hor-line-2"></div>
+        <div class="bottom-hor-line-2"></div>
 
         <section>
           <article>
@@ -62,6 +100,29 @@ class OverPage extends MPElement {
     `;
   }
 
+  async storeMessageInDb() {
+    // POST /v1/{parent=projects/*/databases/*/documents/**}/{collectionId}
+    const resp = await fetch(`https://us-central1-margriet-prinssen.cloudfunctions.net/sendEmail`, { 
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      body: JSON.stringify({
+        "name": this.name || "",
+        "contactInfo": this.contactInfo || "",
+        "message": this.message || "" 
+      })
+    });
+    const messageSuccesIndicatorElement = this.shadowRoot.getElementById('message-succes-indicator');
+    if(resp.status === 202) {
+      messageSuccesIndicatorElement.innerText = "Dank voor het bericht!"
+      this.name = "";
+      this.contactInfo = "";
+      this.message = "";
+    } else {
+      messageSuccesIndicatorElement.innerText = "Er is helaas iets misgegaan, probeer het aub later nog eens."
+    }
+    setTimeout(() => {
+      messageSuccesIndicatorElement.innerText = ""
+    }, 3000);
+  }
 
 }
 

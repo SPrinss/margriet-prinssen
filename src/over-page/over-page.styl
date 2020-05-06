@@ -16,6 +16,41 @@ $$a-link()
   align-items: center
   margin-top var(--mp-size--10)
 
+#contact-container
+  display flex
+  flex-direction row
+  flex-wrap wrap 
+  justify-content center
+  max-height: 170px;
+
+
+#contact-textarea-container
+  display block
+  margin-right: var(--mp-size--5);
+  width: 360px;
+  min-height: 166px;
+
+#contact-inputs-container
+  display: flex
+  flex-direction: column
+  justify-content: space-between;
+  align-items: flex-end;
+  height 100%
+
+#contact-inputs-container *:not(:first-child)
+  margin-top var(--mp-size--3)  
+
+#message-succes-indicator
+  text-align: center;
+
+mp-textarea
+  --mp-input-border-radius: var(--mp-border-radius--1)
+
+mp-input
+  display block
+  max-width: 360px
+  --mp-input-border-radius: var(--mp-border-radius--1)
+
 blockquote
   margin var(--mp-size--10) 0
   
@@ -28,20 +63,30 @@ h5
 p
   margin var(--mp-size--4) 0 
 
-#top-hor-line
-#bottom-hor-line
+.text-centered
+  text-align: center;
+
+.top-hor-line-1
+.bottom-hor-line-1
+.top-hor-line-2
+.bottom-hor-line-2
   width 100%
   height: 2px  
-
-#top-hor-line
-#bottom-hor-line
   margin-top var(--mp-size--2);
 
-#top-hor-line
-  background: linear-gradient(90deg, transparent 29%, var(--mp-color-main--100) 29%, var(--mp-color-main--100) 69%, transparent 69%, transparent 100%);
+.top-hor-line-1
+  background: linear-gradient(90deg, transparent 30%, var(--mp-color-main--100) 30%, var(--mp-color-main--100) 78%, transparent 78%);
 
-#bottom-hor-line
-  background: linear-gradient(90deg, transparent 34%, var(--mp-color-secondary--100) 34% , var(--mp-color-secondary--100) 77%, transparent 77%);
+.bottom-hor-line-1
+  background: linear-gradient(90deg, transparent 40%, var(--mp-color-secondary--100) 40%, var(--mp-color-secondary--100) 68%, transparent 68%);
+
+
+
+.top-hor-line-2
+  background: linear-gradient(90deg, transparent 40%, var(--mp-color-secondary--100) 40%, var(--mp-color-secondary--100) 68%, transparent 68%);
+
+.bottom-hor-line-2
+  background: linear-gradient(90deg, transparent 30%, var(--mp-color-main--100) 30%, var(--mp-color-main--100) 78%, transparent 78%);
 
 *[slot=header]
 article *
@@ -52,7 +97,7 @@ $$ease-in-opacity()
 
 @media (prefers-color-scheme: dark) 
   header
-    background-color var(--mp-color-dark--80)
+    background-color var(--mp-color-dark--90)
     color var(--mp-color-light--100)
 
 @media only screen and (max-width: 660px)
@@ -64,8 +109,26 @@ $$ease-in-opacity()
     align-items: flex-end
     margin-top var(--mp-size--7)
 
+  #contact-textarea-container
+  #contact-inputs-container
+    width 100%
+
+  #contact-inputs-container * 
+    margin-top var(--mp-size--3)
+
+  #contact-inputs-container mp-input
+    min-width 100%
+
+  #contact-textarea-container
+    margin-right: 0;
+    max-width: 100%;
+
+  #contact-container
+    max-height: 100%;
+
   #intro-section img
     margin-right: 0;
+    width: 100%;
   
   h4
     margin-top var(--mp-size--5)
