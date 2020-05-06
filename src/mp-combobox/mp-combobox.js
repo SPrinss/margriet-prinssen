@@ -39,7 +39,9 @@ class MPCombobox extends LitElement {
           @blur="${this.checkSelectionHandler}"
         aria-autocomplete="list" aria-controls="ex1-listbox" id="ex1-input">
       </div>
-      <ul aria-labelledby="ex1-label" role="listbox" id="ex1-listbox" class="listbox hidden" @click="${this.clickItemHandler}"></ul>
+      <div class="results-wrapper">
+        <ul aria-labelledby="ex1-label" role="listbox" id="ex1-listbox" class="listbox hidden" @click="${this.clickItemHandler}"></ul>
+      </div>
     </div>
   `;
   }

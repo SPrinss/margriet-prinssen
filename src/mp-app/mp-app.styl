@@ -15,11 +15,11 @@ nav
   width 100%
   display flex
   flex-direction row
-  justify-content space-between
+  justify-content flex-end
   align-items center
   max-width 1080px
   margin auto
-  padding var(--mp-size--3) var(--mp-size--5)
+  padding var(--mp-size--5) var(--mp-size--5)
   z-index 2
   color var(--mp-color-dark--100)  
 
@@ -43,11 +43,10 @@ nav ul
   list-style none
 
 nav ul li
-  padding 0 12px
-  line-height 58px
+  margin 0 12px
 
 nav ul li:last-of-type
-  padding-right 0
+  margin-right 0
 
 nav ul li a
   mp-text-c1()
@@ -105,8 +104,12 @@ footer > *
 
 
 @media (prefers-color-scheme: dark) 
-  nav
-    color var(--mp-color-light--100)
+  nav ul li a
+    color var(--mp-color-light--70)
+
+  nav ul li a[data-active]
+    color var(--mp-color-light--90)    
+    border-bottom: 1px solid var(--mp-color-light--90)
 
   footer
     background-color var(--mp-color-dark--60);
@@ -115,23 +118,20 @@ footer > *
   main
   nav
   .page
-    background-color var(--mp-color-dark--80)
+    background-color var(--mp-color-dark--90)
 
 
 @media only screen and (max-width: 660px)
   $$text-font-size-mobile-styles()        
 
-  nav
-    flex-wrap: wrap;
-    justify-content: center;
-  
   nav ul
-    justify-content: space-around;
+    justify-content: flex-start;
+    flex-wrap: wrap;
     width 100%
 
   nav ul li
-    margin 0
     padding 0
-
-  nav a 
-    margin-top var(--mp-size--6)
+    margin var(--mp-size--3)
+  
+  nav ul li a
+    font-size: var(--mp-text-c1-mobile-font-size); 

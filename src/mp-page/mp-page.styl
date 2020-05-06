@@ -21,6 +21,22 @@ header
 main
   page-content-spacing()
 
+#divider-container
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  flex-wrap: nowrap;
+
+#divider-container div
+  flex: 1;
+
+svg {
+  padding: 0;
+  margin: 0;
+  height: 52px;
+  padding 0 var(--mp-size--5)
+}
+
 #top-hor-line-top
 #top-hor-line-bottom
 #bottom-hor-line-top
@@ -35,13 +51,14 @@ main
   transform: translateX(var(--move-value-step-0))
   
 #top-hor-line-top
+#bottom-hor-line-top
   margin-top var(--mp-size--4)
 
 #top-hor-line-top
-  background: linear-gradient(90deg, var(--mp-color-main--100) 39%, transparent 39%);
+  background: linear-gradient(90deg, var(--mp-color-main--100) 79%, transparent 79%);
 
 #bottom-hor-line-top
-  background: linear-gradient(90deg, transparent 61%, var(--mp-color-main--100) 61%);
+  background: linear-gradient(90deg, transparent 21%, var(--mp-color-main--100) 21%);
 
 #top-hor-line-top
 #top-hor-line-bottom
@@ -53,10 +70,10 @@ main
   margin-top var(--mp-size--2);
 
 #top-hor-line-bottom
-  background: linear-gradient(90deg, var(--mp-color-secondary--100) 29%, transparent 29%);
+  background: linear-gradient(90deg, var(--mp-color-secondary--100) 58%, transparent 58%);
 
 #bottom-hor-line-bottom
-  background: linear-gradient(90deg, transparent 64%, var(--mp-color-secondary--100) 64% , var(--mp-color-secondary--100) 93%, transparent 93%);
+  background: linear-gradient(90deg, transparent 42%, var(--mp-color-secondary--100) 42%);
 
 @keyframes horizontal-move
   100% 
@@ -67,6 +84,8 @@ main
   .header-content-container
     color var(--mp-color-light--100)
 
+  svg
+    color var(--mp-color-light--100)
 
   ::slotted(*)
     color var(--mp-color-light--100)

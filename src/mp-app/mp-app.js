@@ -36,7 +36,6 @@ class MPApp extends MPElement {
   async _handlePageChange(oldPage, newPage) {
     if(!newPage) return;
     if(!!this.shadowRoot && !!this.shadowRoot.querySelector && !!this.shadowRoot.querySelector('main')) {
-      console.log(this.shadowRoot.querySelector('main'))
         this.shadowRoot.querySelector('main').scrollTo({
           top: 0,
           behavior: 'smooth',
@@ -66,8 +65,8 @@ class MPApp extends MPElement {
 
       <main>
       <nav>
-        <a href="/" aria-label="Navigeer naar de hoofdpagina"><svg viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" version="1.1" fill="currentColor">${unsafeSVG(`${logo}`)}</svg></a>
         <ul>
+          <li><a ?data-active="${this.page.toLowerCase() === 'home'}" href="/">Home</a></li>
           <li><a ?data-active="${this.page.toLowerCase() === 'recensies'}" href="/recensies">Recensies</a></li>
           <li><a ?data-active="${this.page.toLowerCase() === 'interviews'}" href="/interviews">Interviews</a></li>
           <li><a ?data-active="${this.page.toLowerCase() === 'over'}" href="/over">Over</a></li>
