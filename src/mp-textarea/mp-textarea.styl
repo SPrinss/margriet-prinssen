@@ -1,0 +1,63 @@
+@import '../../src/styles/theme/reset'
+@import '../../src/styles/theme/text-styles'
+
+:host
+  outline none
+  user-select none
+  -webkit-user-select none
+  display inline-block
+  font-size 0
+  height 100%
+  width 100%
+
+  textarea
+    width 100%
+    max-height: 100%
+    margin 0
+    height 100%
+    padding var(--mp-size--3) var(--mp-size--4) 0 var(--mp-size--4);
+    mp-text-b2()
+    background var(--mp-color-light--80)
+    color var(--mp-color-dark--50)
+    border-radius var(--mp-input-border-radius, var(--mp-border-radius--1) var(--mp-border-radius--1) 0 0)
+    border 0
+    transition 0.2s border-color ease
+    cursor pointer
+    user-select none
+    -webkit-user-select none
+    outline 5px auto blue
+    outline 5px auto -webkit-focus-ring-color
+    resize: none;
+
+
+    &:not([disabled])
+
+      &:hover
+        background var(--mp-color-light--90)
+
+      &:active
+        background var(--mp-color-light--100)
+
+        &:focus
+          background var(--mp-color-light--100)
+
+      &:focus
+        background var(--mp-color-light--100)
+        color var(--mp-color-dark--90)
+
+      &[required],
+      &[pattern]
+        border-bottom 2px solid var(--mp-color-purple--30)
+
+        &:focus
+          border-bottom-color var(--mp-color-purple--100)
+
+        &:invalid
+          border-bottom-color var(--mp-color-highlight--100)
+    
+    &[disabled]
+      cursor default
+      opacity 0.4
+
+:host(:not(.focus-visible)) textarea
+  outline none
