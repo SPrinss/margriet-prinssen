@@ -3,20 +3,15 @@ const functions = require('firebase-functions');
 const algoliasearch = require('algoliasearch');
 
 const admin = require('firebase-admin');
+
 const algoliaClient = algoliasearch(functions.config().algolia.app, functions.config().algolia.key);
 const reviewsIndex = algoliaClient.initIndex('reviews');
 const interviewsIndex = algoliaClient.initIndex('interviews');
 
-function parseSearchableReviewData(dbData) {
-  // get relevant data from all dbData
-  const searchableData = (({ groups, name, theater, writers, directors, title, reviewDate, actors, city, year }) => ({ groups, name, theater, writers, directors, title, reviewDate, actors, city, year }))(dbData);
-  searchableData.persons = [].concat(...searchableData.writers, ...searchableData.directors, ...searchableData.actors);
+admin.initializeApp();
 
-  // remove empty values since Firestore won't accept them
-  Object.keys(searchableData).forEach((key) => (searchableData[key] === null || typeof searchableData[key] === 'undefined') && delete searchableData[key]);
-
-  // parse id's from searchableData
-  const searchableParsedData  = Object.entries(searchableData).map(([key, val]) => {
+function parseIds(obj) {
+  return Object.entries(obj).map(([key, val]) => {
     if(Array.isArray(val)) {
       // [{id, name}]
       const obj = {[key]: []};
@@ -32,16 +27,28 @@ function parseSearchableReviewData(dbData) {
       return {[key]: val}
     }
   }).reduce(((r, c) => Object.assign(r, c)), {});
+}
 
+function parseSearchableReviewData(dbData) {
+  // get relevant data from all dbData
+  const searchableData = (({ groups, name, theater, writers, directors, title, reviewDate, actors, city, year }) => ({ groups, name, theater, writers, directors, title, reviewDate, actors, city, year }))(dbData);
+  searchableData.persons = [].concat(...searchableData.writers, ...searchableData.directors, ...searchableData.actors);
+
+  // remove empty values since Firestore won't accept them
+  Object.keys(searchableData).forEach((key) => (searchableData[key] === null || typeof searchableData[key] === 'undefined') && delete searchableData[key]);
+
+  // parse id's from searchableData
+  const searchableParsedData  = parseIds(searchableData);
   return searchableParsedData;
 }
 
 function parseSearchableInterviewData(dbData) {
   // deconstruct object into parsed obj
-  const searchableData = (({ title, person, magazine, interviewDate }) => ({ title, person, magazine, interviewDate }))(dbData);
+  const searchableData = (({ title, persons, interviewDate,year, images }) => ({ title, persons, interviewDate, year, images }))(dbData);
   // remove empty values since Firestore won't accept them
   Object.keys(searchableData).forEach((key) => (searchableData[key] === null || typeof searchableData[key] === 'undefined') && delete searchableData[key]);
-  return searchableData;
+  const searchableParsedData  = parseIds(searchableData);
+  return searchableParsedData;
 }
 
 exports.addToReviewIndex = functions.firestore.document('reviews/{reviewId}')
