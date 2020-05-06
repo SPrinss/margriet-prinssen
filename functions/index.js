@@ -1,6 +1,8 @@
 const functions = require('firebase-functions');
+
 const algoliasearch = require('algoliasearch');
 
+const admin = require('firebase-admin');
 const algoliaClient = algoliasearch(functions.config().algolia.app, functions.config().algolia.key);
 const reviewsIndex = algoliaClient.initIndex('reviews');
 const interviewsIndex = algoliaClient.initIndex('interviews');
@@ -86,3 +88,18 @@ exports.deleteFromInterviewIndex = functions.firestore.document('interviews/{int
       interviewsIndex.deleteObject(snapshot.id)
     );
 
+exports.sendEmail = functions.https.onRequest((req, res) => {
+    res.set('Access-Control-Allow-Origin', '*');
+    const {name, contactInfo, message} = JSON.parse(req.body);
+    admin.firestore().collection('messages').add({
+      to: ['info@margrietprinssen.nl'],
+      message: {
+        subject: 'Een nieuw bericht van de website :)',
+        text: `Hallo! \n\n ${name || '?'} (${contactInfo || '?'}) heeft een bericht achter gelaten: \n\n ${message || '?'} \n Ok doei, \n\n X `
+      }
+    }).then(dbRes => {
+      return res.send(202);
+    }).catch(e => {
+      return res.send(500);
+    })
+})
