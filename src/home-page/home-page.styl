@@ -8,38 +8,21 @@ $$a-link()
 
 .grid
   $grid(2)
-  
+
+.grid a
+basic-preview
+  height 100%
+
+header
+  min-height: 162px;
+
 h1
 h2
-  overflow-x: hidden;
-  white-space: nowrap; 
-  margin: 0 auto var(--mp-size--6) auto;
-
-h1
-  animation: 
-    typing 1.5s steps(20, end)
-  line-height 76px
-
-h2 
-  width: 0
-  animation: 
-    typing 1.5s steps(20, end) 1.5s forwards
-  line-height 69px
+  margin: 0 auto var(--mp-size--5) auto;
 
 @keyframes horizontal-move
   100% 
     transform: translateX(0)
-
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
-}
-
-/* The typewriter cursor effect */
-@keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: orange; }
-}
 
 #intro-section *
 basic-preview
@@ -74,6 +57,9 @@ $$ease-in-opacity()
 @media only screen and (max-width: 660px)
   $$text-font-size-mobile-styles()
 
+  header
+    min-height: 116px;
+    
   h1
   h3
     white-space initial

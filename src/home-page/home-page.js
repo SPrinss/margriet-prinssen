@@ -157,20 +157,46 @@ class HomePage extends MPElement {
     return persons.map(person => person.name);
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    const titleEl = this.shadowRoot.getElementById('title');
+    const subtitleEl = this.shadowRoot.getElementById('subtitle');
+    titleEl.innerText = ' ';
+    subtitleEl.innerText = ' ';
+
+    this.setInnerTextWithDelay("Margriet Prinssen", titleEl, 1, 85)
+    window.setTimeout(() => {
+      this.setInnerTextWithDelay("Theaterjournalistiek", subtitleEl, 1, 85)
+    }, 1775);
+    
+  }
+
+
+  setInnerTextWithDelay(str, el, postition, delay) {
+    el.innerText = str.substring(0, postition)
+    postition += 1;
+
+    if (postition < str.length  + 1) {
+      
+      setTimeout(() => requestAnimationFrame(() => {this.setInnerTextWithDelay(str, el, postition, delay)}) , delay);
+    }
+  }
+
   get template() {
     return html`
       ${this.styles}
 
     <mp-page>
 
-      <h1 slot="header">Margriet Prinssen</h1>
-      <h2 slot="header">Theaterjournalistiek</h2>
+      <header slot="header">
+        <h1 id="title" ></h1>
+        <h2 id="subtitle"></h2>
+      </header>
+
 
       <section id="intro-section">
         <p>Vanaf 1989 schrijf ik over theater, dans en opera: theaterrecensies voor diverse dagbladen, artikelen voor de Uitkrant, Scenes, theaterkrant.nl, programmaboeken van Nationale Opera &amp; Ballet en Odeon.</p>
         <p>Op deze site kun je in de recensies zoeken op titel of op naam van de theatermaker of het gezelschap.</p>
-        <a href="/over" aria-label="Navigeer naar over" arrow>Over mij</a>
-
       </section>
 
       <section>
