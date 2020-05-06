@@ -21,7 +21,76 @@ class HomePage extends MPElement {
       },
       interviews: {
         observe: true,
-        defaultValue: []
+        defaultValue: [
+          {
+            "interviewDate": "01-2020",
+            "title": "Een gepassioneerd pleitbezorger van het theater",
+            "objectID": "Fup872FmBLSGwB5Cr2Yb",
+            "images": ["https://firebasestorage.googleapis.com/v0/b/margriet-prinssen.appspot.com/o/Sopro-Tiago-Rordigues-%C2%A9Christophe-Raynaud-de-Lage-3-1240x814%20(1).jpg?alt=media&token=e174c476-aa27-4f32-b259-09db942506e8"],
+
+            "persons": [
+              {
+                "id": "wGLsSIFWghp8nZ1Bvjea",
+                "name": "Tiago Rodrigues"
+              }
+            ],
+          },
+          {
+            "title": "Hamlet in Nieuw-West ",
+            "objectID": "iKEwM7avoUfL3XlaSB3E",
+            "persons": [
+              {
+                "id": "3MDYkGav3TPogZay8teB",
+                "name": "Hamlet Toneelmakerij"
+              },
+              {
+                "id": "BBDS11RdLow2NTfOuKzZ",
+                "name": "Abdelkader Benali"
+              }
+            ],
+            "images": [
+              "https://firebasestorage.googleapis.com/v0/b/margriet-prinssen.appspot.com/o/ABDEL%20KADERKL.jpg?alt=media&token=116302fc-0bbe-4228-a5ea-09eadc3e2c32"
+            ],
+            "interviewDate": "02-2020",
+            "objectID": "iKEwM7avoUfL3XlaSB3E"
+          },
+          {
+            "objectID": "j5tRqazU6Qdpiw3MLLmk",
+            "interviewDate": "04-2019",
+            "images": ["https://firebasestorage.googleapis.com/v0/b/margriet-prinssen.appspot.com/o/losttango_nichonglerum-12.jpg?alt=media&token=be3ff628-f231-4e6d-8955-2501184c49c0"],
+            "title": "Lost Tango, Een schipbreuk in de tijd",
+            "persons": [
+              {
+                "id": "PfsV34nycvbZM1tGCx1U",
+                "name": "Dagmar Slagmolen"
+              },
+              {
+                "name": "Rosa Arnold",
+                "id": "W4S3LcnnxBL1pBvZWplb"
+              },
+              {
+                "id": "9Cmnw04tiRinguPgpXPo",
+                "name": "Carel Kraayenhof"
+              },
+              {
+                "name": "Meral Polat",
+                "id": "8Z1R0NvoH5pgHdgozASL"
+              }
+            ],
+          },
+          {
+            "objectID": "GgsyVuCN6suNerkAyro4",
+            "images": ["https://firebasestorage.googleapis.com/v0/b/margriet-prinssen.appspot.com/o/Katie_Mitchell%20(1).jpg?alt=media&token=13dff8b9-6a1b-4147-9339-21d2768b5df5"],
+            "interviewDate": "05-2018",
+            "title": "Een bizar spannend proces",
+            "persons": [
+              {
+                "name": "Katie Mitchell",
+                "id": "0Zdci4zlC3hxxdRU6blh"
+              }
+            ],
+          }
+        ]
       }
     }
   }
@@ -33,8 +102,8 @@ class HomePage extends MPElement {
 
   async getRecentReviewsAndInterviews() {
     const reviewsPromise = this.getRecentCollection('reviews');
-    const interviewsPromise = this.getRecentCollection('interviews');
-    this.reviews = await reviewsPromise; this.interviews = await interviewsPromise;
+    // const interviewsPromise = this.getRecentCollection('interviews');
+    this.reviews = await reviewsPromise; // this.interviews = await interviewsPromise;
   }
 
   async getRecentCollection(collection) {
