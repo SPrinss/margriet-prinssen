@@ -56,7 +56,7 @@ class InterviewsPage extends MPElement {
       <h2 slot="header">Doorzoek Interviews</h2>
 
       <section id="intro-section">
-        <p>Doorzoek interviews vanaf 2012. Zoeken is mogelijk op theater groepen, personen en jaren.</p>
+        <p>Doorzoek 55+ interviews vanaf 2012. Zoeken is mogelijk op theater groepen, personen en jaren.</p>
       </section>
 
       <section id="search-section">

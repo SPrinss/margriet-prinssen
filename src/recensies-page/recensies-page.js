@@ -50,7 +50,7 @@ class RecensiesPage extends MPElement {
       <h2 slot="header">Doorzoek recensies</h2>
 
       <section id="intro-section">
-        <p>Doorzoek recensies vanaf 1996. Zoeken is mogelijk op theater groepen, personen, theaters, jaartallen, steden en titels. Als je binnen een categorie (e.g. Toneelschuur) wilt zoeken kan je op "Gebruik als filter" klikken.</p>
+        <p>Doorzoek 700+ recensies vanaf 1996. Zoeken is mogelijk op theater groepen, personen, theaters, jaartallen, steden en titels. Als je binnen een categorie (e.g. Toneelschuur) wilt zoeken kan je op "Gebruik als filter" klikken.</p>
       </section>
 
       <section id="search-section">
