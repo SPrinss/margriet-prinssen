@@ -174,7 +174,7 @@ class MPSearch extends MPElement {
 				value: hit.value, 
 				count: hit.count, 
 				category: category, 
-				formatter: (item) => `<span class="result-category">${this.toDutch(item.category)}:</span> <span>${item.value}<span> <span class="result-count">(${item.count})</span>` 
+				formatter: (item) => `<span class="result-category">${this.toDutch(item.category)}:</span> <span>${item.value}</span> <span class="result-count">(${item.count})</span>` 
 			}
 		});
 	}
