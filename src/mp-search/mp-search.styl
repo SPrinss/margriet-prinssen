@@ -90,9 +90,11 @@ mp-button
 .pagination-item 
   cursor pointer 
   mp-text-h4()
+  color var(--mp-color-dark--50)
+
 
 .pagination-item[active]  
-  color var(--mp-color-main--100)
+  color var(--mp-color-dark--100)
 
 @media only screen and (max-width: 660px)
   #search-section
@@ -100,5 +102,8 @@ mp-button
 
 @media (prefers-color-scheme: dark) 
   .pagination-item 
-    color var(--mp-color-dark--50)
+    color var(--mp-color-light--50)
+  
+  .pagination-item[active]
+    color var(--mp-color-light--90)
 
