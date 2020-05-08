@@ -52,7 +52,8 @@ class MPSearch extends MPElement {
 			},
 			pages: {
 				observe: true,
-				defaultValue: []
+				defaultValue: [],
+				changedHandler: "_handlePagesChanged"
 			},
 			page: {
 				observe: true,
@@ -88,6 +89,10 @@ class MPSearch extends MPElement {
 				changedHandler: "_handleSelectedOptionChanged"
 			}
 		}
+	}
+
+	_handlePagesChanged(oldVal, newVal) {
+		this.page = 1;	
 	}
 
 	async _handleSelectedOptionChanged(oldVal, newVal) {
