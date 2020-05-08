@@ -5,6 +5,7 @@ import '../mp-input/mp-input';
 import '../mp-textarea/mp-textarea.js';
 import '../mp-button/mp-button';
 
+import { StringConverter, NumberConverter, BooleanConverter, ObjectConverter } from 'html-element-property-mixins/src/utils/attribute-converters';
 
 class OverPage extends MPElement {
 
@@ -26,6 +27,13 @@ class OverPage extends MPElement {
         observe: true,
         defaultValue: ''
       },
+      showInterview: {
+        observe: true,
+        DOM: true,
+        attributeName: 'show-interview',
+        defaultValue: false,
+        fromAttributeConverter: BooleanConverter.fromAttribute 
+      }
     }
   }
 
@@ -33,7 +41,7 @@ class OverPage extends MPElement {
     return html`
       ${this.styles}
 
-      <mp-page>
+      <mp-page ?active=${!this.showInterview}>
         <h1 slot="header">Over Margriet Prinssen</h1>
           
         <section id="intro-section">
@@ -44,34 +52,33 @@ class OverPage extends MPElement {
           </div>
         </section>
 
-        <div class="top-hor-line-1"></div>
-        <div class="bottom-hor-line-1"></div>
+        <section id="contact-section">
+
+          <div class="top-hor-line-1"></div>
+          <div class="bottom-hor-line-1"></div>
 
 
-        <h4 class="text-centered">Stuur mij een berichtje</h4>
-        <section id="contact-container">
-          <div id="contact-textarea-container">
-            <mp-textarea placeholder="Bericht" .value=${this.message} @input=${e => this.message = e.target.value}></mp-textarea>
-          </div>
-          <div id="contact-inputs-container">
-            <mp-input placeholder="Naam" .value=${this.name} @input=${e => this.name = e.target.value}></mp-input>
-            <mp-input placeholder="Email/06" .value=${this.contactInfo} @input=${e => this.contactInfo = e.target.value}></mp-input>
-            <mp-button ?disabled=${!(!!this.name && !!this.contactInfo && !!this.message)} @click="${this.storeMessageInDb}">Verstuur</mp-button>
-          </div>
+          <h4 class="text-centered">Stuur mij een berichtje</h4>
+          <section id="contact-container">
+            <div id="contact-textarea-container">
+              <mp-textarea placeholder="Bericht" .value=${this.message} @input=${e => this.message = e.target.value}></mp-textarea>
+            </div>
+            <div id="contact-inputs-container">
+              <mp-input placeholder="Naam" .value=${this.name} @input=${e => this.name = e.target.value}></mp-input>
+              <mp-input placeholder="Email/06" .value=${this.contactInfo} @input=${e => this.contactInfo = e.target.value}></mp-input>
+              <mp-button ?disabled=${!(!!this.name && !!this.contactInfo && !!this.message)} @click="${this.storeMessageInDb}">Verstuur</mp-button>
+            </div>
+          </section>
+          <p id="message-succes-indicator"></p>
+
+
+          <div class="top-hor-line-2"></div>
+          <div class="bottom-hor-line-2"></div>
         </section>
-        <p id="message-succes-indicator"></p>
-
-
-        <div class="top-hor-line-2"></div>
-        <div class="bottom-hor-line-2"></div>
 
         <section>
           <article>
-            <h3>Interview ter gelegenheid van haar afscheid bij de Nationale Opera & Ballet</h3>
-            <h6>Laura Roling - mei 2019</h6>
 
-            <p>In oktober 1992 stapte Margriet Prinssen voor het eerst Nationale Opera & Ballet binnen, toen nog het Muziektheater. Nu, ruim 25 jaar later, neemt ze afscheid. Alhoewel, afscheid? ‘Ik blijf gewoon schrijven als freelancer, hopelijk ook voor jullie, dus ik verdwijn niet helemaal.’</p>
-            <p>Margriet studeerde Nederlands, met theaterwetenschap als bijvak. Daarna fladderde ze naar eigen zeggen vooral rond van klus naar klus, vooral op redactioneel vlak. Ze schreef - zoals nu nog steeds - veel over theater. Opvallend is haar betrokkenheid bij ‘Socialisties Feministies Tijdschrift Katijf’. “Daar schreef ik de kunst- en cultuurbijdragen, maar heb ik het maken van een blad van alle kanten geleerd.” Collega’s daar waren andere ambitieuze vrouwen, zoals Mavis Carrilho en Jet Bussemaker.</p>
           <h3>Verantwoording</h3>
           
             <p>Op deze site vind je recensies en interviews vanaf de jaren negentig over met name
@@ -96,6 +103,7 @@ class OverPage extends MPElement {
             Haarlems Dagblad zijn vooral de recensies van alles wat in de Toneelschuur te zien
             was redelijk compleet.<p>
             <p>De site is gemaakt door Sam en Tijl Prinssen en Lex van der Slot, waarvoor veel
+            dank.</p>
           </article>
 
         </section>

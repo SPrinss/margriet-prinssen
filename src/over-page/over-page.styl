@@ -6,6 +6,10 @@
 $$text-styles()
 $$a-link()
 
+#interview-page
+  --mp-page-max-width: 100%
+  padding-bottom var(--mp-size--6)
+  
 #intro-section img
   margin-right: var(--mp-size--6);
 
@@ -37,6 +41,28 @@ $$a-link()
   align-items: flex-end;
   height 100%
 
+main 
+  display grid
+  grid-template-columns 2fr 4fr minmax(0px, 2fr)
+  gap var(--mp-size--8)
+  margin-bottom var(--mp-size--9)
+  grid-template-areas: 
+    "aside-left body .";
+  margin-top var(--mp-size--7)
+  justify-items center
+  align-items start
+
+#aside-right-content-wrapper 
+  grid-area aside-left
+  justify-self start
+  text-align start
+
+#main-content-wrapper
+  grid-area body  
+
+mp-page:not([active]) 
+  display: none;
+  
 #contact-inputs-container *:not(:first-child)
   margin-top var(--mp-size--3)  
 
@@ -63,13 +89,24 @@ h5
 p
   margin var(--mp-size--4) 0 
 
+a[arrow]
+  display: inline-block;
+
 .text-centered
   text-align: center;
+
+
+
+#contact-section .text-centered
+  margin-top 0;
+
 
 .top-hor-line-1
 .bottom-hor-line-1
 .top-hor-line-2
 .bottom-hor-line-2
+.top-hor-line-3
+.bottom-hor-line-3
   width 100%
   height: 2px  
   margin-top var(--mp-size--2);
@@ -80,14 +117,24 @@ p
 .bottom-hor-line-1
   background: linear-gradient(90deg, transparent 40%, var(--mp-color-secondary--100) 40%, var(--mp-color-secondary--100) 68%, transparent 68%);
 
-
-
 .top-hor-line-2
   background: linear-gradient(90deg, transparent 40%, var(--mp-color-secondary--100) 40%, var(--mp-color-secondary--100) 68%, transparent 68%);
 
 .bottom-hor-line-2
   background: linear-gradient(90deg, transparent 30%, var(--mp-color-main--100) 30%, var(--mp-color-main--100) 78%, transparent 78%);
 
+.top-hor-line-3
+  background: linear-gradient(90deg, transparent 20%, var(--mp-color-main--100) 20%, var(--mp-color-main--100) 80%, transparent 80%);
+
+.bottom-hor-line-3
+  background: linear-gradient(90deg, transparent 30%, var(--mp-color-secondary--100) 30%, var(--mp-color-secondary--100) 70%, transparent 70%);
+
+.bottom-hor-line-1
+  margin-bottom var(--mp-size--8);
+
+.top-hor-line-2
+  margin-top var(--mp-size--8);
+  
 *[slot=header]
 article *
 #intro-section *
@@ -135,3 +182,24 @@ $$ease-in-opacity()
 
   blockquote
     margin var(--mp-size--7) 0    
+
+  main 
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    justify-items start
+    align-items start
+    gap var(--mp-size--6)  
+    margin-bottom var(--mp-size--5)
+    grid-template-areas: 
+      "."\
+      "aside-left"\
+      "body"\;
+
+  .bottom-hor-line-1
+    margin-bottom var(--mp-size--6);
+
+  .top-hor-line-2
+    margin-top var(--mp-size--6);      
+
+  #intro-section img
+    width: 70%;    

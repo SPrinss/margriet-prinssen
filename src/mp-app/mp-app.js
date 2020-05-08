@@ -79,7 +79,7 @@ class MPApp extends MPElement {
       <home-page ?visible="${this.page === 'home'}" class="page"></home-page>
       <recensies-page ?visible="${this.page.includes('recensies')}" .recensieId=${this.page.includes('recensies/') ? this.page.substring(this.page.indexOf('recensies/') + 10, this.page.length) : ''} class="page"></recensies-page>
       <interviews-page ?visible="${this.page.includes('interviews')}" .interviewId=${this.page.includes('interviews/') ? this.page.substring(this.page.indexOf('interviews/') + 11, this.page.length) : ''} class="page"></interviews-page>
-      <over-page ?visible="${this.page === 'over'}" class="page"></over-page>
+      <over-page ?visible="${this.page.includes('over')}" ?show-interview=${this.page.includes('over/interview')} class="page"></over-page>
       
       <footer>
         <p>Met liefde gemaakt door Sam Prinssen, Tijl Prinssen & Lex van der Slot</p>
