@@ -202,7 +202,17 @@ class MPSearch extends MPElement {
 		if(!this.algoliaIndex) return;
 		const res = await this.algoliaIndex.search(query, {"facetFilters": facetFilters, page: page} );
 		if(!res || !res.hits) return [];
-		return res.hits.map(hit => {return {...hit, value: hit.title || hit.name, formatter: (item) => `<span>${item.value}</span>`}});
+		
+		return res.hits.map(hit => {return {...hit, value: this._parseValueFromHit(hit, query), formatter: (item) => `<span>${item.value}</span>`}});
+	}
+
+	_parseValueFromHit(hit, query) {
+		console.log(query, hit.title,  hit.name, hit.title && hit.title.includes(query), hit.name && hit.name.includes(query))
+
+		if(hit.title && hit.title.toLowerCase().includes(query.toLowerCase())) return hit.title;
+		if(hit.name && hit.name.toLowerCase().includes(query.toLowerCase())) return hit.name;
+		return hit.title || hit.name || '';
+
 	}
 
 	get facetFilters() {
