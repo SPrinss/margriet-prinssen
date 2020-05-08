@@ -45,24 +45,25 @@ class BasicPreview extends MPElement {
     return html`
       ${this.styles}
 
-    <header ?hidden=${!this.imageSrc}>
-      <figure><img loading="lazy" src="${this.imageSrc}" alt="Foto van stuk/geïnterviewde"></figure>
-    </header>
     <main>
-      <h4>${this.title}</h4>
-      
-      <ul>
-        ${this.featureList.map(item => {
-          return html`
-            <li>${item}</li>
-          `
-        })
-        }
-      </ul>
+      <header ?hidden=${!this.imageSrc}>
+        <figure><img loading="lazy" src="${this.imageSrc}" alt="Foto van stuk/geïnterviewde"></figure>
+      </header>
+      <section>
+        <h4>${this.title}</h4>
+        
+        <ul>
+          ${this.featureList.map(item => {
+            return html`
+              <li>${item}</li>
+            `
+          })
+          }
+        </ul>
 
-      <span>${this.timePublished}</span>
-      <span>${this.outlet}</span>
-
+        <span>${this.timePublished}</span>
+        <span>${this.outlet}</span>
+      </section>
     </main>
     `
   }

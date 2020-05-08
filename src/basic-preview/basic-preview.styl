@@ -7,12 +7,18 @@
   border-radius var(--mp-border-radius--1)
   box-shadow var(--mp-box-shadow--1)
   background-color: var(--mp-color-secondary--30);
+  height 100%
 
 :host(:hover)
   box-shadow var(--mp-box-shadow--3)
   cursor pointer
   transform: scale(1.01)
   
+main
+  display flex
+  flex-direction column
+  height 100%
+
 $$text-styles()
 
 figure
@@ -25,7 +31,9 @@ img
   margin: 0;
   user-select none
 
-main
+section
+  height 100%
+  flex 1
   padding var(--mp-size--4)
 
 h4

@@ -66,57 +66,59 @@ class RecensiePreview extends MPElement {
     return html`
     ${this.styles}
 
-    <header>
-      <div class="header-main">
-        <h4>${this.titel || this.name}</h4>
-        ${this.groups && this.groups.length > 0 ? this.groups.map(group => {
-          return html`
-            <h5>${group}</h5>
-          `
-        }) : ''
-        }
-      </div>
-      <div>
-        <ul>
-          <li>${this.reviewDate}</li>
-          <li>${this.theater}</li>
-          <li>${this.city}</li>
-        </ul>
-      </div>
-    </header>
     <main>
-      <div class="persons-grid">
-        <ul>
-          <li>${this.actors && this.actors.length > 1 ? "Spelers" : "Speler"}</li>
-          ${this.actors && this.actors.length > 0 ? this.actors.map(actor => {
+      <header>
+        <div class="header-main">
+          <h4>${this.titel || this.name}</h4>
+          ${this.groups && this.groups.length > 0 ? this.groups.map(group => {
             return html`
-              <li>${actor}</li>
+              <h5>${group}</h5>
             `
           }) : ''
           }
-        </ul>
+        </div>
+        <div>
+          <ul>
+            <li>${this.reviewDate}</li>
+            <li>${this.theater}</li>
+            <li>${this.city}</li>
+          </ul>
+        </div>
+      </header>
+      <section>
+        <div class="persons-grid">
+          <ul>
+            <li>${this.actors && this.actors.length > 1 ? "Spelers" : "Speler"}</li>
+            ${this.actors && this.actors.length > 0 ? this.actors.map(actor => {
+              return html`
+                <li>${actor}</li>
+              `
+            }) : ''
+            }
+          </ul>
 
-        <ul>
-        <li>${this.directors && this.directors.length > 1 ? "Regisseurs" : "Regisseur"}</li>
-          ${this.directors && this.directors.length > 0 ? this.directors.map(director => {
-              return html`
-                <li>${director}</li>
-              `
-            }) : ''
-          } 
-        </ul>
-        <ul>
-        
-        <li>${this.writers && this.writers.length > 1 ? "Schrijvers" : "Schrijver"}</li>
-          ${this.writers && this.writers.length > 0 ? this.writers.map(writer => {
-              return html`
-                <li>${writer}</li>
-              `
-            }) : ''
-          }
-        </ul>
-        
-      </div>
+          <ul>
+          <li>${this.directors && this.directors.length > 1 ? "Regisseurs" : "Regisseur"}</li>
+            ${this.directors && this.directors.length > 0 ? this.directors.map(director => {
+                return html`
+                  <li>${director}</li>
+                `
+              }) : ''
+            } 
+          </ul>
+          <ul>
+          
+          <li>${this.writers && this.writers.length > 1 ? "Schrijvers" : "Schrijver"}</li>
+            ${this.writers && this.writers.length > 0 ? this.writers.map(writer => {
+                return html`
+                  <li>${writer}</li>
+                `
+              }) : ''
+            }
+          </ul>
+          
+        </div>
+      </section>
     </main>
     `
   }
