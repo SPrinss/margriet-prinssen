@@ -196,7 +196,7 @@ class HomePage extends MPElement {
 
       <section id="intro-section">
         <p>Vanaf 1989 schrijf ik over theater, dans en opera: theaterrecensies voor diverse dagbladen, artikelen voor de Uitkrant, Scenes, theaterkrant.nl, programmaboeken van Nationale Opera &amp; Ballet en Odeon.</p>
-        <p>Op deze site kun je in de recensies zoeken op titel of op naam van de theatermaker of het gezelschap.</p>
+        <p>Op deze site kun je recensies vinden op titel of op naam van het gezelschap of de theatermaker. Volledigheid wordt niet nagestreefd. Evidente fouten graag melden via het contactformulier op de <a href="/over">over</a> pagina.</p>
       </section>
 
       <section>
