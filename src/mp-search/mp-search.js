@@ -100,8 +100,15 @@ class MPSearch extends MPElement {
 		this.pages = [];
 		this._items = [];
 		if(!newVal && this.facetFilters.length !== 0) {			
-			const titles = await this.getTitles('', [].concat(...this.facetFilters));
+			// VERY UGLY REFACTOR LATER. Problem is getting a total result (to set the pages) when removing the selected option while having facets selected. Normally this is done via the attribute count of the selected option, but since we're deselecting an option, we don't have a count and have to request the count based on the selectedFacets + and empty String.
+			// Could be done  
+			const titlesForPageAmount = await this.getTitles('', [].concat(...this.facetFilters), 0, 10000);
+			const pagesAmount = Math.ceil(titlesForPageAmount.length / this.hitsPerPage);
+			if(pagesAmount > 1) this.pages = [ ...Array(pagesAmount).keys() ].map( i => i+1);
+
+			const titles = await this.getTitles('', [].concat(...this.facetFilters), 0);
 			this.searchResults = titles;
+
 		} else if(!!newVal.category) {
 			const pagesAmount = Math.ceil(newVal.count / this.hitsPerPage);
 			if(pagesAmount > 1) this.pages = [ ...Array(pagesAmount).keys() ].map( i => i+1);
@@ -130,7 +137,7 @@ class MPSearch extends MPElement {
 	}
 
 	_searchInputChange(oldVal, newVal) {
-		if(newVal) this.runQuery(newVal)
+		this.runQuery(newVal || '')
 	}
 
 	async _handleSelecedFacetsChanged(oldVal, newVal) {
@@ -141,7 +148,8 @@ class MPSearch extends MPElement {
 
 	async _handleSelecedPageChanged(oldVal, newVal) {
 		if(oldVal !== newVal && (newVal !== 1 || newVal === 1 && oldVal > 1)) {
-			const titles = await this.getTitles("", [].concat(...this.facetFilters, `${this._selectedOption.category}:${this._selectedOption.value}`), newVal - 1);
+			const selectedOption = (this._selectedOption && Object.keys(this._selectedOption).length > 0) ? `${this._selectedOption.category}:${this._selectedOption.value}` : [];
+			const titles = await this.getTitles("", [].concat(...this.facetFilters, selectedOption), newVal - 1);
 			this.searchResults = titles;
 		}
 	}
@@ -159,12 +167,25 @@ class MPSearch extends MPElement {
 				}
 			)
 			const facetResults = await Promise.all(facetQueries);
-
-			facets = facetResults.map((facetResult, i) => this.parseFacetResult(facetResult, this.facetAttributes[i]));
+					console.log('facetResults', facetResults,  facetResults.length)
+			const unfilteredFacets = facetResults.map((facetResult, i) => this.parseFacetResult(facetResult, this.facetAttributes[i]));
+			facets = this._filterSelectedFacetFromFacets(unfilteredFacets, this._selectedFacets);
+			
 		}
 
 		const titles = this.allowSearchTitles ? await this.getTitles(query, this.facetFilters) : [];
 		this._items = [].concat(...facets, titles);
+	}
+
+	_filterSelectedFacetFromFacets(facetsCategories, selectedFacets) {
+		const selectedFactetValues = selectedFacets.map(facet => facet.value);
+		if(!selectedFacets || selectedFacets.length === 0) return facetsCategories;
+		const filteredFacets = facetsCategories.map(facetCategory => {
+			return facetCategory.filter(facet => {
+				return selectedFactetValues.includes(facet.value) === false
+			})
+		});
+		return filteredFacets;
 	}
 	
 	parseFacetResult(result, category) {
@@ -198,17 +219,15 @@ class MPSearch extends MPElement {
 
 	}
 
-	async getTitles(query, facetFilters = ['*'], page = 0) {
+	async getTitles(query, facetFilters = ['*'], page = 0, hitsPerPage = 6) {
 		if(!this.algoliaIndex) return;
-		const res = await this.algoliaIndex.search(query, {"facetFilters": facetFilters, page: page} );
+		const res = await this.algoliaIndex.search(query, {"facetFilters": facetFilters, page: page, hitsPerPage: hitsPerPage} );
 		if(!res || !res.hits) return [];
 		
 		return res.hits.map(hit => {return {...hit, value: this._parseValueFromHit(hit, query), formatter: (item) => `<span>${item.value}</span>`}});
 	}
 
 	_parseValueFromHit(hit, query) {
-		console.log(query, hit.title,  hit.name, hit.title && hit.title.includes(query), hit.name && hit.name.includes(query))
-
 		if(hit.title && hit.title.toLowerCase().includes(query.toLowerCase())) return hit.title;
 		if(hit.name && hit.name.toLowerCase().includes(query.toLowerCase())) return hit.name;
 		return hit.title || hit.name || '';
