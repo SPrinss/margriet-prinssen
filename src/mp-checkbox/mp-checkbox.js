@@ -60,7 +60,7 @@ export class MPCheckboxElement extends HTMLInputElement {
       @input="${(e) => { this.value = e.target.value; this.checked = e.target.checked; }}"
       @change="${(e) => { this.value = e.target.value; this.checked = e.target.checked; }}"
       >
-      <span>checked</span>
+      <span>&#x2713;</span>
     `;
   }
 
