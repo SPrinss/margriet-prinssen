@@ -178,7 +178,7 @@ export class HTMLTextAreaElement extends Properties(HTMLElement) {
       <style>
         :host { outline: none }
 
-        input:invalid {
+        textarea:invalid {
           border: 1px solid red;
         }
       </style>
@@ -190,7 +190,7 @@ export class HTMLTextAreaElement extends Properties(HTMLElement) {
       ${this.styles}
       <textarea
       .accessKey="${this.accessKey}"
-      ?autocomplete="${this.autocomplete}"
+      .autocomplete="${this.autocomplete}"
       ?autofocus="${this.autofocus}"
       .cols="${this.cols}"
       .dirname="${this.dirname}"
@@ -277,7 +277,7 @@ export class HTMLTextAreaElement extends Properties(HTMLElement) {
 
   get $element() {
     if(!this.shadowRoot) return {};
-    return this.shadowRoot.querySelector('input') || {};
+    return this.shadowRoot.querySelector('textarea') || {};
   }
 
   __initFocusDelegation() {
