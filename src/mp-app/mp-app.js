@@ -55,14 +55,18 @@ class MPApp extends MPElement {
       import(`../home-page/home-page.js`);
     } else if (newPage.includes('recensies')) {
       await import(`../recensies-page/recensies-page.js`);
-      const recensiePage = this.shadowRoot.querySelector('recensies-page');
-      recensiePage.recensieId = this._parseIdFromUrl(this.page, 'recensies');
-      recensiePage.authToken = this.authToken;
+      window.requestAnimationFrame(() => {
+        const recensiePage = this.shadowRoot.querySelector('recensies-page');
+        recensiePage.recensieId = this._parseIdFromUrl(this.page, 'recensies');
+        recensiePage.authToken = this.authToken;
+      })
     } else if (newPage.includes('interviews')) {
       await import(`../interviews-page/interviews-page.js`);
-      const interviewsPage = this.shadowRoot.querySelector('interviews-page')
-      interviewsPage.interviewId = this._parseIdFromUrl(this.page, 'interviews');
-      interviewsPage.authToken = this.authToken;
+      window.requestAnimationFrame(() => {
+        const interviewsPage = this.shadowRoot.querySelector('interviews-page')
+        interviewsPage.interviewId = this._parseIdFromUrl(this.page, 'interviews');
+        interviewsPage.authToken = this.authToken;
+      })
     } else if (newPage.includes('over')) {
       import(`../over-page/over-page.js`);
     } 
