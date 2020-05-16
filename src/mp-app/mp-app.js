@@ -1,9 +1,6 @@
 import { MPElement, html } from '../mp-element/mp-element';
 import { installRouter } from 'pwa-helpers/router.js';
-import { logo } from '../logo/logo-small.js';
-import {unsafeSVG} from 'lit-html/directives/unsafe-svg'
 import { css } from './mp-app.css.js';
-
 
 class MPApp extends MPElement {
 
@@ -13,6 +10,10 @@ class MPApp extends MPElement {
         DOM: true,
         observe: true,
         changedHandler: '_handlePageChange'
+      },
+      authToken: {
+        observe: true,
+        defaultValue: null
       }
     }
   }
@@ -33,6 +34,14 @@ class MPApp extends MPElement {
     this.page = page;
   }
 
+  _parseIdFromUrl(url, category) {
+    const startIndex = url.indexOf(`${category}/`);
+    const idPath = url.substring(startIndex + category.length + 1, url.length)
+    const endIndex = idPath.indexOf(`/`);
+    if(endIndex < 0) return idPath;
+    return idPath.substring(0, endIndex);
+  }
+
   async _handlePageChange(oldPage, newPage) {
     if(!newPage) return;
     if(!!this.shadowRoot && !!this.shadowRoot.querySelector && !!this.shadowRoot.querySelector('main')) {
@@ -41,17 +50,24 @@ class MPApp extends MPElement {
           behavior: 'smooth',
       })
     }
+
     if(newPage.includes('home')) {
       import(`../home-page/home-page.js`);
     } else if (newPage.includes('recensies')) {
-      const res = await import(`../recensies-page/recensies-page.js`);
-      this.shadowRoot.querySelector('recensies-page').recensieId = this.page.substring(this.page.indexOf('recensies/') + 10, this.page.length);
+      await import(`../recensies-page/recensies-page.js`);
+      const recensiePage = this.shadowRoot.querySelector('recensies-page');
+      recensiePage.recensieId = this._parseIdFromUrl(this.page, 'recensies');
+      recensiePage.authToken = this.authToken;
     } else if (newPage.includes('interviews')) {
       await import(`../interviews-page/interviews-page.js`);
-      this.shadowRoot.querySelector('interviews-page').interviewId = this.page.substring(this.page.indexOf('interviews/') + 11, this.page.length);
-
+      const interviewsPage = this.shadowRoot.querySelector('interviews-page')
+      interviewsPage.interviewId = this._parseIdFromUrl(this.page, 'interviews');
+      interviewsPage.authToken = this.authToken;
     } else if (newPage.includes('over')) {
       import(`../over-page/over-page.js`);
+    } 
+    if (newPage.includes('auth')) {
+      await import(`../mp-auth/mp-auth.js`);
     }
   }
 
@@ -77,10 +93,10 @@ class MPApp extends MPElement {
       <div id="hor-line-bottom"></div>
 
       <home-page ?visible="${this.page === 'home'}" class="page"></home-page>
-      <recensies-page ?visible="${this.page.includes('recensies')}" .recensieId=${this.page.includes('recensies/') ? this.page.substring(this.page.indexOf('recensies/') + 10, this.page.length) : ''} class="page"></recensies-page>
-      <interviews-page ?visible="${this.page.includes('interviews')}" .interviewId=${this.page.includes('interviews/') ? this.page.substring(this.page.indexOf('interviews/') + 11, this.page.length) : ''} class="page"></interviews-page>
+      <recensies-page ?visible="${this.page.includes('recensies')}" .authToken=${this.authToken} .recensieId=${this.page.includes('recensies/') ? this.page.substring(this.page.indexOf('recensies/') + 10, this.page.length) : ''} class="page"></recensies-page>
+      <interviews-page ?visible="${this.page.includes('interviews')}" .authToken=${this.authToken} .interviewId=${this.page.includes('interviews/') ? this.page.substring(this.page.indexOf('interviews/') + 11, this.page.length) : ''} class="page"></interviews-page>
       <over-page ?visible="${this.page.includes('over')}" ?show-interview=${this.page.includes('over/interview')} class="page"></over-page>
-      
+      <mp-auth ?visible="${this.page.includes('auth')}" @id-token-changed=${e => this.authToken = e.detail.value} @logout=${e => this.authToken = null} class="page"></mp-auth>
       <footer>
         <p>Met liefde gemaakt door Sam Prinssen, Tijl Prinssen & Lex van der Slot</p>
       </footer>

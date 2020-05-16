@@ -23,6 +23,10 @@ class RecensiesPage extends MPElement {
       recensie: {
         observe: true,
         defaultValue: {}
+      },
+      authToken:{
+        observe: true,
+        defaultValue: null
       }
     }
   }
@@ -79,6 +83,7 @@ class RecensiesPage extends MPElement {
                 .actors=${item.actors}
                 .directors=${item.directors}
                 .writers=${item.writers}
+
               >
               </recensie-preview>
               </a>
@@ -89,7 +94,7 @@ class RecensiesPage extends MPElement {
 
     </mp-page>
 
-    <mp-recensie ?active="${this.recensieId}" .recensie=${this.recensie}>
+    <mp-recensie ?active="${this.recensieId}" .authToken=${this.authToken} .recensieId=${this.recensieId} .recensie=${this.recensie}>
 
     </mp-recensie>
 

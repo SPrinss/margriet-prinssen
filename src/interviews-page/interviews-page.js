@@ -5,6 +5,7 @@ import '../mp-search/mp-search';
 import FireStoreParser from 'firestore-parser/index';
 import { css } from './interviews-page.css.js';
 import {unsafeHTML} from 'lit-html/directives/unsafe-html'
+import { BooleanConverter } from 'html-element-property-mixins/src/utils/attribute-converters';
 
 class InterviewsPage extends MPElement {
 
@@ -20,10 +21,24 @@ class InterviewsPage extends MPElement {
         defaultValue: '',
         changedHandler: '_handleInterviewIdChanged'
       },
-      recensie: {
+      interview: {
         observe: true,
         defaultValue: {}
-      }
+      },
+      authToken: {
+        observe: true,
+        defaultValue: null,
+        changedHandler: "_handleAuthTokenChanged"
+      },
+      editing: {
+        observe: true,
+        reflect: true,
+        defaultValue: false,
+        DOM: true,
+        attributeName: 'editing',
+        fromAttributeConverter: BooleanConverter.fromAttribute,
+        toAttributeConverter: BooleanConverter.toAttribute,
+      }      
     }
   }
 
@@ -31,12 +46,48 @@ class InterviewsPage extends MPElement {
     if(newVal) this.getRecensieById(newVal);
   }
 
+  _handleAuthTokenChanged(oldVal, newVal) {
+    if(!newVal) return;
+    import('../mp-textarea/mp-textarea.js');
+    import('../mp-input/mp-input.js');
+    import('../mp-button/mp-button.js');
+    this.editing = true;
+  }
+
+  async patchDocument() {
+    if(!this.authToken) return;
+    const resp = await fetch(`https://firestore.googleapis.com/v1/projects/margriet-prinssen/databases/(default)/documents/interviews/${this.interviewId}?updateMask.fieldPaths=interview&updateMask.fieldPaths=interviewDate&updateMask.fieldPaths=title&currentDocument.exists=true&access_token=${this.authToken}&alt=json`, { 
+      method: 'PATCH',
+      
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.authToken}`
+      },
+      body: JSON.stringify(
+        {
+          "fields" :{
+            "interview": {
+              "stringValue": this.interview.interview
+            },
+            "title": {
+              "stringValue": this.interview.title 
+            },
+            "interviewDate": {
+              "stringValue": this.interview.interviewDate 
+            }
+          }
+        }
+      )
+    }).catch(e => console.log(e))    
+  }
+
+
   async getRecensieById(id) {
     if(!id) return;
     const resp = await fetch(`https://firestore.googleapis.com/v1/projects/margriet-prinssen/databases/(default)/documents/interviews/${id}`);
     const data = await resp.json();
-    console.log(data)
-    this.recensie = FireStoreParser(data).fields || {};
+  
+    this.interview = FireStoreParser(data).fields || {};
   }
 
   get styles() {
@@ -44,9 +95,14 @@ class InterviewsPage extends MPElement {
   }
 
   get names() {
-    if(!this.recensie.persons) return ''
-    return this.recensie.persons.map(person => person.name).join(' - ');
+    if(!this.interview.persons) return ''
+    return this.interview.persons.map(person => person.name).join(' - ');
   }
+
+  _handleInput(evt, propName) {
+    this.interview[propName] = evt.target.value
+    this.render()
+  }  
 
   get template() {
     return html`
@@ -91,8 +147,8 @@ class InterviewsPage extends MPElement {
     </mp-page>
 
     <mp-page id="interview-page" ?active="${this.interviewId}">
-      <h2 slot="header">${this.recensie.title}</h2>
-      <h5 slot="header">${this.recensie.interviewDate} ${this.names}</h5>
+      <h2 slot="header">${this.interview.title}</h2>
+      <h5 slot="header">${this.interview.interviewDate} ${this.names}</h5>
       
       <main>
         <div id="aside-left-content-wrapper">
@@ -100,10 +156,17 @@ class InterviewsPage extends MPElement {
         </div>
 
         <div id="main-content-wrapper">
-          ${unsafeHTML(this.recensie.interview)}
+          ${unsafeHTML(this.interview.interview)}
         </div>
         <div></div>
       </main>
+
+      <section class="edit-section" ?hidden=${!this.authToken}>
+        <mp-textarea placeholder="Interview" .value=${this.interview.interview} @input=${e => this._handleInput(e, 'interview')}></mp-textarea>
+        <mp-input placeholder="Titel" .value=${this.interview.title} @input=${e => this._handleInput(e, 'title')}></mp-input>
+        <mp-input placeholder="Interview datum" .value=${this.interview.interviewDate} @input=${e => this._handleInput(e, 'interviewDate')}></mp-input>
+        <mp-button @click=${this.patchDocument}>Sla op</mp-button>
+      </section>
     </mp-page>
 
     

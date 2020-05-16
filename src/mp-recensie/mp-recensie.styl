@@ -39,9 +39,27 @@ header
   align-items start
   overflow: hidden;
 
-*[slot=header]
-main *
-  animation ease-in-opacity 1.25s forwards ease-in-out
+:host(:not([editing]))
+  *[slot=header]
+  main *
+    animation ease-in-opacity 1.25s forwards ease-in-out
+
+.edit-section 
+  display flex
+  flex-direction column
+  justify-content center
+  align-items center
+
+.edit-section *
+  margin var(--mp-size--3)
+
+.edit-section mp-input
+  --mp-input-border-radius: var(--mp-border-radius--1)
+
+.edit-section mp-textarea
+  display inline-block
+  max-width var(--mp-size--17)
+  height var(--mp-size--14)
 
 #aside-left-content-wrapper 
   grid-area aside-left
@@ -85,6 +103,9 @@ h2[slot="header"]
   margin-bottom var(--mp-size--6)
 
 $$ease-in-opacity()
+
+[hidden]
+  display: none;
 
 @media (prefers-color-scheme: dark) 
   .list li:first-of-type 
