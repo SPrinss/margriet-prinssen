@@ -44,7 +44,6 @@ class MPAuth extends MPElement {
   }
 
   _handleLogOutAttempt() {
-    console.log('_handleLogOutAttempt')
     window.localStorage.clear();
     this.idToken = null;
     this.dispatchEvent(new CustomEvent('logout', {bubbles: true, composed: true}))

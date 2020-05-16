@@ -167,7 +167,6 @@ class MPSearch extends MPElement {
 				}
 			)
 			const facetResults = await Promise.all(facetQueries);
-					console.log('facetResults', facetResults,  facetResults.length)
 			const unfilteredFacets = facetResults.map((facetResult, i) => this.parseFacetResult(facetResult, this.facetAttributes[i]));
 			facets = this._filterSelectedFacetFromFacets(unfilteredFacets, this._selectedFacets);
 			
