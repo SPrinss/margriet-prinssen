@@ -116,7 +116,7 @@ class MPCombobox extends LitElement {
       default:
         if(this.input.value !== this.selected && this.selected !== '') {
           this.selected = '';
-          this.dispatchEvent(new window.CustomEvent('value-changed', { composed:true, bubbles: true, detail: {value: null }}));
+          this.dispatchEvent(new CustomEvent('value-changed', { composed:true, bubbles: true, detail: {value: null }}));
         }
         this.updateResults(true);
     }
@@ -267,7 +267,7 @@ class MPCombobox extends LitElement {
       this.fullvalue = JSON.parse(item.dataset.fullValue);
       this.selected = this.input.value;
 
-      this.dispatchEvent(new window.CustomEvent('value-changed', { composed:true, bubbles: true, detail: {value: this.fullvalue} }));
+      this.dispatchEvent(new CustomEvent('value-changed', { composed:true, bubbles: true, detail: {value: this.fullvalue} }));
       this.hideListbox();
     }
   }
