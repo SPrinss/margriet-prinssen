@@ -126,9 +126,6 @@ class MPSearch extends MPElement {
 	_configChange(oldVal, config) {
 		if(!config) return;
 		this.algoliaIndex = algoliasearch(config.applicationId, config.searchOnlyAPIKey).initIndex(config.index);
-	}
-
-	connectedCallback() {
 		this._runInitialSearch()
 	}
 
