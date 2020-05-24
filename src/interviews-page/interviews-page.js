@@ -109,7 +109,7 @@ class InterviewsPage extends MPElement {
     ${this.styles}
 
     <mp-page ?active="${!this.interviewId}">
-      <h2 slot="header">Doorzoek Interviews</h2>
+      <h2 slot="header">Doorzoek interviews</h2>
 
       <section id="intro-section">
         <p>Zoeken is mogelijk op personen, gezelschappen en jaren..</p>
