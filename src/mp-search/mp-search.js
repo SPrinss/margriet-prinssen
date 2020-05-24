@@ -3,7 +3,7 @@ import '../mp-button/mp-button'
 import '../mp-input/mp-input'
 import '../mp-combobox/mp-combobox';
 import '../mp-checkbox/mp-checkbox';
-import { StringConverter, NumberConverter, BooleanConverter, ObjectConverter } from 'html-element-property-mixins/src/utils/attribute-converters';
+import { BooleanConverter, ObjectConverter } from 'html-element-property-mixins/src/utils/attribute-converters';
 import { css } from './mp-search.css.js';
 import algoliasearch from 'https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.esm.browser.js';
 
