@@ -119,7 +119,7 @@ class MPSearch extends MPElement {
 		}
 	}
 
-	_handleSearchResultsChanged(oldVal, newVal) {
+	_handleSearchResultsChanged(oldVal, newVal = []) {
 		this.dispatchEvent(new CustomEvent('search-results-changed', {detail: {value: newVal}}))
 	}
 
