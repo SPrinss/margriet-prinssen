@@ -278,7 +278,8 @@ class MPCombobox extends LitElement {
   }
 
   checkHide(evt) {
-    if(evt.path[0] === this.input.id || this.combobox.contains(evt.path[0])) {
+    const path = event.path || (event.composedPath && event.composedPath());
+    if(path[0] === this.input.id || this.combobox.contains(path[0])) {
       return;
     }
     this.hideListbox();
