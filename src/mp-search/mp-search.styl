@@ -62,9 +62,13 @@ mp-combobox
   flex 1
   height 48px
   border-radius var(--mp-combobox-border-radius, var(--mp-border-radius--1))
-  --mp-combobox-border-radius var(--mp-border-radius--1) 0 0 var(--mp-border-radius--1)
+  --mp-combobox-border-radius var(--mp-border-radius--1)
   background-color: var(--mp-color-light--100)
   width 100%
+
+:host([allow-filters]) mp-combobox
+  border-radius var(--mp-combobox-border-radius, var(--mp-border-radius--1))
+  --mp-combobox-border-radius var(--mp-border-radius--1) 0 0 var(--mp-border-radius--1)
 
 mp-checkbox
   margin-top var(--mp-size--3)
