@@ -6,6 +6,8 @@ import FireStoreParser from 'firestore-parser/index';
 import { css } from './interviews-page.css.js';
 import {unsafeHTML} from 'lit-html/directives/unsafe-html'
 import { BooleanConverter } from 'html-element-property-mixins/src/utils/attribute-converters';
+import {unsafeSVG} from 'lit-html/directives/unsafe-svg'
+import { algoliaLogo } from '../logo/algolia.js';
 
 class InterviewsPage extends MPElement {
 
@@ -142,6 +144,8 @@ class InterviewsPage extends MPElement {
             `
           })}
         </div>
+      <a href="https://algolia.com" target="_blank"><svg id="algolia-logo" viewBox="0 0 168 24" fill="currentColor">${unsafeSVG(`${algoliaLogo}`)}</svg></a>
+
       </section>
 
     </mp-page>

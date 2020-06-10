@@ -5,6 +5,8 @@ import '../mp-page/mp-page';
 import '../mp-search/mp-search';
 import FireStoreParser from 'firestore-parser/index';
 import { css } from './recensies-page.css.js';
+import {unsafeSVG} from 'lit-html/directives/unsafe-svg'
+import { algoliaLogo } from '../logo/algolia.js';
 
 class RecensiesPage extends MPElement {
 
@@ -90,6 +92,7 @@ class RecensiesPage extends MPElement {
             `
           })}
         </div>
+        <a href="https://algolia.com" target="_blank"><svg id="algolia-logo" viewBox="0 0 168 24" fill="currentColor">${unsafeSVG(`${algoliaLogo}`)}</svg></a>
       </section>
 
     </mp-page>

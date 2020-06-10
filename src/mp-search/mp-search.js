@@ -6,11 +6,7 @@ import '../mp-checkbox/mp-checkbox';
 import { BooleanConverter, ObjectConverter } from 'html-element-property-mixins/src/utils/attribute-converters';
 import { css } from './mp-search.css.js';
 import algoliasearch from 'https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.esm.browser.js';
-import {unsafeSVG} from 'lit-html/directives/unsafe-svg'
-import { algoliaLogo } from '../logo/algolia.js';
 
-
-// https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.esm.browser.js
 class MPSearch extends MPElement {
 
 	static get properties() {
@@ -288,8 +284,6 @@ class MPSearch extends MPElement {
 						}}
 					></mp-checkbox><span>Zoek alleen titels</span>
 				</div>
-			<a href="https://algolia.com" target="_blank"><svg id="algolia-logo" viewBox="0 0 168 24" fill="currentColor">${unsafeSVG(`${algoliaLogo}`)}</svg></a>
-
 			</section>
 
 			<section >
