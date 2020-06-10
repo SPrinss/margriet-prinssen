@@ -73,6 +73,13 @@ class MPSearch extends MPElement {
         fromAttributeConverter: BooleanConverter.fromAttribute,
 				defaultValue: false
 			},
+			searchAllItems: {
+				observe: true,
+				DOM: true,
+				attributeName: "search-all-items",
+        fromAttributeConverter: BooleanConverter.fromAttribute,
+				defaultValue: false
+			},
 			_items: {
 				observe: true,
 				defaultValue: []
@@ -129,11 +136,11 @@ class MPSearch extends MPElement {
 	}
 
 	async _runInitialSearch() {
-		this.searchResults =  await this.getTitles("");
+		this.searchResults =  await this.getTitles("", 0, this.searchAllItems ? 10000 : this.hitsPerPage);
 	}
 
 	_searchInputChange(oldVal, newVal) {
-		this.runQuery(newVal || '')
+		this.runQuery(newVal || '');
 	}
 
 	async _handleSelecedFacetsChanged(oldVal, newVal) {
@@ -159,12 +166,17 @@ class MPSearch extends MPElement {
 
 			const facetQueries = this.facetAttributes.map(
 				attributeName => {
-					return this.algoliaIndex.searchForFacetValues(attributeName, query, queryFilters)
+					return this.algoliaIndex.searchForFacetValues(attributeName, query, {...queryFilters, ...{maxFacetHits: this.searchAllItems ? 100 : 10, page: 0}})
 				}
 			)
+
+
 			const facetResults = await Promise.all(facetQueries);
+
 			const unfilteredFacets = facetResults.map((facetResult, i) => this.parseFacetResult(facetResult, this.facetAttributes[i]));
+
 			facets = this._filterSelectedFacetFromFacets(unfilteredFacets, this._selectedFacets);
+			
 			
 		}
 
@@ -237,7 +249,15 @@ class MPSearch extends MPElement {
 
   get styles() {
     return html`<style>${css}</style>`;
-  }
+	}
+	
+	connectedCallback() {
+		super.connectedCallback();
+		const searchEl = this.shadowRoot.querySelector('mp-combobox');
+		searchEl.addEventListener('input-focussed', () => {
+			return this.runQuery(this.searchInput || '');
+		})
+	}
 
 	get template() {
 		return html`
@@ -263,7 +283,10 @@ class MPSearch extends MPElement {
 					placeholder="${this.placeholder}"
 					.items=${this._items} 
 					@input=${e => this.searchInput = e.target.input.value} 
-					@value-changed=${(e) => this._selectedOption = e.detail.value}
+					@value-changed=${(e) => {
+						this._selectedOption = e.detail.value;
+						this.searchInput = e.detail.value;
+					}}
 				></mp-combobox>
 				<mp-button 
 					?hidden=${!this.allowFilters}

@@ -123,6 +123,7 @@ class InterviewsPage extends MPElement {
           algolia-config='{"applicationId": "QZ9LK09320","searchOnlyAPIKey": "5fe26edd91681f874040eb6110bf8a7f","index": "interviews"}'
           facet-attributes='["persons", "year"]'
           allow-filters
+          search-all-items
           @search-results-changed=${(e) => this.items = e.detail.value}
         ></mp-search>
       </section>

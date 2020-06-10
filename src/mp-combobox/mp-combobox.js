@@ -274,6 +274,7 @@ class MPCombobox extends LitElement {
 
   checkShow() {
     this.updateResults(false);
+    this.dispatchEvent(new CustomEvent('input-focussed'))
   }
 
   checkHide(evt) {
