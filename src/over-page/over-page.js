@@ -45,11 +45,11 @@ class OverPage extends MPElement {
         <h1 slot="header">Over Margriet Prinssen</h1>
           
         <section id="intro-section">
-          <img src="https://firebasestorage.googleapis.com/v0/b/margriet-prinssen.appspot.com/o/Margriet_Prinssen.jpg?alt=media&token=70f95611-9368-4172-bd4b-47032114b025" alt="Foto van Margriet"></img>
           <div>
             <p>Margriet Prinssen is theaterjournalist. Ze schrijft recensies en interviews voor Mediahuis, Haarlems Dagblad, de Uitkrant, Scenes, Odeon en de Theaterkrant. Tot en met 2019 werkte ze ook als eindredacteur bij Nationale Opera & Ballet. </p>
             <a arrow href="/over/interview">Lees hier een interview met mij uit 2019</a>
           </div>
+          <img src="https://firebasestorage.googleapis.com/v0/b/margriet-prinssen.appspot.com/o/Margriet_Prinssen.jpg?alt=media&token=70f95611-9368-4172-bd4b-47032114b025" alt="Foto van Margriet"></img>
         </section>
 
         <section id="contact-section">

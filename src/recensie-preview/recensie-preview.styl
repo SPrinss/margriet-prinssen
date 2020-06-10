@@ -91,10 +91,6 @@ header ul
 @media only screen and (max-width: 660px)
   $$text-font-size-mobile-styles()        
 
-  header
-    flex-direction: column;
-    align-items: flex-start;
-
   header ul
     text-align: left;
 
@@ -110,3 +106,8 @@ header ul
 
   header ul li
     mp-text-c2()
+
+@media only screen and (max-width: 460px)
+  header
+    flex-direction: column;
+    align-items: flex-start;
