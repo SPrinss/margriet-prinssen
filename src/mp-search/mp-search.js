@@ -255,6 +255,7 @@ class MPSearch extends MPElement {
 		super.connectedCallback();
 		const searchEl = this.shadowRoot.querySelector('mp-combobox');
 		searchEl.addEventListener('input-focussed', () => {
+			searchEl.scrollIntoView({behavior: 'smooth'})
 			return this.runQuery(this.searchInput || '');
 		})
 	}
