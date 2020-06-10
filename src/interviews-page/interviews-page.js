@@ -114,7 +114,7 @@ class InterviewsPage extends MPElement {
       <h2 slot="header">Doorzoek interviews</h2>
 
       <section id="intro-section">
-        <p>Zoeken is mogelijk op personen, gezelschappen en jaren..</p>
+        <p>Zoeken is mogelijk op personen, gezelschappen en jaren.</p>
       </section>
 
       <section id="search-section">
@@ -122,7 +122,6 @@ class InterviewsPage extends MPElement {
           placeholder="Jacob Derwig, Dood paard, 2020 ..."
           algolia-config='{"applicationId": "QZ9LK09320","searchOnlyAPIKey": "5fe26edd91681f874040eb6110bf8a7f","index": "interviews"}'
           facet-attributes='["persons", "year"]'
-          allow-filters
           search-all-items
           @search-results-changed=${(e) => this.items = e.detail.value}
         ></mp-search>
