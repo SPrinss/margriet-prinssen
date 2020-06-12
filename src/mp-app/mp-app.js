@@ -101,6 +101,9 @@ class MPApp extends MPElement {
       <interviews-page ?visible="${this.page.includes('interviews')}" .authToken=${this.authToken} .interviewId=${this.page.includes('interviews/') ? this.page.substring(this.page.indexOf('interviews/') + 11, this.page.length) : ''} class="page"></interviews-page>
       <over-page ?visible="${this.page.includes('over')}" ?show-interview=${this.page.includes('over/interview')} class="page"></over-page>
       <mp-auth ?visible="${this.page.includes('auth')}" @id-token-changed=${e => this.authToken = e.detail.value} @logout=${e => this.authToken = null} class="page"></mp-auth>
+      <footer ?hidden=${!this.page.includes('over')}>
+        <p>Met liefde gemaakt door Sam Prinssen, Tijl Prinssen & Lex van der Slot</p>
+      </footer>
       </main>
     `
   }

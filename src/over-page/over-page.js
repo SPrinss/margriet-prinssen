@@ -102,8 +102,6 @@ class OverPage extends MPElement {
             <p>Enige volledigheid wordt niet gepretendeerd, maar vanwege mijn werk voor het
             Haarlems Dagblad zijn vooral de recensies van alles wat in de Toneelschuur te zien
             was redelijk compleet.<p>
-            <p>De site is gemaakt door Sam en Tijl Prinssen en Lex van der Slot, waarvoor veel
-            dank.</p>
           </article>
 
         </section>
