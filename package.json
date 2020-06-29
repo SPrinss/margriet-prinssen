@@ -7,7 +7,7 @@
     "init": "npm i && npx snowpack --include \"src/**/*.js\"",
     "start": "concurrently --kill-others \"npm run start:server::watch\" \"npm run watch:styles\"",
     "start:server::watch": "es-dev-server --app-index index.html --http2 --node-resolve --watch --open",
-    "build": "rimraf dist && rollup -c rollup.config.js",
+    "build": "rimraf dist && build:styles && rollup -c rollup.config.js",
     "start:build": "npm run build && es-dev-server --root-dir dist --app-index index.html --open --compatibility none",
     "lint:eslint": "eslint --ext .js,.html . --ignore-path .gitignore",
     "format:eslint": "eslint --ext .js,.html . --fix --ignore-path .gitignore",
