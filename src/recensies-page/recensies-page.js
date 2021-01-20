@@ -3,9 +3,9 @@ import '../recensie-preview/recensie-preview';
 import '../mp-recensie/mp-recensie';
 import '../mp-page/mp-page';
 import '../mp-search/mp-search';
-import FireStoreParser from 'firestore-parser/index';
+import FireStoreParser from 'firestore-parser/index.js';
 import { css } from './recensies-page.css.js';
-import { unsafeSVG } from 'lit-html/directives/unsafe-svg';
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { algoliaLogo } from '../logo/algolia.js';
 
 class RecensiesPage extends MPElement {

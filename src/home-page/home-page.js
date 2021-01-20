@@ -3,7 +3,7 @@ import '../recensie-preview/recensie-preview';
 import '../basic-preview/basic-preview';
 import '../mp-page/mp-page';
 import '../mp-button/mp-button';
-import FireStoreParser from 'firestore-parser/index';
+import FireStoreParser from 'firestore-parser/index.js';
 
 import { css } from './home-page.css.js';
 

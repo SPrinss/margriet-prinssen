@@ -1,6 +1,6 @@
 import { Properties } from 'html-element-property-mixins';
-import { StringConverter, NumberConverter, BooleanConverter } from 'html-element-property-mixins/src/utils/attribute-converters';
-import { html, render as litRender} from 'lit-html/lib/shady-render';
+import { StringConverter, NumberConverter, BooleanConverter } from 'html-element-property-mixins/src/utils/attribute-converters/index.js';
+import { html, render as litRender} from 'lit-html/lib/shady-render.js';
 export { html } from 'lit-html';
 
 export class HTMLTextAreaElement extends Properties(HTMLElement) {

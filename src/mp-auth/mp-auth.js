@@ -1,6 +1,9 @@
 import { MPElement, html } from '../mp-element/mp-element';
 import { css } from './mp-auth.css.js';
-import { BooleanConverter } from 'html-element-property-mixins/src/utils/attribute-converters';
+import '../mp-textarea/mp-textarea.js';
+import '../mp-input/mp-input.js';
+import '../mp-button/mp-button.js';
+import { BooleanConverter } from 'html-element-property-mixins/src/utils/attribute-converters/index.js';
 
 class MPAuth extends MPElement {
 

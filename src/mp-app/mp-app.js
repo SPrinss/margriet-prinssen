@@ -74,6 +74,8 @@ class MPApp extends MPElement {
       });
     } else if (newPage.includes('over')) {
       import(`../over-page/over-page.js`);
+    } else if (newPage.includes('add')) {
+      import(`../mp-add-content/mp-add-content.js`);
     }
     if (newPage.includes('auth')) {
       await import(`../mp-auth/mp-auth.js`);
@@ -153,6 +155,11 @@ class MPApp extends MPElement {
           ?show-interview=${this.page.includes('over/interview')}
           class="page"
         ></over-page>
+        <mp-add-content
+          ?visible="${this.page.includes('add')}"
+          .authToken=${this.authToken}
+          class="page"
+        ></mp-add-content>
         <mp-auth
           ?visible="${this.page.includes('auth')}"
           @id-token-changed=${e => (this.authToken = e.detail.value)}

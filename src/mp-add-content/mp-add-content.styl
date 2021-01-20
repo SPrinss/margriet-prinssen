@@ -1,0 +1,22 @@
+@import '../../src/styles/theme/reset'
+@import '../../src/styles/theme/text-styles'
+
+
+:host
+
+  .edit-section 
+    display flex
+    flex-direction column
+    justify-content center
+    align-items center
+
+  .edit-section *
+    margin var(--mp-size--3)
+
+  .edit-section mp-input
+    --mp-input-border-radius: var(--mp-border-radius--1)
+
+  .edit-section mp-textarea
+    display inline-block
+    max-width var(--mp-size--17)
+    height var(--mp-size--14)

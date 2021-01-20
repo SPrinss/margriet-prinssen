@@ -5,7 +5,7 @@ import '../mp-input/mp-input';
 import '../mp-textarea/mp-textarea.js';
 import '../mp-button/mp-button';
 
-import { StringConverter, NumberConverter, BooleanConverter, ObjectConverter } from 'html-element-property-mixins/src/utils/attribute-converters';
+import { StringConverter, NumberConverter, BooleanConverter, ObjectConverter } from 'html-element-property-mixins/src/utils/attribute-converters/index.js';
 
 class OverPage extends MPElement {
 
