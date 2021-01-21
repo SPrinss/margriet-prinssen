@@ -1,22 +1,68 @@
 @import '../../src/styles/theme/reset'
 @import '../../src/styles/theme/text-styles'
+@import '../../src/styles/mixins/base-styles'
 
 
 :host
+  $$text-styles()
 
-  .edit-section 
-    display flex
-    flex-direction column
-    justify-content center
-    align-items center
+  main
+    max-width 1000px
+    margin auto
 
-  .edit-section *
-    margin var(--mp-size--3)
+    header 
+      display flex
+      flex-direction column
+      justify-content center
+      align-items center
+      margin-bottom var(--mp-size--9)
 
-  .edit-section mp-input
-    --mp-input-border-radius: var(--mp-border-radius--1)
+      h2 
+        text-transform capitalize
+        color var(--mp-color-dark--100)
 
-  .edit-section mp-textarea
-    display inline-block
-    max-width var(--mp-size--17)
-    height var(--mp-size--14)
+      mp-button
+        margin-left var(--mp-size--4)
+
+    .edit-section 
+      display flex
+      flex-direction column
+      justify-content center
+      align-items center
+
+      .input-button
+        display none
+      label {
+        mp-text-h5()
+        background-color var(--mp-color-main--100)
+        color var(--mp-color-dark--100)
+        padding var(--mp-size--4)
+        border-radius var(--mp-border-radius--1)
+        cursor: pointer;
+        border 2px solid transparent      
+      }
+
+
+    .edit-section *
+      margin var(--mp-size--3)
+
+    .edit-section mp-input
+      --mp-input-border-radius: var(--mp-border-radius--1)
+
+    .edit-section mp-textarea
+      display inline-block
+      max-width var(--mp-size--17)
+      height var(--mp-size--14)
+
+  [hidden]
+    display: none!important;
+
+@media only screen and (max-width: 660px)
+  $$text-font-size-mobile-styles()
+
+@media (prefers-color-scheme: dark) 
+  :host
+    main
+      header 
+        h2
+          color var(--mp-color-light--100)
