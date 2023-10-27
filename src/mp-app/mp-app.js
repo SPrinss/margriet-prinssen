@@ -72,12 +72,18 @@ class MPApp extends MPElement {
         );
         interviewsPage.authToken = this.authToken;
       });
+    } else if (newPage.includes('toevoegen')) {
+      await import(`../mp-add/mp-add.js`);
+      window.requestAnimationFrame(() => {
+        const addPage = this.shadowRoot.querySelector('mp-add');
+        addPage.authToken = this.authToken;
+      })
     } else if (newPage.includes('over')) {
       import(`../over-page/over-page.js`);
     }
-    if (newPage.includes('auth')) {
+    // if (newPage.includes('auth')) {
       await import(`../mp-auth/mp-auth.js`);
-    }
+    // }
   }
 
   get styles() {
@@ -148,6 +154,18 @@ class MPApp extends MPElement {
             : ''}
           class="page"
         ></interviews-page>
+
+        <mp-add
+          ?visible="${this.page.includes('toevoegen')}"
+          class="page"
+          .authToken=${this.authToken}
+        >
+          <mp-auth
+          slot="auth"
+            @id-token-changed=${e => (this.authToken = e.detail.value)}
+            @logout=${e => (this.authToken = null)}
+          ></mp-auth>        
+        </mp-add>
         <over-page
           ?visible="${this.page.includes('over')}"
           ?show-interview=${this.page.includes('over/interview')}

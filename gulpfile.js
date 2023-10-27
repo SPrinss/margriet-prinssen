@@ -1,8 +1,10 @@
-const gulp = require('gulp');
-const stylus = require('gulp-stylus');
-const transform = require('gulp-transform');
-const rename = require('gulp-rename');
-const argv = require('yargs').argv;
+import gulp from 'gulp';
+import stylus from 'gulp-stylus';
+import transform from 'gulp-transform';
+import rename from "gulp-rename";
+import Yargs from "yargs";
+const argv = Yargs(process.argv.slice(2)).argv;
+
 
 gulp.task('watch-styles', () => {
   return gulp.watch(`./${argv.folder}/**/*.styl`, gulp.series('modulize-styles'));

@@ -102,8 +102,9 @@ class HomePage extends MPElement {
 
   async getRecentReviewsAndInterviews() {
     const reviewsPromise = this.getRecentCollection('reviews');
-    // const interviewsPromise = this.getRecentCollection('interviews');
-    this.reviews = await reviewsPromise; // this.interviews = await interviewsPromise;
+    const interviewsPromise = this.getRecentCollection('interviews');
+    this.reviews = await reviewsPromise; 
+    this.interviews = await interviewsPromise;
   }
 
   async getRecentCollection(collection) {
@@ -119,7 +120,7 @@ class HomePage extends MPElement {
           ],
           orderBy: [
             { field: 
-                { fieldPath: 'timePublished' 
+                { fieldPath: collection === 'reviews' ? 'timePerformed' : 'timePublished' 
             }, direction: 'DESCENDING' }
         ],
           limit: 4
