@@ -470,12 +470,24 @@ class MPAdd extends MPElement {
 
 
             ${this.#imageUrl ? html`<img src="${this.#imageUrl}" />` : ''}
-            <input label="Plaatje" type="file" placeholder="Plaatje" @input=${e => this.handleFileUpload(e, 'review')}>
+            <label>
+              Afbeelding
+
+              <input  type="file" placeholder="Plaatje" @input=${e => this.handleFileUpload(e, 'review')}>
+            </label>
             <sl-input label="Datum opvoering" required type="date" placeholder="Date" @input=${e => this._handleInput(e, 'reviewDate')}></sl-input>
             <sl-input label="Titel" required @input=${e => this._handleInput(e, 'title')}></sl-input>
             <sl-input label="Naam recensie" required @input=${e => this._handleInput(e, 'name')}></sl-input>
             <sl-textarea label="Recensie" required rows="10" resize="none" @input=${e => this._handleInput(e, 'review')}></sl-textarea>
-            
+            <sl-details summary="Hoe kan ik styling toevoegen?">
+              <i>voor alles geldt dat na de < er geen spatie moet zijn, maar dat kan ik het niet goed laten zien :D</i>
+              <ol>
+                <li>Eerste paragraaf, begin: < p class="intro-text">, eind: < /p></li>
+                <li>Quote, begin: < blockquote>< p>, eind: < /p>< /blockquote></li>
+                <li>Heading, begin: < h4>, eind: < /h4></li>
+                <li>Afzonderlijke paragraaf, begin: < p>, eind: < /p></li>
+                </ol>
+            </sl-details>
             <sl-button type="submit" variant="primary">Submit</sl-button>
           </form>
         </sl-tab-panel>
@@ -486,12 +498,22 @@ class MPAdd extends MPElement {
             </sl-select>
             
             ${this.#interviewImgUrl ? html`<img src="${this.#interviewImgUrl}" />` : ''}
-            <input label="Plaatje" type="file" placeholder="Plaatje" @input=${e => this.handleFileUpload(e, 'interviews')}>
-
+            <label>
+              Afbeelding
+              <input label="Afbeelding" type="file" placeholder="Plaatje" @input=${e => this.handleFileUpload(e, 'interviews')}>
+            </label>
             <sl-input label="Datum interview" required type="date" placeholder="" @input=${e => this._handleInput(e, 'interviewDate')}></sl-input>
             <sl-input label="Titel" required @input=${e => this._handleInput(e, 'titleInterview')}></sl-input>
             <sl-textarea label="Interview" required rows="10" resize="none" @input=${e => this._handleInput(e, 'interview')}></sl-textarea>
-            
+            <sl-details summary="Hoe kan ik styling toevoegen?">
+              <i>voor alles geldt dat na de < er geen spatie moet zijn, maar dat kan ik het niet goed laten zien :D</i>
+              <ol>
+                <li>Eerste paragraaf, begin: < p class="intro-text">, eind: < /p></li>
+                <li>Quote, begin: < blockquote>< p>, eind: < /p>< /blockquote></li>
+                <li>Heading, begin: < h4>, eind: < /h4></li>
+                <li>Afzonderlijke paragraaf, begin: < p>, eind: < /p></li>
+                </ol>
+            </sl-details>
             <sl-button type="submit" variant="primary">Submit</sl-button>
           </form>
         </sl-tab-panel>
