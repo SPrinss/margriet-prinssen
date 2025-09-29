@@ -1,0 +1,107 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Text Extraction Service Contract",
+    "version": "1.0.0",
+    "description": "Contract for DOCX text extraction functionality"
+  },
+  "paths": {
+    "/extract": {
+      "post": {
+        "summary": "Extract text from DOCX file",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "DOCX file to process"
+                  }
+                },
+                "required": ["file"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Text extracted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "description": "Extracted plain text content"
+                    },
+                    "html": {
+                      "type": "string",
+                      "description": "Extracted HTML content preserving structure"
+                    },
+                    "metadata": {
+                      "type": "object",
+                      "properties": {
+                        "wordCount": {
+                          "type": "number"
+                        },
+                        "processingTime": {
+                          "type": "number",
+                          "description": "Processing time in milliseconds"
+                        }
+                      }
+                    }
+                  },
+                  "required": ["text", "html"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid file format or corrupted file",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "File too large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "details": {
+            "type": "string"
+          }
+        },
+        "required": ["error", "message"]
+      }
+    }
+  }
+}

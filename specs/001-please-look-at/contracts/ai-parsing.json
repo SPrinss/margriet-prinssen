@@ -1,0 +1,159 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "AI Parsing Service Contract",
+    "version": "1.0.0",
+    "description": "Contract for Claude Haiku-based content parsing"
+  },
+  "paths": {
+    "/parse-segment": {
+      "post": {
+        "summary": "Parse ambiguous metadata segment using AI",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "description": "Raw text segment to parse"
+                  },
+                  "context": {
+                    "type": "string",
+                    "description": "Context from surrounding segments"
+                  },
+                  "expectedFields": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": ["theater", "title", "writers", "directors", "actors", "groups", "city", "location", "date"]
+                    },
+                    "description": "Likely field types for this segment"
+                  },
+                  "language": {
+                    "type": "string",
+                    "default": "nl",
+                    "description": "Content language (Dutch theater context)"
+                  }
+                },
+                "required": ["text"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Segment parsed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "parsedFields": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "string"
+                      },
+                      "description": "Extracted field values"
+                    },
+                    "confidence": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 100,
+                      "description": "AI confidence in parsing accuracy"
+                    },
+                    "reasoning": {
+                      "type": "string",
+                      "description": "Explanation of parsing decisions"
+                    },
+                    "uncertainFields": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Fields that need user validation"
+                    },
+                    "userValidationNeeded": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "field": {
+                            "type": "string"
+                          },
+                          "value": {
+                            "type": "string"
+                          },
+                          "options": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "description": "Fields requiring frontend user confirmation"
+                    }
+                  },
+                  "required": ["parsedFields", "confidence", "reasoning"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parsing request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "AI service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "fallbackSuggestion": {
+            "type": "string",
+            "description": "Suggested fallback when AI unavailable"
+          }
+        },
+        "required": ["error", "message"]
+      }
+    }
+  }
+}

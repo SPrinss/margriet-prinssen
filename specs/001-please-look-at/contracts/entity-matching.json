@@ -1,0 +1,135 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Entity Matching Service Contract",
+    "version": "1.0.0",
+    "description": "Contract for duplicate entity detection functionality"
+  },
+  "paths": {
+    "/match": {
+      "post": {
+        "summary": "Find similar entities in database",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "names": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "List of names to match against"
+                  },
+                  "entityType": {
+                    "type": "string",
+                    "enum": ["person", "theater", "city", "group"],
+                    "description": "Type of entity to match"
+                  },
+                  "threshold": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100,
+                    "default": 70,
+                    "description": "Minimum similarity percentage to return"
+                  }
+                },
+                "required": ["names", "entityType"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Entity matches found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "matches": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "inputName": {
+                            "type": "string",
+                            "description": "Original name from input"
+                          },
+                          "candidates": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "entity": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "name": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": ["id", "name"]
+                                },
+                                "similarity": {
+                                  "type": "number",
+                                  "minimum": 0,
+                                  "maximum": 100
+                                },
+                                "reason": {
+                                  "type": "string",
+                                  "description": "Explanation of match basis"
+                                },
+                                "confidence": {
+                                  "type": "string",
+                                  "enum": ["high", "medium", "low"]
+                                }
+                              },
+                              "required": ["entity", "similarity", "reason", "confidence"]
+                            }
+                          }
+                        },
+                        "required": ["inputName", "candidates"]
+                      }
+                    }
+                  },
+                  "required": ["matches"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": ["error", "message"]
+      }
+    }
+  }
+}
