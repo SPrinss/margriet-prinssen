@@ -1,0 +1,212 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { getAllInterviews, getInterviewById, type Interview, type Person } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const interviews = await getAllInterviews();
+
+  return interviews.map((interview) => ({
+    params: { id: interview.id },
+    props: { interview },
+  }));
+}
+
+interface Props {
+  interview: Interview;
+}
+
+const { interview } = Astro.props;
+
+// Helper to get names as formatted string
+function getPersonNames(persons: Person[]): string {
+  if (!persons || persons.length === 0) return '';
+  return persons.map((p) => p.name).join(' - ');
+}
+
+// Page metadata
+const title = `${interview.title} - Interview - Margriet Prinssen`;
+const personNames = getPersonNames(interview.persons);
+const description = `Theaterinterview: ${interview.title}. ${personNames ? `Met: ${personNames}.` : ''} ${interview.interviewDate ? `Datum: ${interview.interviewDate}` : ''}`.trim();
+---
+
+<PageLayout title={title} description={description}>
+  <div class="page-container">
+    <header class="page-header">
+      <h2>{interview.title}</h2>
+      <h5>
+        {interview.interviewDate && <span>{interview.interviewDate}</span>}
+        {personNames && <span> {personNames}</span>}
+      </h5>
+    </header>
+
+    <main class="interview-content">
+      <div class="aside-left">
+        <a href="/interviews" class="back-link">
+          <span class="arrow">&larr;</span> Terug naar interviews
+        </a>
+      </div>
+
+      <div class="main-content">
+        <article set:html={interview.interview} />
+
+        {interview.images && interview.images.length > 0 && (
+          <div class="images">
+            {interview.images.map((image) => (
+              <figure>
+                <img src={image} alt={`Afbeelding bij ${interview.title}`} loading="lazy" />
+              </figure>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div class="aside-right">
+        <!-- Empty aside for layout consistency, can be used for related content -->
+      </div>
+    </main>
+  </div>
+</PageLayout>
+
+<style>
+  .page-container {
+    max-width: var(--mp-page-max-width, 1080px);
+    margin: 0 auto;
+    padding: var(--mp-size--5);
+  }
+
+  .page-header {
+    min-height: var(--mp-size--14);
+    text-align: center;
+    margin-bottom: var(--mp-size--6);
+  }
+
+  .page-header h2 {
+    margin-bottom: var(--mp-size--3);
+  }
+
+  .page-header h5 {
+    color: var(--mp-color-dark--60);
+  }
+
+  .interview-content {
+    display: grid;
+    grid-template-columns: 2fr 4fr minmax(0px, 2fr);
+    grid-template-areas: "aside-left body aside-right";
+    gap: var(--mp-size--8);
+    margin-top: var(--mp-size--7);
+    justify-items: center;
+    align-items: start;
+    margin-bottom: var(--mp-size--9);
+  }
+
+  .aside-left {
+    grid-area: aside-left;
+  }
+
+  .main-content {
+    grid-area: body;
+  }
+
+  .aside-right {
+    grid-area: aside-right;
+  }
+
+  .back-link {
+    display: inline-block;
+    padding-bottom: var(--mp-size--3);
+    border-bottom: 1px solid var(--mp-color-dark--100);
+    font-family: var(--mp-text-b-font-family);
+    font-size: var(--mp-text-b3-font-size);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .back-link .arrow {
+    margin-right: var(--mp-size--2);
+  }
+
+  article :global(p) {
+    margin: var(--mp-size--4) 0;
+  }
+
+  article :global(p:first-of-type) {
+    margin-top: 0;
+  }
+
+  /* Handle various HTML elements that might be in the interview content */
+  article :global(h1),
+  article :global(h2),
+  article :global(h3),
+  article :global(h4),
+  article :global(h5),
+  article :global(h6) {
+    margin-top: var(--mp-size--6);
+    margin-bottom: var(--mp-size--3);
+  }
+
+  article :global(blockquote) {
+    margin: var(--mp-size--5) 0;
+    padding-left: var(--mp-size--4);
+    border-left: 3px solid var(--mp-color-main--60);
+    font-style: italic;
+  }
+
+  article :global(ul),
+  article :global(ol) {
+    margin: var(--mp-size--4) 0;
+    padding-left: var(--mp-size--5);
+  }
+
+  .images {
+    margin-top: var(--mp-size--6);
+  }
+
+  .images figure {
+    margin: var(--mp-size--4) 0;
+  }
+
+  .images img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  /* Dark Mode */
+  @media (prefers-color-scheme: dark) {
+    .page-header h5 {
+      color: var(--mp-color-light--60);
+    }
+
+    .back-link {
+      border-bottom-color: var(--mp-color-light--100);
+    }
+
+    article :global(blockquote) {
+      border-left-color: var(--mp-color-main--100);
+    }
+  }
+
+  /* Mobile Responsive */
+  @media only screen and (max-width: 660px) {
+    .interview-content {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto;
+      grid-template-areas: "aside-left" "body";
+      gap: var(--mp-size--6);
+      margin-bottom: var(--mp-size--6);
+    }
+
+    .aside-left {
+      justify-self: center;
+      margin-bottom: var(--mp-size--4);
+    }
+
+    .aside-right {
+      display: none;
+    }
+
+    .page-header {
+      padding-top: var(--mp-size--6);
+    }
+  }
+</style>

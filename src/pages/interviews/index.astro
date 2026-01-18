@@ -1,0 +1,195 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { getAllInterviews, type Interview } from '../../lib/content';
+import { MpSearch } from '../../components/lit/MpSearch';
+
+// Fetch all interviews at build time
+const interviews: Interview[] = await getAllInterviews();
+
+// Page metadata
+const title = 'Interviews - Margriet Prinssen';
+const description = 'Doorzoek alle theaterinterviews van Margriet Prinssen. Zoeken is mogelijk op personen, gezelschappen en jaren.';
+
+// Helper to get person names as array
+function getPersonNames(persons: Array<{ id: string; name: string }>): string[] {
+  if (!persons || persons.length === 0) return [];
+  return persons.map((p) => p.name);
+}
+---
+
+<PageLayout title={title} description={description}>
+  <div class="page-container">
+    <header class="page-header">
+      <h2>Doorzoek interviews</h2>
+    </header>
+
+    <section class="intro-section">
+      <p>Zoeken is mogelijk op personen, gezelschappen en jaren .</p>
+    </section>
+
+    <!-- Algolia Search Lit Island -->
+    <section class="search-section">
+      <MpSearch
+        client:only="lit"
+        index="interviews"
+        placeholder="Jacob Derwig, Dood paard, 2020 ..."
+        allow-filters
+        hits-per-page="6"
+      />
+    </section>
+
+    <section class="content-section">
+      <div class="interviews-grid">
+        {interviews.map((interview) => {
+          const personNames = getPersonNames(interview.persons);
+
+          return (
+            <a
+              href={`/interviews/${interview.id}`}
+              aria-label={`Navigeer naar ${interview.title}`}
+              class="interview-card"
+            >
+              <article class="basic-preview">
+                <section>
+                  <h4>{interview.title}</h4>
+
+                  {personNames.length > 0 && (
+                    <ul>
+                      {personNames.map((name) => (
+                        <li>{name}</li>
+                      ))}
+                    </ul>
+                  )}
+
+                  <span>{interview.interviewDate}</span>
+                </section>
+              </article>
+            </a>
+          );
+        })}
+      </div>
+
+      <a href="https://algolia.com" target="_blank" rel="noopener noreferrer" class="algolia-link">
+        <span>Search by Algolia</span>
+      </a>
+    </section>
+  </div>
+</PageLayout>
+
+<style>
+  .page-container {
+    max-width: var(--mp-page-max-width, 1080px);
+    margin: 0 auto;
+    padding: var(--mp-size--5);
+  }
+
+  .page-header {
+    min-height: var(--mp-size--14);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .intro-section {
+    text-align: center;
+    margin-bottom: var(--mp-size--6);
+  }
+
+  .search-section {
+    max-width: 660px;
+    margin: 0 auto var(--mp-size--6);
+  }
+
+  .interviews-grid {
+    display: grid;
+    gap: var(--mp-size--3);
+    grid-template-columns: repeat(2, 1fr);
+    align-items: start;
+  }
+
+  .interview-card {
+    display: block;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .basic-preview {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border-radius: var(--mp-border-radius--1);
+    box-shadow: var(--mp-box-shadow--1);
+    background-color: var(--mp-color-secondary--30);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .basic-preview:hover {
+    transform: scale(1.01);
+    cursor: pointer;
+    box-shadow: var(--mp-box-shadow--3);
+  }
+
+  .basic-preview section {
+    flex: 1;
+    padding: var(--mp-size--4);
+  }
+
+  .basic-preview h4 {
+    margin-bottom: var(--mp-size--2);
+  }
+
+  .basic-preview ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--mp-size--1) 0;
+  }
+
+  .basic-preview ul li {
+    display: inline-block;
+    font-family: var(--mp-text-h6-font-family);
+    font-size: var(--mp-text-h6-font-size);
+    font-weight: var(--mp-text-h6-font-weight);
+    text-transform: var(--mp-text-h6-text-transform);
+  }
+
+  .basic-preview ul li:not(:last-of-type)::after {
+    content: '-';
+    display: inline-block;
+    width: 10px;
+    margin-left: 5px;
+    text-align: center;
+  }
+
+  .basic-preview span {
+    font-family: var(--mp-text-c-font-family);
+    font-size: var(--mp-text-c2-font-size);
+  }
+
+  .algolia-link {
+    display: block;
+    margin-top: var(--mp-size--4);
+    color: var(--mp-color-dark--60);
+    font-size: var(--mp-text-c2-font-size);
+  }
+
+  /* Dark Mode */
+  @media (prefers-color-scheme: dark) {
+    .basic-preview {
+      background-color: var(--mp-color-dark--60);
+      color: var(--mp-color-light--100);
+    }
+  }
+
+  /* Mobile Responsive */
+  @media only screen and (max-width: 660px) {
+    .interviews-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .basic-preview ul li {
+      font-size: var(--mp-text-h6-mobile-font-size);
+    }
+  }
+</style>
