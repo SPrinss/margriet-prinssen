@@ -1,0 +1,181 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  href: string;
+  image?: string;
+  featureList?: string[];
+  timePublished?: string;
+  type?: 'review' | 'interview';
+}
+
+const { title, subtitle, href, image, featureList = [], timePublished, type } = Astro.props;
+
+// Determine border color based on type
+const borderClass = type === 'review' ? 'type-review' : type === 'interview' ? 'type-interview' : '';
+---
+
+<a href={href} class:list={['basic-preview', borderClass]}>
+  {image && (
+    <header>
+      <figure>
+        <img loading="lazy" src={image} alt="Foto van stuk/geinterviewde" />
+      </figure>
+    </header>
+  )}
+  <section>
+    <h4>{title}</h4>
+    {subtitle && <p class="subtitle">{subtitle}</p>}
+    {featureList.length > 0 && (
+      <ul class="feature-list">
+        {featureList.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    )}
+    {timePublished && <span class="time-published">{timePublished}</span>}
+    <slot />
+  </section>
+</a>
+
+<style>
+  .basic-preview {
+    display: block;
+    border-radius: var(--mp-border-radius--1);
+    box-shadow: var(--mp-box-shadow--1);
+    background-color: var(--mp-color-secondary--30);
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .basic-preview.type-review {
+    border-top: 4px solid var(--mp-color-main--100);
+  }
+
+  .basic-preview.type-interview {
+    border-top: 4px solid var(--mp-color-secondary--100);
+  }
+
+  .basic-preview:hover {
+    box-shadow: var(--mp-box-shadow--3);
+    cursor: pointer;
+    transform: scale(1.01);
+  }
+
+  header {
+    display: block;
+  }
+
+  figure,
+  img {
+    max-width: 100%;
+    height: 240px;
+    width: 100%;
+    object-fit: cover;
+    padding: 0;
+    margin: 0;
+    user-select: none;
+    border-radius: var(--mp-border-radius--1) var(--mp-border-radius--1) 0 0;
+  }
+
+  section {
+    height: 100%;
+    flex: 1;
+    padding: var(--mp-size--4);
+  }
+
+  h4 {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    margin: 0 0 var(--mp-size--2) 0;
+    font-family: var(--mp-text-h4-font-family, var(--mp-text-h-font-family));
+    font-size: var(--mp-text-h4-font-size);
+    font-weight: var(--mp-text-h4-font-weight, var(--mp-text-h-font-weight));
+    line-height: var(--mp-text-h4-line-height, var(--mp-text-h-line-height));
+  }
+
+  .subtitle {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    margin: 0 0 var(--mp-size--1) 0;
+    font-family: var(--mp-text-c2-font-family, var(--mp-text-c-font-family));
+    font-size: var(--mp-text-c2-font-size);
+    font-weight: var(--mp-text-c2-font-weight, var(--mp-text-c-font-weight));
+    line-height: var(--mp-text-c2-line-height, var(--mp-text-c-line-height));
+    color: var(--mp-color-dark--60);
+  }
+
+  .feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--mp-size--1) 0;
+  }
+
+  .feature-list li {
+    display: inline-block;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-family: var(--mp-text-h6-font-family, var(--mp-text-h-font-family));
+    font-size: var(--mp-text-h6-font-size);
+    font-weight: var(--mp-text-h6-font-weight, var(--mp-text-h-font-weight));
+    line-height: var(--mp-text-h6-line-height, var(--mp-text-h-line-height));
+    text-transform: var(--mp-text-h6-text-transform);
+  }
+
+  .feature-list li:not(:last-of-type)::after {
+    content: '-';
+    display: inline-block;
+    width: 10px;
+    margin-left: 5px;
+    text-align: center;
+  }
+
+  .time-published {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-family: var(--mp-text-c2-font-family, var(--mp-text-c-font-family));
+    font-size: var(--mp-text-c2-font-size);
+    font-weight: var(--mp-text-c2-font-weight, var(--mp-text-c-font-weight));
+    line-height: var(--mp-text-c2-line-height, var(--mp-text-c-line-height));
+    color: var(--mp-color-dark--60);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .basic-preview {
+      background-color: var(--mp-color-dark--60);
+      color: var(--mp-color-light--100);
+    }
+
+    .subtitle {
+      color: var(--mp-color-light--60);
+    }
+
+    .time-published {
+      color: var(--mp-color-light--60);
+    }
+  }
+
+  @media only screen and (max-width: 660px) {
+    h4 {
+      font-size: var(--mp-text-h4-mobile-font-size);
+    }
+
+    .subtitle {
+      font-size: var(--mp-text-c2-mobile-font-size);
+    }
+
+    .feature-list li {
+      font-size: var(--mp-text-h6-mobile-font-size);
+    }
+
+    .time-published {
+      font-size: var(--mp-text-b3-mobile-font-size);
+    }
+  }
+</style>
