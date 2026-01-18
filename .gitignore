@@ -8,3 +8,6 @@ web_modules
 .firebase
 .tmp
 .playwright-mcp
+.astro/
+.claude/
+firebase-debug.log
