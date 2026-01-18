@@ -6,3 +6,5 @@ dist/
 web_modules
 .vscode
 .firebase
+.tmp
+.playwright-mcp
