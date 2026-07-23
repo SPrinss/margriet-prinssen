@@ -26,7 +26,7 @@ import mammoth from 'mammoth/mammoth.browser';
 import { getFirebaseAuth } from '../../lib/firebase-client';
 import { getDb } from '../../lib/firebase';
 // @ts-ignore - plain ESM module shared with the Node test harness
-import { parseArticle, htmlToParagraphs } from '../../lib/import-parser.mjs';
+import { parseArticle, htmlToParagraphs, odtToParagraphs, txtToParagraphs } from '../../lib/import-parser.mjs';
 
 interface EntityRecord {
   id: string;
@@ -377,14 +377,22 @@ export class MpImportContent extends LitElement {
     this.parsing = true;
     const newItems: ImportItem[] = [];
     for (const file of Array.from(files)) {
-      if (!/\.docx$/i.test(file.name)) continue;
+      if (!/\.(docx|odt|txt)$/i.test(file.name)) continue;
       const key = `${file.name}-${file.size}`;
       if (this.items.some(item => item.key === key)) continue;
       try {
-        const arrayBuffer = await file.arrayBuffer();
-        const { value: htmlContent } = await mammoth.convertToHtml({ arrayBuffer });
+        let paragraphs;
+        if (/\.docx$/i.test(file.name)) {
+          const arrayBuffer = await file.arrayBuffer();
+          const { value: htmlContent } = await mammoth.convertToHtml({ arrayBuffer });
+          paragraphs = htmlToParagraphs(htmlContent);
+        } else if (/\.odt$/i.test(file.name)) {
+          paragraphs = odtToParagraphs(new Uint8Array(await file.arrayBuffer()));
+        } else {
+          paragraphs = txtToParagraphs(await file.text());
+        }
         const folderHint = (file as File & { webkitRelativePath?: string }).webkitRelativePath || '';
-        const draft = parseArticle(htmlToParagraphs(htmlContent), file.name, folderHint) as Draft;
+        const draft = parseArticle(paragraphs, file.name, folderHint) as Draft;
         this.fixTheaterCityOrder(draft);
         newItems.push({ key, fileName: file.name, draft, accepted: false, written: false, expanded: true });
       } catch (error) {
@@ -589,10 +597,10 @@ export class MpImportContent extends LitElement {
           if (e.dataTransfer?.files) this.addFiles(e.dataTransfer.files);
         }}
       >
-        Sleep .docx bestanden hierheen, of
+        Sleep .docx, .odt of .txt bestanden hierheen, of
         <input
           type="file"
-          accept=".docx"
+          accept=".docx,.odt,.txt"
           multiple
           style="width:auto"
           @change=${(e: Event) => {

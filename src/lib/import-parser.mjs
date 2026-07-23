@@ -30,6 +30,57 @@
  *       <body...>
  */
 
+import { unzipSync, strFromU8 } from 'fflate';
+
+function decodeEntities(str) {
+  return str
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&#39;/g, "'");
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+/**
+ * Extract paragraphs from an OpenDocument Text (.odt) file.
+ * @param {Uint8Array} bytes
+ */
+export function odtToParagraphs(bytes) {
+  const files = unzipSync(bytes);
+  if (!files['content.xml']) throw new Error('Geen content.xml in .odt bestand');
+  const xml = strFromU8(files['content.xml']);
+  const blocks = xml.match(/<text:(p|h)[^>]*>[\s\S]*?<\/text:\1>/g) || [];
+  return blocks
+    .map(block => {
+      const text = decodeEntities(
+        block
+          .replace(/<text:line-break[^>]*\/>/g, ' ')
+          .replace(/<text:tab[^>]*\/>/g, ' ')
+          .replace(/<text:s(?:\s+text:c="(\d+)")?[^>]*\/>/g, (_, count) => ' '.repeat(count ? Number(count) : 1))
+          .replace(/<[^>]+>/g, '')
+      );
+      return { text, html: `<p>${escapeHtml(text)}</p>` };
+    })
+    .filter(p => p.text.trim());
+}
+
+/**
+ * Extract paragraphs from a plain-text (.txt) file — one paragraph per
+ * non-empty line (matching how the old export files are structured).
+ */
+export function txtToParagraphs(content) {
+  return content
+    .split(/\r?\n/)
+    .map(line => line.trim())
+    .filter(Boolean)
+    .map(line => ({ text: line, html: `<p>${escapeHtml(line)}</p>` }));
+}
+
 /**
  * Split mammoth's HTML output into block-level paragraphs with plain text.
  * Shared by the wizard (browser) and the Node test harness.

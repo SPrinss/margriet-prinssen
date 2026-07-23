@@ -17,10 +17,15 @@ meteen vindbaar via het zoekveld, nog voordat de eigen pagina bestaat.
 
 ## Inloggen
 
-De beheerpagina's zijn onzichtbaar voor bezoekers. Je logt in met je
-e-mailadres en wachtwoord op de pagina zelf. Eén keer inloggen is genoeg —
-daarna ben je op alle beheerpagina's (en onder alle artikelen) ingelogd totdat
-je de browser-gegevens wist.
+**Waar log je in?** Op elke beheerpagina zelf: open bijvoorbeeld
+`margrietprinssen.nl/add` of `margrietprinssen.nl/import` — als je nog niet
+ingelogd bent zie je daar meteen het inlogformulier (e-mailadres +
+wachtwoord). Er is dus geen aparte inlogpagina.
+
+Eén keer inloggen is genoeg: daarna ben je op alle beheerpagina's ingelogd én
+verschijnt het bewerkblok onder elk artikel. Dat blijft zo totdat je de
+browsergegevens wist. Zie je het bewerkblok niet onder een artikel? Log dan
+eerst in via `margrietprinssen.nl/add` en open het artikel opnieuw.
 
 | Pagina | Adres | Waarvoor |
 |---|---|---|
@@ -29,10 +34,39 @@ je de browser-gegevens wist.
 | Homepage beheren | `margrietprinssen.nl/curate` | Kiezen wat er op de voorpagina staat |
 | Dubbele namen | `margrietprinssen.nl/dedupe` | Naamvarianten samenvoegen (bijv. Kruijver/Kruyver) |
 
-## Artikelen importeren uit Word-bestanden (/import)
+## Artikelen importeren uit bestanden (/import)
+
+**Welke bestanden kunnen erin?** Word-bestanden (**.docx**), OpenDocument
+(**.odt**) en platte tekst (**.txt**). Oude .doc-bestanden en PDF's werken
+niet — sla die in Word eerst op als .docx ("Opslaan als…"), of voer het
+artikel in via `/add`.
+
+**Aanbevolen opbouw van een bestand.** De wizard herkent de gegevens het
+best als het bestand zo begint:
+
+*Recensie:*
+```
+Orkater                                  ← gezelschap(pen)
+Orchestra Soledad                        ← naam voorstelling
+Goede bedoelingen zitten het drama in de weg   ← kop
+Gezien op 14 december 2024, Theater Bellevue, Amsterdam
+(daarna de tekst van de recensie)
+```
+
+*Interview:*
+```
+Interview met Anita van Dolen            ← "Interview (met) …"
+'De theatraliteit is terug in de dans'   ← kop (mag met of zonder quotes)
+(daarna de tekst van het interview)
+```
+
+Wijkt een bestand hiervan af? Geen probleem — het wordt gewoon ingelezen,
+maar dan moet je meer velden zelf invullen. De oude opmaak met schuine
+strepen (`Theater/ Recensie / Margriet Prinssen / … / Regie: … / Gezien: …`)
+wordt ook herkend.
 
 1. Ga naar `margrietprinssen.nl/import` en log in.
-2. **Sleep je .docx-bestanden** naar het gestippelde vak (of kies ze via de
+2. **Sleep je bestanden** naar het gestippelde vak (of kies ze via de
    knop). Je kunt er veel tegelijk slepen.
 3. Elk bestand wordt automatisch gelezen. Per bestand zie je een kaart met de
    herkende gegevens: type (recensie/interview), naam voorstelling, titel,
