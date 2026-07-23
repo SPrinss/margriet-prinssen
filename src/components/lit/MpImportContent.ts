@@ -79,8 +79,33 @@ function normalizeName(name: string): string {
     .toLowerCase()
     .normalize('NFD')
     .replace(/\p{Diacritic}/gu, '')
+    // Word auto-curls apostrophes/quotes; treat all variants as equal so
+    // "L’Herminez" (docx) matches "L'Herminez" (database)
+    .replace(/[’‘‛`´ʼ]/g, "'")
+    .replace(/[“”„]/g, '"')
     .replace(/\s+/g, ' ')
     .trim();
+}
+
+/**
+ * Levenshtein distance capped at `max` (bails out early). Used only to
+ * SUGGEST near-matches in the UI — never to silently merge records, since
+ * two similarly-spelled names can be genuinely different people.
+ */
+function editDistance(a: string, b: string, max: number): number {
+  if (Math.abs(a.length - b.length) > max) return max + 1;
+  let prev = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    const curr = [i];
+    let rowMin = i;
+    for (let j = 1; j <= b.length; j++) {
+      curr[j] = Math.min(prev[j] + 1, curr[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      if (curr[j] < rowMin) rowMin = curr[j];
+    }
+    if (rowMin > max) return max + 1;
+    prev = curr;
+  }
+  return prev[b.length];
 }
 
 @customElement('mp-import-content')
@@ -233,6 +258,16 @@ export class MpImportContent extends LitElement {
     .match.new {
       background: #fdeeca;
       color: #8a5a00;
+    }
+
+    button.suggestion {
+      background: none;
+      border: none;
+      padding: 1px 6px;
+      font-size: var(--mp-text-c3-font-size, 12px);
+      color: #2c5aa0;
+      text-decoration: underline;
+      cursor: pointer;
     }
 
     .warnings {
@@ -414,12 +449,36 @@ export class MpImportContent extends LitElement {
     });
   }
 
-  private matchBadge(collectionName: EntityCollection, value: string) {
+  /** Nearest existing record within edit distance 1 (short) / 2 (long names). */
+  private findSuggestion(collectionName: EntityCollection, value: string): EntityRecord | null {
+    const norm = normalizeName(value);
+    if (!norm || this.entities[collectionName].has(norm)) return null;
+    const max = norm.length >= 8 ? 2 : 1;
+    let best: EntityRecord | null = null;
+    let bestDistance = max + 1;
+    for (const [key, record] of this.entities[collectionName]) {
+      const distance = editDistance(norm, key, max);
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        best = record;
+        if (distance === 1) break;
+      }
+    }
+    return bestDistance <= max ? best : null;
+  }
+
+  private matchBadge(collectionName: EntityCollection, value: string, onPick?: (name: string) => void) {
     if (!value.trim()) return nothing;
     const existing = this.entities[collectionName].get(normalizeName(value));
-    return existing
-      ? html`<span class="match existing">✓ bestaand</span>`
-      : html`<span class="match new">+ nieuw</span>`;
+    if (existing) return html`<span class="match existing">✓ bestaand</span>`;
+    const suggestion = onPick ? this.findSuggestion(collectionName, value) : null;
+    return html`<span class="match new">+ nieuw</span>${
+      suggestion
+        ? html`<button class="suggestion" @click=${() => onPick!(suggestion.name)}>
+            bedoelde je “${suggestion.name}”?
+          </button>`
+        : nothing
+    }`;
   }
 
   // -- writing --------------------------------------------------------------
@@ -624,7 +683,11 @@ export class MpImportContent extends LitElement {
           .value=${(draft[field] as string) || ''}
           @input=${(e: Event) => this.updateItem(item.key, d => ((d[field] as string) = (e.target as HTMLInputElement).value))}
         />
-        ${opts.entity ? this.matchBadge(opts.entity, (draft[field] as string) || '') : nothing}
+        ${opts.entity
+          ? this.matchBadge(opts.entity, (draft[field] as string) || '', name =>
+              this.updateItem(item.key, d => ((d[field] as string) = name))
+            )
+          : nothing}
       </div>
     `;
     const list = (label: string, field: 'groups' | 'writers' | 'directors' | 'actors' | 'persons') => html`
@@ -642,7 +705,13 @@ export class MpImportContent extends LitElement {
             })}
         />
         <div>
-          ${(draft[field] || []).map(name => this.matchBadge(ENTITY_FIELDS[field] as EntityCollection, name))}
+          ${(draft[field] || []).map(name =>
+            this.matchBadge(ENTITY_FIELDS[field] as EntityCollection, name, picked =>
+              this.updateItem(item.key, d => {
+                d[field] = (d[field] || []).map(existing => (existing === name ? picked : existing));
+              })
+            )
+          )}
         </div>
       </div>
     `;
