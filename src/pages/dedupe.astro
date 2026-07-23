@@ -1,0 +1,46 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import MpDedupe from '../components/lit/MpDedupe';
+---
+
+<PageLayout
+  title="Dubbele namen opschonen - Margriet Prinssen"
+  description="Voeg dubbele persoons- en gezelschapsnamen samen."
+>
+  <div class="dedupe-page">
+    <header>
+      <h3>Dubbele namen opschonen</h3>
+      <p>
+        Namen die vrijwel zeker dezelfde persoon of hetzelfde gezelschap zijn (hoofdletters,
+        ij/y, accenten) staan aangevinkt. Mogelijke typefouten staan uit — vink ze alleen aan
+        als je zeker weet dat het dezelfde is. Kies per rij de juiste schrijfwijze; samenvoegen
+        past alle artikelen aan.
+      </p>
+    </header>
+    <MpDedupe client:only="lit" />
+  </div>
+</PageLayout>
+
+<style>
+  .dedupe-page {
+    max-width: var(--mp-page-max-width, 1080px);
+    margin: 0 auto;
+    padding: 0 var(--mp-size--5, 20px);
+    min-height: calc(100vh - 200px);
+  }
+
+  header {
+    text-align: center;
+    padding: var(--mp-size--6, 24px) 0;
+  }
+
+  header p {
+    max-width: 660px;
+    margin: var(--mp-size--3, 12px) auto 0;
+  }
+
+  .dedupe-page :global(mp-dedupe) {
+    display: block;
+    width: 100%;
+  }
+</style>

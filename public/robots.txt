@@ -3,5 +3,6 @@ Allow: /
 Disallow: /add
 Disallow: /import
 Disallow: /curate
+Disallow: /dedupe
 
 Sitemap: https://margrietprinssen.nl/sitemap-index.xml

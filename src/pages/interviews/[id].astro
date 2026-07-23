@@ -1,5 +1,6 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
+import MpEditArticle from '../../components/lit/MpEditArticle';
 import { getAllInterviews, getInterviewById, type Interview, type Person } from '../../lib/content';
 
 export async function getStaticPaths() {
@@ -27,9 +28,22 @@ function getPersonNames(persons: Person[]): string {
 const title = `${interview.title} - Interview - Margriet Prinssen`;
 const personNames = getPersonNames(interview.persons);
 const description = `Theaterinterview: ${interview.title}. ${personNames ? `Met: ${personNames}.` : ''} ${interview.interviewDate ? `Datum: ${interview.interviewDate}` : ''}`.trim();
+
+// Structured data: connect the interviewed persons to this article
+const jsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: interview.title,
+  author: { '@type': 'Person', name: 'Margriet Prinssen' },
+  inLanguage: 'nl',
+  ...(interview.persons?.length
+    ? { about: interview.persons.map((p) => ({ '@type': 'Person', name: p.name })) }
+    : {}),
+});
 ---
 
 <PageLayout title={title} description={description}>
+  <script type="application/ld+json" set:html={jsonLd} />
   <div class="page-container">
     <header class="page-header">
       <h2>{interview.title}</h2>
@@ -64,6 +78,8 @@ const description = `Theaterinterview: ${interview.title}. ${personNames ? `Met:
         <!-- Empty aside for layout consistency, can be used for related content -->
       </div>
     </main>
+
+    <MpEditArticle client:only="lit" article-id={interview.id} type="interview" />
   </div>
 </PageLayout>
 

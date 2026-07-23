@@ -9,7 +9,10 @@ export default defineConfig({
     sitemap({
       // Keep the authenticated admin pages out of the sitemap
       filter: (page) =>
-        !page.includes('/add') && !page.includes('/import') && !page.includes('/curate'),
+        !page.includes('/add') &&
+        !page.includes('/import') &&
+        !page.includes('/curate') &&
+        !page.includes('/dedupe'),
     }),
   ],
   output: 'static'

@@ -1,5 +1,6 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
+import MpEditArticle from '../../components/lit/MpEditArticle';
 import { getAllReviews, getReviewById, type Review, type Person } from '../../lib/content';
 
 export async function getStaticPaths() {
@@ -37,12 +38,55 @@ function getName(item: Person | string | undefined | null): string {
 // Page metadata
 const pageTitle = review.title || review.name;
 const title = `${pageTitle} - Recensie - Margriet Prinssen`;
-const description = `Theaterrecensie van ${pageTitle} door Margriet Prinssen. ${review.theater ? `Theater: ${getName(review.theater)}` : ''} ${review.reviewDate ? `Datum: ${review.reviewDate}` : ''}`.trim();
+const allPersons = [
+  ...(review.writers || []),
+  ...(review.directors || []),
+  ...(review.actors || []),
+]
+  .map(getName)
+  .filter(Boolean);
+const description = `Theaterrecensie van ${pageTitle} door Margriet Prinssen. ${review.theater ? `Theater: ${getName(review.theater)}.` : ''} ${allPersons.length ? `Met: ${allPersons.slice(0, 6).join(', ')}.` : ''} ${review.reviewDate ? `Datum: ${review.reviewDate}` : ''}`.trim();
+
+// MM-DD-YYYY → ISO date for structured data (omit when unparseable)
+function toIsoDate(dateStr: string | undefined): string | undefined {
+  const match = (dateStr || '').match(/^(\d{2})-(\d{2})-(\d{4})$/);
+  return match ? `${match[3]}-${match[1]}-${match[2]}` : undefined;
+}
+
+// Structured data: helps search engines connect persons/groups to this review
+const jsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Review',
+  headline: pageTitle,
+  author: { '@type': 'Person', name: 'Margriet Prinssen' },
+  inLanguage: 'nl',
+  ...(toIsoDate(review.reviewDate) ? { datePublished: toIsoDate(review.reviewDate) } : {}),
+  itemReviewed: {
+    '@type': 'TheaterEvent',
+    name: review.name || pageTitle,
+    ...(review.directors?.length
+      ? { director: review.directors.map((p) => ({ '@type': 'Person', name: getName(p) })) }
+      : {}),
+    ...(review.actors?.length
+      ? { performer: review.actors.map((p) => ({ '@type': 'Person', name: getName(p) })) }
+      : {}),
+    ...(review.theater
+      ? {
+          location: {
+            '@type': 'PerformingArtsTheater',
+            name: getName(review.theater),
+            ...(review.city ? { address: getName(review.city) } : {}),
+          },
+        }
+      : {}),
+  },
+});
 
 const parsedReview = parseReviewContent(review.review);
 ---
 
 <PageLayout title={title} description={description}>
+  <script type="application/ld+json" set:html={jsonLd} />
   <div class="page-container">
     <header class="page-header">
       <h2>{review.title || review.name}</h2>
@@ -111,6 +155,8 @@ const parsedReview = parseReviewContent(review.review);
         )}
       </aside>
     </main>
+
+    <MpEditArticle client:only="lit" article-id={review.id} type="review" />
   </div>
 </PageLayout>
 
