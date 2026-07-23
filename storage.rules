@@ -1,0 +1,8 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if request.auth.token.sub == "Iub1VczOPEg4LrM8l9Lr5I3Y8b62" || request.auth.token.sub == "bUSee9pArEg7pa4Vz7N1KxoDzoF2";
+    }
+  }
+}

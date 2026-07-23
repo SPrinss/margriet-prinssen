@@ -5,6 +5,12 @@ on:
     branches:
       - main
       - master
+  # Allows the dispatchSiteRebuild Cloud Function (and manual runs) to trigger a deploy
+  workflow_dispatch:
+  # Daily safety net: content added via /add or /import is republished at
+  # least once a day even if the on-change dispatch is unavailable
+  schedule:
+    - cron: '0 4 * * *'
 
 jobs:
   build-and-deploy:

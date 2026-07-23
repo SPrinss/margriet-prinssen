@@ -1,5 +1,10 @@
 import { initializeApp, getApps, type FirebaseApp } from 'firebase/app';
-import { getAuth, type Auth } from 'firebase/auth';
+import { getAuth, connectAuthEmulator, type Auth } from 'firebase/auth';
+import { getStorage, connectStorageEmulator, type FirebaseStorage } from 'firebase/storage';
+
+// Set PUBLIC_USE_EMULATORS=true (e.g. `npm run dev:emulated`) to develop
+// against the local Firebase emulators instead of production.
+const useEmulators = import.meta.env.PUBLIC_USE_EMULATORS === 'true';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyC8em8nKNhnyhDFrj4_pTrRpGy8nmNxh8k',
@@ -23,8 +28,23 @@ export function getFirebaseApp(): FirebaseApp {
 export function getFirebaseAuth(): Auth {
   if (!auth) {
     auth = getAuth(getFirebaseApp());
+    if (useEmulators) {
+      connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
+    }
   }
   return auth;
+}
+
+let storage: FirebaseStorage;
+
+export function getFirebaseStorage(): FirebaseStorage {
+  if (!storage) {
+    storage = getStorage(getFirebaseApp());
+    if (useEmulators) {
+      connectStorageEmulator(storage, 'localhost', 9199);
+    }
+  }
+  return storage;
 }
 
 export { firebaseConfig };

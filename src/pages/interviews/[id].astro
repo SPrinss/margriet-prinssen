@@ -42,7 +42,7 @@ const description = `Theaterinterview: ${interview.title}. ${personNames ? `Met:
     <main class="interview-content">
       <div class="aside-left">
         <a href="/interviews" class="back-link">
-          <span class="arrow">&larr;</span> Terug naar interviews
+          {'<-'}  Terug naar interviews
         </a>
       </div>
 
@@ -69,19 +69,19 @@ const description = `Theaterinterview: ${interview.title}. ${personNames ? `Met:
 
 <style>
   .page-container {
-    max-width: var(--mp-page-max-width, 1080px);
+    max-width: 100%;
     margin: 0 auto;
-    padding: var(--mp-size--5);
+    padding: 0 var(--mp-size--5);
   }
 
   .page-header {
     min-height: var(--mp-size--14);
     text-align: center;
-    margin-bottom: var(--mp-size--6);
+    padding: var(--mp-size--8);
   }
 
   .page-header h2 {
-    margin-bottom: var(--mp-size--3);
+    margin-bottom: var(--mp-size--6);
   }
 
   .page-header h5 {
@@ -93,9 +93,9 @@ const description = `Theaterinterview: ${interview.title}. ${personNames ? `Met:
     grid-template-columns: 2fr 4fr minmax(0px, 2fr);
     grid-template-areas: "aside-left body aside-right";
     gap: var(--mp-size--8);
-    margin-top: var(--mp-size--7);
     justify-items: center;
     align-items: start;
+    margin-top: var(--mp-size--7);
     margin-bottom: var(--mp-size--9);
   }
 
@@ -121,16 +121,8 @@ const description = `Theaterinterview: ${interview.title}. ${personNames ? `Met:
     color: inherit;
   }
 
-  .back-link .arrow {
-    margin-right: var(--mp-size--2);
-  }
-
   article :global(p) {
-    margin: var(--mp-size--4) 0;
-  }
-
-  article :global(p:first-of-type) {
-    margin-top: 0;
+    margin-bottom: var(--mp-size--4);
   }
 
   /* Handle various HTML elements that might be in the interview content */
@@ -140,12 +132,11 @@ const description = `Theaterinterview: ${interview.title}. ${personNames ? `Met:
   article :global(h4),
   article :global(h5),
   article :global(h6) {
-    margin-top: var(--mp-size--6);
-    margin-bottom: var(--mp-size--3);
+    margin: var(--mp-size--6) 0 var(--mp-size--4) 0;
   }
 
   article :global(blockquote) {
-    margin: var(--mp-size--5) 0;
+    margin: var(--mp-size--10) 0;
     padding-left: var(--mp-size--4);
     border-left: 3px solid var(--mp-color-main--60);
     font-style: italic;
@@ -198,7 +189,7 @@ const description = `Theaterinterview: ${interview.title}. ${personNames ? `Met:
 
     .aside-left {
       justify-self: center;
-      margin-bottom: var(--mp-size--4);
+      margin-bottom: var(--mp-size--6);
     }
 
     .aside-right {
@@ -206,7 +197,7 @@ const description = `Theaterinterview: ${interview.title}. ${personNames ? `Met:
     }
 
     .page-header {
-      padding-top: var(--mp-size--6);
+      padding: var(--mp-size--7);
     }
   }
 </style>

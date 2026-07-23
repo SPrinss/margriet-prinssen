@@ -49,18 +49,23 @@ export type ContentItem = (Review & { type: 'review' }) | (Interview & { type: '
 
 /**
  * Get all reviews ordered by timePublished descending
+ * Note: Fetches all documents first, then sorts client-side to include
+ * documents that may not have a timePublished field
  */
 export async function getAllReviews(): Promise<Review[]> {
-  const q = query(
-    collection(db, 'reviews'),
-    orderBy('timePublished', 'desc')
-  );
-  const snapshot = await getDocs(q);
+  const snapshot = await getDocs(collection(db, 'reviews'));
 
-  return snapshot.docs.map((doc) => ({
+  const reviews = snapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   })) as Review[];
+
+  // Sort by timePublished descending, placing documents without timePublished at the end
+  return reviews.sort((a, b) => {
+    const timeA = a.timePublished?.toMillis?.() || 0;
+    const timeB = b.timePublished?.toMillis?.() || 0;
+    return timeB - timeA;
+  });
 }
 
 /**
@@ -82,18 +87,23 @@ export async function getReviewById(id: string): Promise<Review | null> {
 
 /**
  * Get all interviews ordered by timePublished descending
+ * Note: Fetches all documents first, then sorts client-side to include
+ * documents that may not have a timePublished field
  */
 export async function getAllInterviews(): Promise<Interview[]> {
-  const q = query(
-    collection(db, 'interviews'),
-    orderBy('timePublished', 'desc')
-  );
-  const snapshot = await getDocs(q);
+  const snapshot = await getDocs(collection(db, 'interviews'));
 
-  return snapshot.docs.map((doc) => ({
+  const interviews = snapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   })) as Interview[];
+
+  // Sort by timePublished descending, placing documents without timePublished at the end
+  return interviews.sort((a, b) => {
+    const timeA = a.timePublished?.toMillis?.() || 0;
+    const timeB = b.timePublished?.toMillis?.() || 0;
+    return timeB - timeA;
+  });
 }
 
 /**
@@ -192,4 +202,45 @@ export async function getRecentInterviews(limitCount: number = 4): Promise<Inter
     id: doc.id,
     ...doc.data(),
   })) as Interview[];
+}
+
+/**
+ * Homepage curation: the admin /curate page stores a manual selection in
+ * settings/homepage. When present (and not reset to "laatst toegevoegd"),
+ * the home page shows those items; otherwise it falls back to the most
+ * recent ones — which is also the default behavior.
+ */
+export interface HomepageSelection {
+  reviews?: string[];
+  interviews?: string[];
+  useLatest?: boolean;
+}
+
+export async function getHomepageContent(
+  limitCount: number = 4
+): Promise<{ reviews: Review[]; interviews: Interview[] }> {
+  try {
+    const selectionSnap = await getDoc(doc(db, 'settings', 'homepage'));
+    if (selectionSnap.exists()) {
+      const selection = selectionSnap.data() as HomepageSelection;
+      if (!selection.useLatest && (selection.reviews?.length || selection.interviews?.length)) {
+        const reviews = (
+          await Promise.all((selection.reviews || []).map((id) => getReviewById(id)))
+        ).filter(Boolean) as Review[];
+        const interviews = (
+          await Promise.all((selection.interviews || []).map((id) => getInterviewById(id)))
+        ).filter(Boolean) as Interview[];
+        return {
+          reviews: reviews.length ? reviews : await getRecentReviews(limitCount),
+          interviews: interviews.length ? interviews : await getRecentInterviews(limitCount),
+        };
+      }
+    }
+  } catch (error) {
+    console.warn('Homepage selection unavailable, falling back to recent content', error);
+  }
+  return {
+    reviews: await getRecentReviews(limitCount),
+    interviews: await getRecentInterviews(limitCount),
+  };
 }

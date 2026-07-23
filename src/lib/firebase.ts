@@ -1,5 +1,9 @@
 import { initializeApp, getApps, type FirebaseApp } from 'firebase/app';
-import { getFirestore, type Firestore } from 'firebase/firestore';
+import { getFirestore, connectFirestoreEmulator, type Firestore } from 'firebase/firestore';
+
+// Set PUBLIC_USE_EMULATORS=true (e.g. `npm run dev:emulated`) to develop
+// against the local Firebase emulators instead of production.
+const useEmulators = import.meta.env.PUBLIC_USE_EMULATORS === 'true';
 
 // Public Firebase config - safe for client-side use
 const firebaseConfig = {
@@ -24,6 +28,9 @@ function getApp(): FirebaseApp {
 export function getDb(): Firestore {
   if (!_db) {
     _db = getFirestore(getApp());
+    if (useEmulators) {
+      connectFirestoreEmulator(_db, 'localhost', 8080);
+    }
   }
   return _db;
 }

@@ -6,7 +6,11 @@
   "scripts": {
     "start": "astro dev",
     "dev": "astro dev",
+    "dev:emulated": "PUBLIC_USE_EMULATORS=true astro dev",
+    "emulators": "JAVA_HOME=/opt/homebrew/opt/openjdk@21 PATH=\"/opt/homebrew/opt/openjdk@21/bin:$PATH\" firebase emulators:start --import ./.emulator-data --export-on-exit",
+    "emulators:fresh": "JAVA_HOME=/opt/homebrew/opt/openjdk@21 PATH=\"/opt/homebrew/opt/openjdk@21/bin:$PATH\" firebase emulators:start",
     "build": "rimraf dist && npm run build:styles && astro build",
+    "build:astro": "astro build",
     "preview": "astro preview",
     "start:legacy": "concurrently --kill-others \"npm run start:server::watch\" \"npm run watch:styles\"",
     "start:server::watch": "es-dev-server --app-index index.html --http2 --node-resolve --watch --open",
@@ -37,6 +41,7 @@
   "homepage": "https://github.com/SPrinss/margriet-prinssen#readme",
   "dependencies": {
     "@astrojs/lit": "^4.3.0",
+    "@astrojs/sitemap": "^3.2.1",
     "@html-element-wrappers/button": "^0.3.1",
     "@html-element-wrappers/img": "^0.3.1",
     "@html-element-wrappers/input": "^0.3.1",
@@ -50,6 +55,7 @@
     "html-element-property-mixins": "^0.10.10",
     "lit": "^3.2.0",
     "lit-html": "^1.2.1",
+    "mammoth": "^1.12.0",
     "pwa-helpers": "^0.9.1"
   },
   "devDependencies": {
@@ -62,6 +68,7 @@
     "eslint": "^6.1.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-promise": "^4.2.1",
+    "firebase-tools": "^15.24.0",
     "gulp": "^4.0.2",
     "gulp-rename": "^2.0.0",
     "gulp-stylus": "^2.7.0",

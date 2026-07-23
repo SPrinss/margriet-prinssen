@@ -39,6 +39,21 @@ npm run serve         # Local emulator
 npm run deploy        # Deploy functions
 ```
 
+## Local Test Environment (emulators)
+
+Never develop against production. Use the Firebase emulators, seeded with a copy of production data:
+
+```bash
+npm run emulators        # Start emulators with saved data snapshot (.emulator-data/), auto-saves on exit
+npm run emulators:fresh  # Start empty (re-seed with tools/seed-emulator.js from the workspace root)
+```
+
+- Emulator UI: http://localhost:4000 — Firestore :8080, Auth :9099, Functions :5001
+- Requires JDK 21 (`/opt/homebrew/opt/openjdk@21`, baked into the npm scripts)
+- Production data dump/seed scripts live in `../tools/` (workspace root): `dump-firestore.js` (read-only export of all collections incl. subcollections) and `seed-emulator.js` (refuses to run without `FIRESTORE_EMULATOR_HOST`)
+- **Algolia safety**: emulated functions write to `reviews_test`/`interviews_test` indices, never production. Two layers: `functions/.env.local` (gitignored) sets the index names, and `functions/index.js` defaults to `*_test` whenever `FUNCTIONS_EMULATOR=true`
+- Functions were modernized (Node 22, firebase-functions v6, env-based config instead of the removed `functions.config()`). Production deploy needs `ALGOLIA_APP_ID`/`ALGOLIA_ADMIN_KEY` provided via functions env (e.g. `functions/.env` or secrets) — not yet configured for deploys
+
 ## Architecture
 
 ### Frontend (Astro + Lit)

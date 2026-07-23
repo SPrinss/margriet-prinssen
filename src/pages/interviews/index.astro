@@ -33,13 +33,13 @@ function getPersonNames(persons: Array<{ id: string; name: string }>): string[] 
         client:only="lit"
         index="interviews"
         placeholder="Jacob Derwig, Dood paard, 2020 ..."
-        allow-filters
         hits-per-page="6"
+        facet-attributes='["persons", "year"]'
       />
     </section>
 
     <section class="content-section">
-      <div class="interviews-grid">
+      <div class="interviews-grid" id="interviews-grid">
         {interviews.map((interview) => {
           const personNames = getPersonNames(interview.persons);
 
@@ -69,11 +69,25 @@ function getPersonNames(persons: Array<{ id: string; name: string }>): string[] 
         })}
       </div>
 
-      <a href="https://algolia.com" target="_blank" rel="noopener noreferrer" class="algolia-link">
-        <span>Search by Algolia</span>
-      </a>
+      <div id="static-algolia-link">
+        <a href="https://algolia.com" target="_blank" rel="noopener noreferrer" class="algolia-link">
+          <span>Search by Algolia</span>
+        </a>
+      </div>
     </section>
   </div>
+
+<script>
+  // Hide static grid and algolia link - MpSearch component handles all results display
+  const grid = document.getElementById('interviews-grid');
+  if (grid) {
+    grid.style.display = 'none';
+  }
+  const algoliaLink = document.getElementById('static-algolia-link');
+  if (algoliaLink) {
+    algoliaLink.style.display = 'none';
+  }
+</script>
 </PageLayout>
 
 <style>
@@ -84,10 +98,10 @@ function getPersonNames(persons: Array<{ id: string; name: string }>): string[] 
   }
 
   .page-header {
-    min-height: var(--mp-size--14);
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: var(--mp-size--8);
   }
 
   .intro-section {
@@ -96,7 +110,7 @@ function getPersonNames(persons: Array<{ id: string; name: string }>): string[] 
   }
 
   .search-section {
-    max-width: 660px;
+    max-width: 100%;
     margin: 0 auto var(--mp-size--6);
   }
 

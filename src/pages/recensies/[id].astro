@@ -55,9 +55,7 @@ const parsedReview = parseReviewContent(review.review);
 
     <main class="review-content">
       <div class="aside-left">
-        <a href="/recensies" class="back-link">
-          <span class="arrow">&larr;</span> Terug naar recensies
-        </a>
+        <a href="/recensies" class="back-link">Terug naar recensies</a>
       </div>
 
       <div class="main-content">
@@ -118,15 +116,15 @@ const parsedReview = parseReviewContent(review.review);
 
 <style>
   .page-container {
-    max-width: var(--mp-page-max-width, 1080px);
+    --mp-page-max-width: 100%;
+    max-width: var(--mp-page-max-width);
     margin: 0 auto;
-    padding: var(--mp-size--5);
+    padding: 0 var(--mp-size--5);
   }
 
   .page-header {
-    min-height: var(--mp-size--14);
     text-align: center;
-    margin-bottom: var(--mp-size--6);
+    padding: var(--mp-size--8);
   }
 
   .page-header h2 {
@@ -163,7 +161,7 @@ const parsedReview = parseReviewContent(review.review);
   }
 
   .back-link {
-    display: inline-block;
+    display: block;
     padding-bottom: var(--mp-size--3);
     border-bottom: 1px solid var(--mp-color-dark--100);
     font-family: var(--mp-text-b-font-family);
@@ -172,8 +170,9 @@ const parsedReview = parseReviewContent(review.review);
     color: inherit;
   }
 
-  .back-link .arrow {
-    margin-right: var(--mp-size--2);
+  .back-link::before {
+    content: '<-';
+    padding-right: var(--mp-size--3);
   }
 
   article :global(p) {

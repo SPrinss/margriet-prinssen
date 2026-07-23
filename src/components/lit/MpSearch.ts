@@ -27,6 +27,9 @@ interface SearchHit {
   actors?: string[];
   directors?: string[];
   writers?: string[];
+  // Interview-specific fields
+  interviewDate?: string;
+  persons?: string[];
   [key: string]: unknown;
 }
 
@@ -107,6 +110,7 @@ export class MpSearch extends LitElement {
       --mp-color-main--20: #eff5ff;
       --mp-color-main--10: #f7faff;
       --mp-color-secondary--100: #f4d18f;
+      --mp-color-secondary--30: #fbf1dd;
       --mp-color-dark--100: #000;
       --mp-color-dark--80: #333;
       --mp-color-dark--70: #4c4c4c;
@@ -286,9 +290,11 @@ export class MpSearch extends LitElement {
       cursor: pointer;
       font-family: var(--mp-text-b-font-family);
       font-size: var(--mp-text-b3-font-size);
-      font-weight: var(--mp-text-b-font-weight);
+      font-weight: 400;
       color: var(--mp-color-dark--100);
       white-space: nowrap;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     .filter-button:hover:not(:disabled) {
@@ -448,7 +454,7 @@ export class MpSearch extends LitElement {
       justify-content: space-between;
       flex-wrap: nowrap;
       padding: var(--mp-size--4);
-      background-color: var(--mp-color-secondary--100);
+      background-color: var(--mp-color-secondary--30);
       flex: 1;
     }
 
@@ -469,6 +475,77 @@ export class MpSearch extends LitElement {
 
     .persons-grid ul li.label {
       margin-bottom: var(--mp-size--1);
+      color: var(--mp-color-dark--60);
+    }
+
+    /* Interview card styles - simple card like basic-preview */
+    .interview-card {
+      display: block;
+      height: 100%;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .interview-preview {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      border-radius: var(--mp-border-radius--1);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      background-color: var(--mp-color-secondary--30, #fbf1dd);
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .interview-preview:hover {
+      transform: scale(1.01);
+      cursor: pointer;
+      box-shadow: var(--mp-box-shadow--3);
+    }
+
+    .interview-preview section {
+      flex: 1;
+      padding: var(--mp-size--4);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .interview-preview h4 {
+      margin: 0 0 var(--mp-size--2) 0;
+      font-family: var(--mp-text-h-font-family);
+      font-size: var(--mp-text-h4-font-size);
+      font-weight: var(--mp-text-h4-font-weight);
+      line-height: 1.3;
+    }
+
+    .interview-preview .interview-persons {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 var(--mp-size--1) 0;
+    }
+
+    .interview-preview .interview-persons li {
+      display: inline-block;
+      font-family: var(--mp-text-b-font-family);
+      font-size: 14px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .interview-preview .interview-persons li:not(:last-of-type)::after {
+      content: '-';
+      display: inline-block;
+      width: 10px;
+      margin-left: 5px;
+      text-align: center;
+    }
+
+    .interview-preview .interview-date {
+      display: block;
+      font-family: var(--mp-text-b-font-family);
+      font-size: 14px;
       color: var(--mp-color-dark--60);
     }
 
@@ -524,6 +601,16 @@ export class MpSearch extends LitElement {
 
       .persons-grid ul li.label {
         color: var(--mp-color-light--60);
+      }
+
+      /* Interview card dark mode */
+      .interview-preview {
+        background-color: var(--mp-color-dark--60);
+        color: var(--mp-color-light--100);
+      }
+
+      .interview-preview .interview-date {
+        color: var(--mp-color-light--70);
       }
     }
 
@@ -618,7 +705,11 @@ export class MpSearch extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this._initializeAlgolia();
+    // Delay initialization to allow properties to be set from attributes
+    // This is needed for client:only="lit" in Astro where attributes are set after connectedCallback
+    requestAnimationFrame(() => {
+      this._initializeAlgolia();
+    });
     document.addEventListener('click', this._handleOutsideClick);
   }
 
@@ -1000,6 +1091,38 @@ export class MpSearch extends LitElement {
     `;
   }
 
+  private _renderInterviewCard(hit: SearchHit) {
+    const hasPersons = hit.persons && hit.persons.length > 0;
+
+    return html`
+      <a
+        href=${this._getResultUrl(hit)}
+        aria-label="Navigeer naar ${hit.title}"
+        class="interview-card"
+      >
+        <article class="interview-preview">
+          <section>
+            ${hit.title ? html`<h4>${hit.title}</h4>` : ''}
+            ${hasPersons ? html`
+              <ul class="interview-persons">
+                ${hit.persons!.map(person => html`<li>${person}</li>`)}
+              </ul>
+            ` : ''}
+            ${hit.interviewDate ? html`<span class="interview-date">${hit.interviewDate}</span>` : ''}
+          </section>
+        </article>
+      </a>
+    `;
+  }
+
+  private _renderCard(hit: SearchHit) {
+    // Use interview card for interviews index, review card for reviews
+    if (this.index === 'interviews') {
+      return this._renderInterviewCard(hit);
+    }
+    return this._renderReviewCard(hit);
+  }
+
   override render() {
     const canAddFilter = this._selectedOption?.category &&
       this._selectedOption.category !== 'titel' &&
@@ -1094,7 +1217,7 @@ export class MpSearch extends LitElement {
 
         <!-- Search results display -->
         <section class="search-results" id="search-results">
-          ${this._searchResults.map(hit => this._renderReviewCard(hit))}
+          ${this._searchResults.map(hit => this._renderCard(hit))}
         </section>
       </main>
     `;

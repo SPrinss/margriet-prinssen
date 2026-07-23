@@ -1,11 +1,11 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
 import BasicPreview from '../components/BasicPreview.astro';
-import { getRecentReviews, getRecentInterviews, type Review, type Interview } from '../lib/content';
+import { getHomepageContent, type Review, type Interview } from '../lib/content';
 
-// Fetch recent reviews and interviews at build time
-const reviews = await getRecentReviews(4);
-const interviews = await getRecentInterviews(4);
+// Fetch home page content at build time: the curated selection from
+// settings/homepage, or (default) the most recent reviews and interviews.
+const { reviews, interviews } = await getHomepageContent(4);
 
 // Helper function to extract names from groups array
 function getGroupNames(groups: Array<{ id: string; name: string }> | undefined): string[] {
@@ -26,8 +26,8 @@ function getPersonNames(persons: Array<{ id: string; name: string }> | undefined
 >
   <div class="home-page">
     <header class="hero">
-      <h1 id="title">Margriet Prinssen</h1>
-      <h2 id="subtitle">Theaterjournalistiek</h2>
+      <h1 id="title"></h1>
+      <h2 id="subtitle"></h2>
     </header>
 
     <section class="intro-section">
@@ -80,9 +80,7 @@ function getPersonNames(persons: Array<{ id: string; name: string }> | undefined
   .hero {
     min-height: 162px;
     margin-bottom: var(--mp-size--7, 32px);
-  }
-
-  .hero {
+    padding: var(--mp-size--8, 48px);
     text-align: center;
   }
 
@@ -190,3 +188,34 @@ function getPersonNames(persons: Array<{ id: string; name: string }> | undefined
     }
   }
 </style>
+
+<script>
+  // Typing animation for the heading
+  function typeText(text: string, element: HTMLElement, position: number, delay: number) {
+    element.innerText = text.substring(0, position);
+    position += 1;
+
+    if (position < text.length + 1) {
+      setTimeout(() => requestAnimationFrame(() => typeText(text, element, position, delay)), delay);
+    }
+  }
+
+  // Initialize typing animation on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    const titleEl = document.getElementById('title');
+    const subtitleEl = document.getElementById('subtitle');
+
+    if (titleEl && subtitleEl) {
+      titleEl.innerText = ' ';
+      subtitleEl.innerText = ' ';
+
+      // Start typing "Margriet Prinssen"
+      typeText("Margriet Prinssen", titleEl, 1, 85);
+
+      // After 1775ms, start typing "Theaterjournalistiek"
+      setTimeout(() => {
+        typeText("Theaterjournalistiek", subtitleEl, 1, 85);
+      }, 1775);
+    }
+  });
+</script>

@@ -2,16 +2,61 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // This rule allows anyone on the internet to view, edit, and delete
-    // all data in your Firestore database. It is useful for getting
-    // started, but it is configured to expire after 30 days because it
-    // leaves your app open to attackers. At that time, all client
-    // requests to your Firestore database will be denied.
-    //
-    // Make sure to write security rules for your app before that time, or else
-    // your app will lose access to your Firestore database
+    // Copy of the rules deployed in production (fetched 2026-07-22).
+    // Public read on content collections; writes restricted to the two admin
+    // user UIDs; contact form messages are create-only.
     match /{document=**} {
-      allow read, write: if request.time < timestamp.date(2020, 5, 14);
+      match /interviews {
+        allow read;
+      }
+      match /reviews {
+        allow read;
+      }
+      match /persons {
+        allow read;
+      }
+      match /persons/{personId} {
+        allow write: if request.auth.token.sub == "Iub1VczOPEg4LrM8l9Lr5I3Y8b62" || request.auth.token.sub == "bUSee9pArEg7pa4Vz7N1KxoDzoF2";
+        allow read;
+      }
+      match /cities {
+        allow read;
+      }
+      match /cities/{cityId} {
+        allow write: if request.auth.token.sub == "Iub1VczOPEg4LrM8l9Lr5I3Y8b62" || request.auth.token.sub == "bUSee9pArEg7pa4Vz7N1KxoDzoF2";
+        allow read;
+      }
+      match /groups {
+        allow read;
+      }
+      match /groups/{groupId} {
+        allow write: if request.auth.token.sub == "Iub1VczOPEg4LrM8l9Lr5I3Y8b62" || request.auth.token.sub == "bUSee9pArEg7pa4Vz7N1KxoDzoF2";
+        allow read;
+      }
+      match /theaters {
+        allow read;
+      }
+      match /theaters/{theaterId} {
+        allow write: if request.auth.token.sub == "Iub1VczOPEg4LrM8l9Lr5I3Y8b62" || request.auth.token.sub == "bUSee9pArEg7pa4Vz7N1KxoDzoF2";
+        allow read;
+      }
+      match /interviews/{interviewId} {
+        allow write: if request.auth.token.sub == "Iub1VczOPEg4LrM8l9Lr5I3Y8b62" || request.auth.token.sub == "bUSee9pArEg7pa4Vz7N1KxoDzoF2";
+        allow read;
+      }
+      match /reviews/{reviewId} {
+        allow write: if request.auth.token.sub == "Iub1VczOPEg4LrM8l9Lr5I3Y8b62" || request.auth.token.sub == "bUSee9pArEg7pa4Vz7N1KxoDzoF2";
+        allow read;
+      }
+      match /messages/{message} {
+        allow create;
+      }
+      // Homepage curation: publicly readable (the static build reads it),
+      // writable only by the admin users.
+      match /settings/{settingId} {
+        allow read;
+        allow write: if request.auth.token.sub == "Iub1VczOPEg4LrM8l9Lr5I3Y8b62" || request.auth.token.sub == "bUSee9pArEg7pa4Vz7N1KxoDzoF2";
+      }
     }
   }
 }

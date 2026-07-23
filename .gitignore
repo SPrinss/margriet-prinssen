@@ -11,3 +11,10 @@ web_modules
 .astro/
 .claude/
 firebase-debug.log
+# Firebase service account keys — never commit
+*firebase-adminsdk*.json
+**/config/firebase-service-account-keys.json
+.emulator-data/
+firestore-debug.log
+firebase-debug.log
+ui-debug.log
