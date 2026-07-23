@@ -184,18 +184,39 @@ function yearFromHints(folderHint, fileName) {
 function parseSlashMeta(line, draft) {
   const segments = line.split('/').map(clean).filter(Boolean);
   const positional = [];
+  draft._extraCredits = draft._extraCredits || [];
 
   for (const segment of segments) {
     const labelMatch = segment.match(/^([a-zA-Zëé &]+?)\s*:\s*(.+)$/);
     if (labelMatch) {
       const label = labelMatch[1].toLowerCase();
       const value = labelMatch[2];
-      if (label.includes('regie')) draft.directors = splitNames(value);
-      else if (label.includes('tekst') || label.includes('script')) draft.writers = splitNames(value);
-      else if (label.includes('spel') || label === 'met' || label.includes('cast')) draft.actors = splitNames(value);
-      else if (label.includes('choreografie')) draft.directors = draft.directors.concat(splitNames(value));
-      else if (label.includes('gezien') || label.includes('premi')) parseGezien(value, draft);
-      // Info:, Foto:, www links etc. are intentionally dropped
+      // A label can combine roles ("Tekst en regie:") — assign to every match
+      let known = false;
+      if (/regie|bewerking/.test(label)) {
+        draft.directors = draft.directors.concat(splitNames(value));
+        known = true;
+      }
+      if (/tekst|script/.test(label)) {
+        draft.writers = draft.writers.concat(splitNames(value));
+        known = true;
+      }
+      if (/spel|\bmet\b|cast/.test(label) || label === 'van en met') {
+        draft.actors = draft.actors.concat(splitNames(value));
+        known = true;
+      }
+      if (/gezien|premi/.test(label)) {
+        parseGezien(value, draft);
+        known = true;
+      }
+      if (/info|te zien|te horen|tournee|aldaar/.test(label)) {
+        known = true; // tour/booking info: stale for the archive, dropped
+      }
+      if (!known) {
+        // Dramaturgie, muziek, choreografie, decor, kostuums, licht, … —
+        // no database field exists, so preserve as a credits line in the text
+        draft._extraCredits.push(`${labelMatch[1].trim()}: ${clean(value)}`);
+      }
     } else if (/^gezien\b/i.test(segment)) {
       parseGezien(segment.replace(/^gezien(\s+op)?:?\s*/i, ''), draft);
     } else if (/^(theater|dans|opera|cabaret|recensie|interview|margriet prinssen)$/i.test(segment)) {
@@ -205,6 +226,10 @@ function parseSlashMeta(line, draft) {
     } else if (!/^(www\.|info\b|http)/i.test(segment)) {
       positional.push(segment);
     }
+  }
+  // De-duplicate names that landed in a field twice via combined labels
+  for (const field of ['directors', 'writers', 'actors']) {
+    draft[field] = [...new Set(draft[field])];
   }
 
   // Positional leftovers: first = group(s), second = play name.
@@ -342,6 +367,14 @@ function parseReview(paras, fileName, folderHint, { gezienIdx, slashMetaIdx, war
   draft.bodyHtml = paras.slice(bodyStart).map(p => p.html).join('');
   if (!draft.name) warnings.push('Geen naam voorstelling gevonden');
 
+  // Roles without a database field (dramaturgie, muziek, decor, …) are kept
+  // as a credits line at the end of the article text so nothing is lost
+  if (draft._extraCredits && draft._extraCredits.length) {
+    draft.bodyHtml += `<p><em>${draft._extraCredits.join(' / ')}</em></p>`;
+    warnings.push(`Extra vermeldingen onderaan de tekst geplaatst: ${draft._extraCredits.map(c => c.split(':')[0]).join(', ')}`);
+  }
+
+  delete draft._extraCredits;
   delete draft._parsedDate;
   delete draft._place1;
   delete draft._place2;
@@ -373,10 +406,12 @@ function parseInterview(paras, fileName, folderHint, { interviewIdx, slashMetaId
   if (interviewIdx !== -1) bodyStart = interviewIdx + 1;
 
   // Old-style slash meta line before/instead: mine it for a date, skip it
+  let extraCredits = [];
   if (slashMetaIdx === 0 && interviewIdx !== 0) {
     const tmp = { directors: [], writers: [], actors: [], groups: [] };
     parseSlashMeta(clean(paras[0].text), tmp);
     if (tmp._parsedDate) draft._parsedDate = tmp._parsedDate;
+    if (tmp._extraCredits) extraCredits = tmp._extraCredits;
     if (bodyStart < 1) bodyStart = 1;
   }
 
@@ -408,6 +443,10 @@ function parseInterview(paras, fileName, folderHint, { interviewIdx, slashMetaId
   }
 
   draft.bodyHtml = paras.slice(bodyStart).map(p => p.html).join('');
+  if (extraCredits.length) {
+    draft.bodyHtml += `<p><em>${extraCredits.join(' / ')}</em></p>`;
+    warnings.push(`Extra vermeldingen onderaan de tekst geplaatst: ${extraCredits.map(c => c.split(':')[0]).join(', ')}`);
+  }
   delete draft._parsedDate;
   return draft;
 }

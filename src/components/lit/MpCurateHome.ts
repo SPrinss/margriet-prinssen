@@ -27,8 +27,13 @@ import {
   serverTimestamp,
 } from 'firebase/firestore';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
+import algoliasearch from 'algoliasearch/lite';
 import { getFirebaseAuth, getFirebaseStorage } from '../../lib/firebase-client';
 import { getDb } from '../../lib/firebase';
+
+// Same public search-only credentials as the site's search component
+const searchClient = algoliasearch('QZ9LK09320', '5fe26edd91681f874040eb6110bf8a7f');
+const useTestIndices = import.meta.env.PUBLIC_USE_EMULATORS === 'true';
 
 type ContentKind = 'reviews' | 'interviews';
 
@@ -74,6 +79,11 @@ export class MpCurateHome extends LitElement {
       border: 1px solid var(--mp-color-dark--20, #ccc);
       border-radius: var(--mp-border-radius--1, 5px);
       box-sizing: border-box;
+    }
+
+    .archive-search {
+      width: 100%;
+      margin-bottom: var(--mp-size--3, 12px);
     }
 
     button {
@@ -205,6 +215,13 @@ export class MpCurateHome extends LitElement {
   @state() private statusMessage = '';
   @state() private errorMessage = '';
   @state() private uploadingId = '';
+  @state() private searchQuery: Record<ContentKind, string> = { reviews: '', interviews: '' };
+  @state() private searching: Record<ContentKind, boolean> = { reviews: false, interviews: false };
+
+  private searchTimers: Record<ContentKind, ReturnType<typeof setTimeout> | undefined> = {
+    reviews: undefined,
+    interviews: undefined,
+  };
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -268,6 +285,43 @@ export class MpCurateHome extends LitElement {
     } catch (error) {
       this.authError = error instanceof Error ? error.message : 'Aanmelden mislukt';
     }
+  }
+
+  /**
+   * Archive search: find any article (not just the recent 40) via the same
+   * Algolia index the site uses, then pull the matching Firestore docs into
+   * the candidate list so they can be selected like any other row.
+   */
+  private handleSearchInput(kind: ContentKind, value: string): void {
+    this.searchQuery = { ...this.searchQuery, [kind]: value };
+    clearTimeout(this.searchTimers[kind]);
+    if (!value.trim()) return;
+    this.searchTimers[kind] = setTimeout(() => this.runSearch(kind, value.trim()), 350);
+  }
+
+  private async runSearch(kind: ContentKind, queryText: string): Promise<void> {
+    this.searching = { ...this.searching, [kind]: true };
+    try {
+      const indexName = useTestIndices ? `${kind}_test` : kind;
+      const { hits } = await searchClient.initIndex(indexName).search(queryText, { hitsPerPage: 8 });
+      const db = getDb();
+      const found: ContentRow[] = [];
+      for (const hit of hits as { objectID: string }[]) {
+        const existing = this.rows[kind].find(row => row.id === hit.objectID);
+        if (existing) {
+          found.push(existing);
+          continue;
+        }
+        const snap = await getDoc(doc(db, kind, hit.objectID));
+        if (snap.exists()) found.push(this.rowFromDoc(kind, snap.id, snap.data()));
+      }
+      // Search results float to the top of the section; the rest stays below
+      const foundIds = new Set(found.map(row => row.id));
+      this.rows = { ...this.rows, [kind]: [...found, ...this.rows[kind].filter(row => !foundIds.has(row.id))] };
+    } catch (error) {
+      this.errorMessage = error instanceof Error ? error.message : 'Zoeken mislukt';
+    }
+    this.searching = { ...this.searching, [kind]: false };
   }
 
   private toggle(kind: ContentKind, id: string): void {
@@ -407,6 +461,14 @@ export class MpCurateHome extends LitElement {
     return html`
       <section>
         <h4>${title} — ${count} geselecteerd (aanbevolen: ${RECOMMENDED_COUNT})</h4>
+        <input
+          type="search"
+          class="archive-search"
+          placeholder="Zoek in alle ${title.toLowerCase()} (titel, naam, persoon, gezelschap)…"
+          .value=${this.searchQuery[kind]}
+          @input=${(e: Event) => this.handleSearchInput(kind, (e.target as HTMLInputElement).value)}
+        />
+        ${this.searching[kind] ? html`<p>Zoeken…</p>` : nothing}
         ${this.rows[kind].map(row => {
           const isSelected = this.selected[kind].includes(row.id);
           const noImage = row.images.length === 0;

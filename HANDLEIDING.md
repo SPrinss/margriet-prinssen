@@ -60,6 +60,11 @@ Interview met Anita van Dolen            ← "Interview (met) …"
 (daarna de tekst van het interview)
 ```
 
+Rollen waar de site geen eigen veld voor heeft (dramaturgie, muziek,
+choreografie, decor, kostuums…) gaan niet verloren: die worden automatisch
+als creditsregel onderaan de artikeltekst bewaard — je ziet daarvan een
+melding op de kaart.
+
 Wijkt een bestand hiervan af? Geen probleem — het wordt gewoon ingelezen,
 maar dan moet je meer velden zelf invullen. De oude opmaak met schuine
 strepen (`Theater/ Recensie / Margriet Prinssen / … / Regie: … / Gezien: …`)
@@ -112,7 +117,9 @@ interviews. Wil je zelf kiezen wat er staat:
 
 1. Ga naar `margrietprinssen.nl/curate` en log in.
 2. Vink de artikelen aan die je op de voorpagina wilt (aanbevolen: 4
-   recensies en 4 interviews).
+   recensies en 4 interviews). Standaard zie je de nieuwste artikelen; een
+   ouder artikel vind je via het zoekveld boven de lijst (titel, naam,
+   persoon of gezelschap) — resultaten verschijnen bovenaan.
 3. Artikelen **zonder foto** krijgen een ⚠ waarschuwing — een voorpagina
    oogt beter mét foto's. Klik op **Afbeelding toevoegen** naast het artikel
    om er direct één te uploaden.
