@@ -12,8 +12,9 @@ import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import type { User } from 'firebase/auth';
 import { onAuthStateChanged } from 'firebase/auth';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { getFirebaseAuth } from '../../lib/firebase-client';
+import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
+import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { getFirebaseAuth, getFirebaseStorage } from '../../lib/firebase-client';
 import { getDb } from '../../lib/firebase';
 
 type ArticleType = 'review' | 'interview';
@@ -96,6 +97,49 @@ export class MpEditArticle extends LitElement {
     .error {
       color: #a33;
     }
+
+    .images-row {
+      display: flex;
+      gap: var(--mp-size--3, 12px);
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .image-item {
+      position: relative;
+    }
+
+    .image-item img {
+      width: 96px;
+      height: 72px;
+      object-fit: cover;
+      border-radius: var(--mp-border-radius--1, 5px);
+      display: block;
+    }
+
+    .image-item .remove {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      width: 22px;
+      height: 22px;
+      padding: 0;
+      border-radius: 50%;
+      background: var(--mp-color-dark--80, #333);
+      color: #fff;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .upload-label {
+      font-size: var(--mp-text-c1-font-size, 16px);
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .upload-label input {
+      display: none;
+    }
   `;
 
   @property({ type: String, attribute: 'article-id' }) articleId = '';
@@ -107,6 +151,8 @@ export class MpEditArticle extends LitElement {
   @state() private title2 = '';
   @state() private name = '';
   @state() private date = '';
+  @state() private images: string[] = [];
+  @state() private uploading = false;
   @state() private saving = false;
   @state() private statusMessage = '';
   @state() private errorMessage = '';
@@ -140,6 +186,7 @@ export class MpEditArticle extends LitElement {
       this.title2 = String(data.title || '');
       this.name = String(data.name || '');
       this.date = String(data[this.dateField] || '');
+      this.images = Array.isArray(data.images) ? data.images : [];
       this.loaded = true;
     } catch (error) {
       this.errorMessage = error instanceof Error ? error.message : 'Laden mislukt';
@@ -163,6 +210,39 @@ export class MpEditArticle extends LitElement {
       this.errorMessage = error instanceof Error ? error.message : 'Opslaan mislukt';
     }
     this.saving = false;
+  }
+
+  private async uploadImage(e: Event): Promise<void> {
+    const input = e.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file) return;
+    this.uploading = true;
+    this.errorMessage = '';
+    try {
+      const folder = this.type === 'review' ? 'recensie' : 'interview';
+      const fileRef = storageRef(getFirebaseStorage(), `${folder}/${file.name}_${Date.now()}`);
+      await uploadBytes(fileRef, file);
+      const url = await getDownloadURL(fileRef);
+      await updateDoc(doc(getDb(), this.collectionName, this.articleId), { images: arrayUnion(url) });
+      this.images = [...this.images, url];
+      this.statusMessage = 'Afbeelding toegevoegd — de site wordt binnen ±15 minuten bijgewerkt';
+    } catch (error) {
+      this.errorMessage = error instanceof Error ? error.message : 'Upload mislukt';
+    }
+    this.uploading = false;
+  }
+
+  private async removeImage(url: string): Promise<void> {
+    if (!window.confirm('Afbeelding verwijderen van dit artikel?')) return;
+    this.errorMessage = '';
+    try {
+      await updateDoc(doc(getDb(), this.collectionName, this.articleId), { images: arrayRemove(url) });
+      this.images = this.images.filter(image => image !== url);
+      this.statusMessage = 'Afbeelding verwijderd — de site wordt binnen ±15 minuten bijgewerkt';
+    } catch (error) {
+      this.errorMessage = error instanceof Error ? error.message : 'Verwijderen mislukt';
+    }
   }
 
   override render() {
@@ -191,6 +271,23 @@ export class MpEditArticle extends LitElement {
         <label>
           Datum
           <input type="text" .value=${this.date} @input=${(e: Event) => (this.date = (e.target as HTMLInputElement).value)} />
+        </label>
+        <label>
+          Afbeeldingen
+          <div class="images-row">
+            ${this.images.map(
+              url => html`
+                <span class="image-item">
+                  <img src=${url} alt="" loading="lazy" />
+                  <button class="remove" title="Verwijderen" @click=${() => this.removeImage(url)}>×</button>
+                </span>
+              `
+            )}
+            <span class="upload-label">
+              ${this.uploading ? 'Bezig…' : '+ Afbeelding toevoegen'}
+              <input type="file" accept="image/*" ?disabled=${this.uploading} @change=${this.uploadImage} />
+            </span>
+          </div>
         </label>
         <div class="actions">
           <button ?disabled=${this.saving} @click=${this.save}>${this.saving ? 'Bezig…' : 'Sla op'}</button>
