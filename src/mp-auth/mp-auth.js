@@ -1,8 +1,10 @@
 import { MPElement, html } from '../mp-element/mp-element';
 import { css } from './mp-auth.css.js';
-import { BooleanConverter } from 'html-element-property-mixins/src/utils/attribute-converters';
-import '../mp-input/mp-input';
-import '../mp-button/mp-button';
+import '../mp-textarea/mp-textarea.js';
+import '../mp-input/mp-input.js';
+import '../mp-button/mp-button.js';
+import { BooleanConverter } from 'html-element-property-mixins/src/utils/attribute-converters/index.js';
+
 class MPAuth extends MPElement {
 
   static get properties() {
@@ -26,6 +28,31 @@ class MPAuth extends MPElement {
 
   get styles() {
     return html`<style>${css}</style>`;
+  }
+
+  constructor() {
+    super();
+    this._loadFirebaseScripts();
+  }
+
+  _loadFirebaseScripts() {
+    this._addScript("https://www.gstatic.com/firebasejs/7.23.0/firebase-app.js", () => {
+      firebase.initializeApp({
+        apiKey: "AIzaSyC8em8nKNhnyhDFrj4_pTrRpGy8nmNxh8k",
+        authDomain: "margriet-prinssen.firebaseapp.com",
+        projectId: "margriet-prinssen",
+        storageBucket: "margriet-prinssen.appspot.com",
+        appId: "1:840668873185:web:fc66cab4b29d56940052a0"
+      });
+      this._addScript("https://www.gstatic.com/firebasejs/7.23.0/firebase-auth.js");
+    });
+  }
+
+  _addScript( src, callback ) {
+    var s = document.createElement( 'script' );
+    s.setAttribute( 'src', src );
+    s.onload=callback;
+    document.body.appendChild( s );
   }
 
   connectedCallback() {
@@ -64,6 +91,7 @@ class MPAuth extends MPElement {
       )
     }).catch(e => console.log(e));
 
+    await firebase.auth().signInWithEmailAndPassword(this.email, this.password)
 
     const data = await resp.json();
     if(resp.status === 400) window.alert(data.error.message);

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /add
+Disallow: /import
+Disallow: /curate
+
+Sitemap: https://margrietprinssen.nl/sitemap-index.xml

@@ -2,11 +2,11 @@ import { MPElement, html } from '../mp-element/mp-element';
 import '../basic-preview/basic-preview';
 import '../mp-page/mp-page';
 import '../mp-search/mp-search';
-import FireStoreParser from 'firestore-parser/index';
+import FireStoreParser from 'firestore-parser/index.js';
 import { css } from './interviews-page.css.js';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
-import { BooleanConverter } from 'html-element-property-mixins/src/utils/attribute-converters';
-import { unsafeSVG } from 'lit-html/directives/unsafe-svg';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
+import { BooleanConverter } from 'html-element-property-mixins/src/utils/attribute-converters/index.js';
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 import { algoliaLogo } from '../logo/algolia.js';
 
 class InterviewsPage extends MPElement {

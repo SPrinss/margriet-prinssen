@@ -1,0 +1,404 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const {
+  title = 'Margriet Prinssen - Theaterjournalist',
+  description = 'Theater journalist website voor Margriet Prinssen met recensies en interviews.',
+  image
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!DOCTYPE html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="canonical" href={canonicalURL} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale" content="nl_NL" />
+    {image && <meta property="og:image" content={image} />}
+
+    <!-- Google Fonts: Raleway and Work Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&family=Work+Sans:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  /* CSS Custom Properties - Design Tokens */
+  :root {
+    /* Sizes */
+    --mp-size--1: 4px;
+    --mp-size--2: 8px;
+    --mp-size--3: 12px;
+    --mp-size--4: 16px;
+    --mp-size--5: 20px;
+    --mp-size--6: 24px;
+    --mp-size--7: 32px;
+    --mp-size--8: 40px;
+    --mp-size--9: 48px;
+    --mp-size--10: 64px;
+    --mp-size--11: 80px;
+    --mp-size--12: 96px;
+    --mp-size--13: 128px;
+    --mp-size--14: 256px;
+    --mp-size--15: 384px;
+    --mp-size--16: 512px;
+    --mp-size--17: 768px;
+    --mp-size--18: 1024px;
+    --mp-size--19: 1280px;
+    --mp-size--20: 1440px;
+    --mp-size--21: 1600px;
+    --mp-size--22: 1920px;
+
+    /* Colors - Main (Blue) */
+    --mp-color-main: #b2cdff;
+    --mp-color-main--100: #b2cdff;
+    --mp-color-main--90: #b9d2ff;
+    --mp-color-main--80: #c1d7ff;
+    --mp-color-main--70: #c9dcff;
+    --mp-color-main--60: #d0e1ff;
+    --mp-color-main--50: #d8e6ff;
+    --mp-color-main--40: #e0ebff;
+    --mp-color-main--30: #e7f0ff;
+    --mp-color-main--20: #eff5ff;
+    --mp-color-main--10: #f7faff;
+    --mp-color-main--alpha10: rgba(178, 205, 255, 0.1);
+
+    /* Colors - Secondary (Gold) */
+    --mp-color-secondary: #f4d18f;
+    --mp-color-secondary--100: #f4d18f;
+    --mp-color-secondary--90: #f5d59a;
+    --mp-color-secondary--80: #f6daa5;
+    --mp-color-secondary--70: #f7deb0;
+    --mp-color-secondary--60: #f8e3bb;
+    --mp-color-secondary--50: #f9e8c7;
+    --mp-color-secondary--40: #faecd2;
+    --mp-color-secondary--30: #fbf1dd;
+    --mp-color-secondary--20: #fcf5e8;
+    --mp-color-secondary--10: #fdfaf3;
+
+    /* Colors - Dark */
+    --mp-color-dark--100: #000;
+    --mp-color-dark--90: #191919;
+    --mp-color-dark--80: #333;
+    --mp-color-dark--70: #4c4c4c;
+    --mp-color-dark--60: #666;
+    --mp-color-dark--50: #7f7f7f;
+    --mp-color-dark--40: #999;
+    --mp-color-dark--30: #b2b2b2;
+    --mp-color-dark--20: #ccc;
+    --mp-color-dark--10: #e5e5e5;
+
+    /* Colors - Light */
+    --mp-color-light--100: #fff;
+    --mp-color-light--90: rgba(255, 255, 255, 0.9);
+    --mp-color-light--80: rgba(255, 255, 255, 0.8);
+    --mp-color-light--70: rgba(255, 255, 255, 0.7);
+    --mp-color-light--60: rgba(255, 255, 255, 0.6);
+    --mp-color-light--50: rgba(255, 255, 255, 0.5);
+    --mp-color-light--40: rgba(255, 255, 255, 0.4);
+    --mp-color-light--30: rgba(255, 255, 255, 0.3);
+    --mp-color-light--20: rgba(255, 255, 255, 0.2);
+    --mp-color-light--10: rgba(255, 255, 255, 0.1);
+
+    /* Typography - Headings */
+    --mp-text-h-font-family: 'Raleway', serif;
+    --mp-text-h-font-weight: 700;
+    --mp-text-h-line-height: 110%;
+    --mp-text-h1-font-size: 64px;
+    --mp-text-h1-mobile-font-size: 30px;
+    --mp-text-h2-font-size: 52px;
+    --mp-text-h2-mobile-font-size: 26px;
+    --mp-text-h2-line-height: 100%;
+    --mp-text-h3-font-size: 40px;
+    --mp-text-h3-mobile-font-size: 22px;
+    --mp-text-h3-font-weight: 600;
+    --mp-text-h4-font-size: 26px;
+    --mp-text-h4-font-weight: 600;
+    --mp-text-h4-mobile-font-size: 20px;
+    --mp-text-h5-font-size: 20px;
+    --mp-text-h5-mobile-font-size: 18px;
+    --mp-text-h5-font-weight: 400;
+    --mp-text-h5-font-family: 'Raleway', serif;
+    --mp-text-h5-line-height: 130%;
+    --mp-text-h6-font-size: 14px;
+    --mp-text-h6-mobile-font-size: 16px;
+    --mp-text-h6-font-weight: 400;
+    --mp-text-h6-font-family: 'Work Sans', sans-serif;
+    --mp-text-h6-text-transform: uppercase;
+
+    /* Typography - Body */
+    --mp-text-b-font-family: 'Work Sans', sans-serif;
+    --mp-text-b-font-weight: 400;
+    --mp-text-b-line-height: 150%;
+    --mp-text-b1-font-size: 20px;
+    --mp-text-b1-mobile-font-size: 18px;
+    --mp-text-b2-font-size: 18px;
+    --mp-text-b2-mobile-font-size: 16px;
+    --mp-text-b3-font-size: 16px;
+    --mp-text-b3-mobile-font-size: 14px;
+
+    /* Typography - Captions */
+    --mp-text-c-font-family: 'Work Sans', sans-serif;
+    --mp-text-c-font-weight: 400;
+    --mp-text-c-line-height: 145%;
+    --mp-text-c1-line-height: 145%;
+    --mp-text-c1-font-size: 16px;
+    --mp-text-c1-mobile-font-size: 14px;
+    --mp-text-c2-font-size: 14px;
+    --mp-text-c2-mobile-font-size: 12px;
+    --mp-text-c3-font-size: 12px;
+    --mp-text-c3-mobile-font-size: 10px;
+
+    /* Border Radius */
+    --mp-border-radius--1: 5px;
+
+    /* Box Shadows */
+    --mp-box-shadow--1: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    --mp-box-shadow--2: 0 3px 6px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.12);
+    --mp-box-shadow--3: 0 10px 20px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1);
+    --mp-box-shadow--4: 0 15px 25px rgba(0, 0, 0, 0.15), 0 5px 10px rgba(0, 0, 0, 0.05);
+    --mp-box-shadow--5: 0 20px 40px rgba(0, 0, 0, 0.2);
+
+    /* Page Layout */
+    --mp-page-max-width: 1080px;
+  }
+
+  /* Reset and Base Styles */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-family: var(--mp-text-b-font-family);
+    font-weight: var(--mp-text-b-font-weight);
+    line-height: var(--mp-text-b-line-height);
+    background-color: var(--mp-color-secondary--20);
+    color: var(--mp-color-dark--100);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  [hidden] {
+    display: none;
+  }
+
+  figure,
+  img {
+    object-fit: contain;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Typography */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+    padding: 0;
+  }
+
+  h1 {
+    font-family: var(--mp-text-h1-font-family, var(--mp-text-h-font-family));
+    font-size: var(--mp-text-h1-font-size);
+    font-weight: var(--mp-text-h1-font-weight, var(--mp-text-h-font-weight));
+    line-height: var(--mp-text-h1-line-height, var(--mp-text-h-line-height));
+  }
+
+  h2 {
+    font-family: var(--mp-text-h2-font-family, var(--mp-text-h-font-family));
+    font-size: var(--mp-text-h2-font-size);
+    font-weight: var(--mp-text-h2-font-weight, var(--mp-text-h-font-weight));
+    line-height: var(--mp-text-h2-line-height, var(--mp-text-h-line-height));
+  }
+
+  h3 {
+    font-family: var(--mp-text-h3-font-family, var(--mp-text-h-font-family));
+    font-size: var(--mp-text-h3-font-size);
+    font-weight: var(--mp-text-h3-font-weight, var(--mp-text-h-font-weight));
+    line-height: var(--mp-text-h3-line-height, var(--mp-text-h-line-height));
+  }
+
+  h4 {
+    font-family: var(--mp-text-h4-font-family, var(--mp-text-h-font-family));
+    font-size: var(--mp-text-h4-font-size);
+    font-weight: var(--mp-text-h4-font-weight, var(--mp-text-h-font-weight));
+    line-height: var(--mp-text-h4-line-height, var(--mp-text-h-line-height));
+  }
+
+  h5 {
+    font-family: var(--mp-text-h5-font-family, var(--mp-text-h-font-family));
+    font-size: var(--mp-text-h5-font-size);
+    font-weight: var(--mp-text-h5-font-weight, var(--mp-text-h-font-weight));
+    line-height: var(--mp-text-h5-line-height, var(--mp-text-h-line-height));
+  }
+
+  h6 {
+    font-family: var(--mp-text-h6-font-family, var(--mp-text-h-font-family));
+    font-size: var(--mp-text-h6-font-size);
+    font-weight: var(--mp-text-h6-font-weight, var(--mp-text-h-font-weight));
+    line-height: var(--mp-text-h6-line-height, var(--mp-text-h-line-height));
+    text-transform: var(--mp-text-h6-text-transform);
+  }
+
+  p {
+    margin: 0;
+    padding: 0;
+    font-family: var(--mp-text-b2-font-family, var(--mp-text-b-font-family));
+    font-size: var(--mp-text-b2-font-size);
+    font-weight: var(--mp-text-b2-font-weight, var(--mp-text-b-font-weight));
+    line-height: var(--mp-text-b2-line-height, var(--mp-text-b-line-height));
+  }
+
+  article {
+    font-family: var(--mp-text-b2-font-family, var(--mp-text-b-font-family));
+    font-size: var(--mp-text-b2-font-size);
+    font-weight: var(--mp-text-b2-font-weight, var(--mp-text-b-font-weight));
+    line-height: var(--mp-text-b2-line-height, var(--mp-text-b-line-height));
+  }
+
+  span {
+    font-family: var(--mp-text-c1-font-family, var(--mp-text-c-font-family));
+    font-size: var(--mp-text-c1-font-size);
+    font-weight: var(--mp-text-c1-font-weight, var(--mp-text-c-font-weight));
+    line-height: var(--mp-text-c1-line-height, var(--mp-text-c-line-height));
+  }
+
+  li {
+    margin: 0;
+    font-family: var(--mp-text-h6-font-family, var(--mp-text-h-font-family));
+    font-size: var(--mp-text-h6-font-size);
+    font-weight: var(--mp-text-h6-font-weight, var(--mp-text-h-font-weight));
+    line-height: var(--mp-text-h6-line-height, var(--mp-text-h-line-height));
+    text-transform: var(--mp-text-h6-text-transform);
+  }
+
+  blockquote {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  blockquote p {
+    font-family: var(--mp-text-h4-font-family, var(--mp-text-h-font-family));
+    font-size: var(--mp-text-h4-font-size);
+    font-weight: var(--mp-text-h4-font-weight, var(--mp-text-h-font-weight));
+    line-height: var(--mp-text-h4-line-height, var(--mp-text-h-line-height));
+  }
+
+  blockquote span {
+    margin-top: var(--mp-size--5);
+    font-family: var(--mp-text-h5-font-family, var(--mp-text-h-font-family));
+    font-size: var(--mp-text-h5-font-size);
+    font-weight: var(--mp-text-h5-font-weight, var(--mp-text-h-font-weight));
+    line-height: var(--mp-text-h5-line-height, var(--mp-text-h-line-height));
+  }
+
+  /* Dark Mode */
+  @media (prefers-color-scheme: dark) {
+    body {
+      background-color: var(--mp-color-dark--90);
+      color: var(--mp-color-light--100);
+    }
+  }
+
+  /* Mobile Responsive Typography */
+  @media only screen and (max-width: 660px) {
+    h1 {
+      font-size: var(--mp-text-h1-mobile-font-size);
+    }
+
+    h2 {
+      font-size: var(--mp-text-h2-mobile-font-size);
+    }
+
+    h3 {
+      font-size: var(--mp-text-h3-mobile-font-size);
+    }
+
+    h4 {
+      font-size: var(--mp-text-h4-mobile-font-size);
+    }
+
+    blockquote p {
+      font-size: var(--mp-text-h4-mobile-font-size);
+    }
+
+    h5 {
+      font-size: var(--mp-text-h5-mobile-font-size);
+    }
+
+    blockquote span {
+      font-size: var(--mp-text-h5-mobile-font-size);
+    }
+
+    h6 {
+      font-size: var(--mp-text-h6-mobile-font-size);
+    }
+
+    p {
+      font-size: var(--mp-text-b2-mobile-font-size);
+    }
+
+    article {
+      font-size: var(--mp-text-b2-mobile-font-size);
+    }
+
+    span {
+      font-size: var(--mp-text-b3-mobile-font-size);
+    }
+
+    li {
+      font-size: var(--mp-text-h6-mobile-font-size);
+    }
+  }
+</style>

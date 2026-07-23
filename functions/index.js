@@ -1,12 +1,17 @@
-const functions = require('firebase-functions');
+const functions = require('firebase-functions/v1');
 
 const algoliasearch = require('algoliasearch');
 
 const admin = require('firebase-admin');
+const { FieldValue } = require('firebase-admin/firestore');
 
-const algoliaClient = algoliasearch(functions.config().algolia.app, functions.config().algolia.key);
-const reviewsIndex = algoliaClient.initIndex('reviews');
-const interviewsIndex = algoliaClient.initIndex('interviews');
+// Algolia config comes from environment variables (.env at deploy, .env.local in the emulator).
+// Safety: when running in the emulator, index names default to *_test so emulated
+// functions can never write to the production indices, even with missing config.
+const emulated = process.env.FUNCTIONS_EMULATOR === 'true';
+const algoliaClient = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_ADMIN_KEY);
+const reviewsIndex = algoliaClient.initIndex(process.env.ALGOLIA_REVIEWS_INDEX || (emulated ? 'reviews_test' : 'reviews'));
+const interviewsIndex = algoliaClient.initIndex(process.env.ALGOLIA_INTERVIEWS_INDEX || (emulated ? 'interviews_test' : 'interviews'));
 
 admin.initializeApp();
 
@@ -94,6 +99,77 @@ exports.deleteFromInterviewIndex = functions.firestore.document('interviews/{int
     .onDelete(snapshot => 
       interviewsIndex.deleteObject(snapshot.id)
     );
+
+// ---------------------------------------------------------------------------
+// Site rebuild triggering
+//
+// The site is statically generated, so content changes require a rebuild.
+// Every write to reviews/interviews marks meta/rebuild as pending; a scheduled
+// function dispatches ONE GitHub Actions deploy once writes have quieted down
+// for 5+ minutes (so a bulk import causes a single rebuild, not one per doc).
+// meta/rebuild is not client-writable (no rule grants access); only these
+// admin-SDK functions touch it.
+
+const REBUILD_QUIET_MS = 5 * 60 * 1000;
+
+function markContentChanged() {
+  return admin.firestore().doc('meta/rebuild').set({
+    pending: true,
+    lastContentWriteAt: FieldValue.serverTimestamp(),
+  }, { merge: true });
+}
+
+exports.requestRebuildOnReviewWrite = functions.firestore.document('reviews/{reviewId}')
+  .onWrite(() => markContentChanged());
+
+exports.requestRebuildOnInterviewWrite = functions.firestore.document('interviews/{interviewId}')
+  .onWrite(() => markContentChanged());
+
+// Homepage curation changes also require a rebuild. Loop-safe: writes only
+// meta/rebuild, which has no trigger listening to it.
+exports.requestRebuildOnHomepageChange = functions.firestore.document('settings/{settingId}')
+  .onWrite(() => markContentChanged());
+
+exports.dispatchSiteRebuild = functions.pubsub.schedule('every 10 minutes').onRun(async () => {
+  const docRef = admin.firestore().doc('meta/rebuild');
+  const snapshot = await docRef.get();
+  const data = snapshot.data();
+  if (!data || !data.pending || !data.lastContentWriteAt) return null;
+
+  // Debounce: wait until content writes have stopped for a while
+  if (Date.now() - data.lastContentWriteAt.toMillis() < REBUILD_QUIET_MS) return null;
+
+  const token = process.env.GH_DISPATCH_TOKEN;
+  if (!token) {
+    console.warn('GH_DISPATCH_TOKEN not set; skipping site rebuild dispatch');
+    return null;
+  }
+
+  const response = await fetch(
+    'https://api.github.com/repos/SPrinss/margriet-prinssen/actions/workflows/deploy.yml/dispatches',
+    {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+      },
+      body: JSON.stringify({ ref: 'master' }),
+    }
+  );
+
+  if (response.status === 204) {
+    await docRef.set({
+      pending: false,
+      lastDispatchedAt: FieldValue.serverTimestamp(),
+    }, { merge: true });
+    console.log('Site rebuild dispatched to GitHub Actions');
+  } else {
+    const body = await response.text();
+    console.error(`GitHub workflow dispatch failed: ${response.status} ${body}`);
+  }
+  return null;
+});
 
 exports.sendEmail = functions.https.onRequest((req, res) => {
     res.set('Access-Control-Allow-Origin', '*');

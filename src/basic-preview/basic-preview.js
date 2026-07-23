@@ -1,5 +1,5 @@
 import { MPElement, html } from '../mp-element/mp-element';
-import { StringConverter, NumberConverter, BooleanConverter, ObjectConverter } from 'html-element-property-mixins/src/utils/attribute-converters';
+import { StringConverter, NumberConverter, BooleanConverter, ObjectConverter } from 'html-element-property-mixins/src/utils/attribute-converters/index.js';
 import { css } from './basic-preview.css.js';
 
 class BasicPreview extends MPElement {

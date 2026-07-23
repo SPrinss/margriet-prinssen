@@ -1,0 +1,161 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import ContactForm from '../components/ContactForm.astro';
+
+// Margriet's photo URL from Firebase Storage
+const photoUrl = 'https://firebasestorage.googleapis.com/v0/b/margriet-prinssen.appspot.com/o/Margriet_Prinssen.jpg?alt=media&token=70f95611-9368-4172-bd4b-47032114b025';
+---
+
+<PageLayout
+  title="Over Margriet Prinssen - Theaterjournalist"
+  description="Margriet Prinssen is theaterjournalist. Ze schrijft recensies en interviews voor Mediahuis, Haarlems Dagblad, de Uitkrant, Scenes, Odeon en de Theaterkrant."
+  showFooter={true}
+>
+  <div class="over-page">
+    <header>
+      <h1>Over Margriet Prinssen</h1>
+    </header>
+
+    <section class="intro-section">
+      <div class="intro-content">
+        <p>Margriet Prinssen is theaterjournalist. Ze schrijft recensies en interviews voor Mediahuis, Haarlems Dagblad, de Uitkrant, Scenes, Odeon en de Theaterkrant. Tot en met 2019 werkte ze ook als eindredacteur bij Nationale Opera & Ballet.</p>
+        <a href="/over/interview" class="arrow-link">Lees hier een interview met mij uit 2019</a>
+      </div>
+      <img src={photoUrl} alt="Foto van Margriet" loading="lazy" />
+    </section>
+
+    <ContactForm />
+
+    <section class="verantwoording-section">
+      <article>
+        <h3>Verantwoording</h3>
+
+        <p>Op deze site vind je recensies en interviews vanaf de jaren negentig over met name theater, maar ook opera en dans.</p>
+
+        <p>Vanaf 1989 schrijf ik recensies voor Haarlems Dagblad en wat achtereenvolgens De GPD-bladen, TMG Media en Mediahuis (Noordhollands Dagblad, Haarlems Dagblad, Leidsch Dagblad, De Gooi- en Eemlander en IJmuider Courant) heette; sinds 2011 artikelen over theater voor de Amsterdamse Uitkrant, sinds het eerste nummer voor theaterblad Scenes en daarnaast voor programmaboeken van Nationale Opera & Ballet en voor Odeon.</p>
+
+        <p>Bijzonder is de zoekfunctie: je kunt op personen, gezelschappen en nog veel meer zoeken. Ook voor mijzelf een zoektocht vol verrassingen. Er staan zo'n 700 artikelen in, lang niet alles, maar wel veel van wat ik heb geschreven in de loop van de tijd. Van de eerste jaren ontbreekt vrijwel alles, eenvoudig omdat de digitalisering nog in de kinderschoenen stond. Flopjes naar de drukker brengen, recensies in nachtelijke uren met het modem versturen, met ingehouden adem of het wonder weer geschieden zou (het geluid dat zo'n modem voortbracht, het suggestieve piepen en kraken - alsof de woordenbrij letterlijk door een buis moest worden geduwd door ijverige maar oververmoeide kabouters - duurde wel een minuut...).</p>
+
+        <p>Enige volledigheid wordt niet gepretendeerd, maar vanwege mijn werk voor het Haarlems Dagblad zijn vooral de recensies van alles wat in de Toneelschuur te zien was redelijk compleet.</p>
+      </article>
+    </section>
+  </div>
+</PageLayout>
+
+<style>
+  .over-page {
+    max-width: var(--mp-page-max-width, 1080px);
+    margin: 0 auto;
+    padding: 0 var(--mp-size--5, 20px);
+  }
+
+  header {
+    text-align: center;
+    padding: var(--mp-size--8, 40px);
+    margin-bottom: var(--mp-size--6, 24px);
+  }
+
+  header h1 {
+    animation: ease-in-opacity 1.25s forwards ease-in-out;
+  }
+
+  .intro-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--mp-size--10, 64px);
+    margin-bottom: var(--mp-size--10, 64px);
+    animation: ease-in-opacity 1.25s forwards ease-in-out;
+  }
+
+  .intro-content {
+    flex: 1;
+    margin-right: var(--mp-size--6, 24px);
+  }
+
+  .intro-content p {
+    margin: var(--mp-size--4, 16px) 0;
+  }
+
+  .intro-section img {
+    margin-left: var(--mp-size--6, 24px);
+    width: 100%;
+    max-width: 300px;
+    object-fit: contain;
+    max-height: 360px;
+  }
+
+  .arrow-link {
+    display: inline-block;
+    margin-top: var(--mp-size--4, 16px);
+    padding: 0 0 var(--mp-size--3, 12px) 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-family: var(--mp-text-b3-font-family, var(--mp-text-b-font-family));
+    font-size: var(--mp-text-b3-font-size);
+    font-weight: var(--mp-text-b3-font-weight, var(--mp-text-b-font-weight));
+    line-height: var(--mp-text-b3-line-height, var(--mp-text-b-line-height));
+    border-bottom: 1px solid var(--mp-color-dark--100);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .arrow-link::after {
+    content: '->';
+    padding-left: var(--mp-size--3, 12px);
+  }
+
+  .verantwoording-section {
+    margin-top: var(--mp-size--10, 64px);
+    margin-bottom: var(--mp-size--10, 64px);
+    animation: ease-in-opacity 1.25s forwards ease-in-out;
+  }
+
+  .verantwoording-section h3 {
+    margin-top: var(--mp-size--7, 32px);
+    margin-bottom: var(--mp-size--3, 12px);
+  }
+
+  .verantwoording-section p {
+    margin: var(--mp-size--4, 16px) 0;
+  }
+
+  @keyframes ease-in-opacity {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  /* Dark Mode */
+  @media (prefers-color-scheme: dark) {
+    .arrow-link {
+      border-bottom: 1px solid var(--mp-color-light--100);
+    }
+  }
+
+  /* Mobile Responsive */
+  @media only screen and (max-width: 660px) {
+    .intro-section {
+      flex-wrap: wrap-reverse;
+      justify-content: center;
+      align-items: flex-end;
+      margin-top: var(--mp-size--7, 32px);
+    }
+
+    .intro-content {
+      margin-right: 0;
+      width: 100%;
+    }
+
+    .intro-section img {
+      margin-left: 0;
+      margin-bottom: var(--mp-size--5, 20px);
+      max-width: 100%;
+    }
+  }
+</style>

@@ -1,0 +1,44 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import MpCurateHome from '../components/lit/MpCurateHome';
+---
+
+<PageLayout
+  title="Homepage beheren - Margriet Prinssen"
+  description="Kies welke recensies en interviews op de homepage staan."
+>
+  <div class="curate-page">
+    <header>
+      <h3>Homepage beheren</h3>
+      <p>
+        Kies welke artikelen op de homepage staan, of gebruik de standaard (laatst toegevoegd).
+        Items zonder afbeelding krijgen een waarschuwing; upload direct een afbeelding waar nodig.
+      </p>
+    </header>
+    <MpCurateHome client:only="lit" />
+  </div>
+</PageLayout>
+
+<style>
+  .curate-page {
+    max-width: var(--mp-page-max-width, 1080px);
+    margin: 0 auto;
+    padding: 0 var(--mp-size--5, 20px);
+    min-height: calc(100vh - 200px);
+  }
+
+  header {
+    text-align: center;
+    padding: var(--mp-size--6, 24px) 0;
+  }
+
+  header p {
+    max-width: 660px;
+    margin: var(--mp-size--3, 12px) auto 0;
+  }
+
+  .curate-page :global(mp-curate-home) {
+    display: block;
+    width: 100%;
+  }
+</style>

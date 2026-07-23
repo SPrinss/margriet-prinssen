@@ -2,8 +2,8 @@ import { MPElement, html } from '../mp-element/mp-element';
 import { css } from './mp-recensie.css.js';
 import '../mp-page/mp-page';
 import '../mp-auth/mp-auth';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
-import { BooleanConverter } from 'html-element-property-mixins/src/utils/attribute-converters';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
+import { BooleanConverter } from 'html-element-property-mixins/src/utils/attribute-converters/index.js';
 
 class MPRecensie extends MPElement {
   static get properties() {

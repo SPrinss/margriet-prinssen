@@ -1,0 +1,265 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { getAllReviews, getReviewById, type Review, type Person } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const reviews = await getAllReviews();
+
+  return reviews.map((review) => ({
+    params: { id: review.id },
+    props: { review },
+  }));
+}
+
+interface Props {
+  review: Review;
+}
+
+const { review } = Astro.props;
+
+// Helper function to parse review content (convert newlines to paragraphs)
+function parseReviewContent(content: string): string {
+  if (!content) return '';
+  return content
+    .replace(/↵/g, '\n')
+    .split('\n')
+    .map((paragraph) => (paragraph.trim() ? `<p>${paragraph}</p>` : ''))
+    .join('');
+}
+
+// Helper to safely get name from Person object or string
+function getName(item: Person | string | undefined | null): string {
+  if (!item) return '';
+  if (typeof item === 'string') return item;
+  return item.name || '';
+}
+
+// Page metadata
+const pageTitle = review.title || review.name;
+const title = `${pageTitle} - Recensie - Margriet Prinssen`;
+const description = `Theaterrecensie van ${pageTitle} door Margriet Prinssen. ${review.theater ? `Theater: ${getName(review.theater)}` : ''} ${review.reviewDate ? `Datum: ${review.reviewDate}` : ''}`.trim();
+
+const parsedReview = parseReviewContent(review.review);
+---
+
+<PageLayout title={title} description={description}>
+  <div class="page-container">
+    <header class="page-header">
+      <h2>{review.title || review.name}</h2>
+      <h5>
+        {review.reviewDate && <span>{review.reviewDate}</span>}
+        {review.theater && <span> - {getName(review.theater)}</span>}
+        {review.city && <span> - {getName(review.city)}</span>}
+      </h5>
+    </header>
+
+    <main class="review-content">
+      <div class="aside-left">
+        <a href="/recensies" class="back-link">Terug naar recensies</a>
+      </div>
+
+      <div class="main-content">
+        <article set:html={parsedReview} />
+
+        {review.images && review.images.length > 0 && (
+          <div class="images">
+            {review.images.map((image) => (
+              <figure>
+                <img src={image} alt={`Afbeelding bij ${pageTitle}`} loading="lazy" />
+              </figure>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <aside class="aside-right">
+        <h3>{review.name}</h3>
+
+        {review.groups && review.groups.length > 0 && (
+          <div class="groups">
+            {review.groups.map((group) => (
+              <h5>{getName(group)}</h5>
+            ))}
+          </div>
+        )}
+
+        {review.writers && review.writers.length > 0 && (
+          <ul class="person-list">
+            <li class="label">Tekst</li>
+            {review.writers.map((writer) => (
+              <li>{getName(writer)}</li>
+            ))}
+          </ul>
+        )}
+
+        {review.directors && review.directors.length > 0 && (
+          <ul class="person-list">
+            <li class="label">Regie</li>
+            {review.directors.map((director) => (
+              <li>{getName(director)}</li>
+            ))}
+          </ul>
+        )}
+
+        {review.actors && review.actors.length > 0 && (
+          <ul class="person-list">
+            <li class="label">Spel</li>
+            {review.actors.map((actor) => (
+              <li>{getName(actor)}</li>
+            ))}
+          </ul>
+        )}
+      </aside>
+    </main>
+  </div>
+</PageLayout>
+
+<style>
+  .page-container {
+    --mp-page-max-width: 100%;
+    max-width: var(--mp-page-max-width);
+    margin: 0 auto;
+    padding: 0 var(--mp-size--5);
+  }
+
+  .page-header {
+    text-align: center;
+    padding: var(--mp-size--8);
+  }
+
+  .page-header h2 {
+    margin-bottom: var(--mp-size--3);
+  }
+
+  .page-header h5 {
+    color: var(--mp-color-dark--60);
+  }
+
+  .review-content {
+    display: grid;
+    grid-template-columns: 2fr 4fr minmax(0px, 2fr);
+    grid-template-areas: "aside-left body aside-right";
+    gap: var(--mp-size--8);
+    margin-top: var(--mp-size--7);
+    justify-items: center;
+    align-items: start;
+    margin-bottom: var(--mp-size--9);
+  }
+
+  .aside-left {
+    grid-area: aside-left;
+  }
+
+  .main-content {
+    grid-area: body;
+  }
+
+  .aside-right {
+    grid-area: aside-right;
+    justify-self: start;
+    text-align: start;
+  }
+
+  .back-link {
+    display: block;
+    padding-bottom: var(--mp-size--3);
+    border-bottom: 1px solid var(--mp-color-dark--100);
+    font-family: var(--mp-text-b-font-family);
+    font-size: var(--mp-text-b3-font-size);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .back-link::before {
+    content: '<-';
+    padding-right: var(--mp-size--3);
+  }
+
+  article :global(p) {
+    margin: var(--mp-size--4) 0;
+  }
+
+  article :global(p:first-of-type) {
+    margin-top: 0;
+  }
+
+  .images {
+    margin-top: var(--mp-size--6);
+  }
+
+  .images figure {
+    margin: var(--mp-size--4) 0;
+  }
+
+  .images img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .aside-right h3 {
+    margin-bottom: var(--mp-size--3);
+  }
+
+  .groups {
+    margin-bottom: var(--mp-size--4);
+  }
+
+  .person-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: var(--mp-size--4);
+    font-family: var(--mp-text-b-font-family);
+    font-size: var(--mp-text-b3-font-size);
+  }
+
+  .person-list .label {
+    color: var(--mp-color-dark--60);
+    margin-bottom: var(--mp-size--2);
+    margin-top: var(--mp-size--3);
+  }
+
+  /* Dark Mode */
+  @media (prefers-color-scheme: dark) {
+    .page-header h5 {
+      color: var(--mp-color-light--60);
+    }
+
+    .back-link {
+      border-bottom-color: var(--mp-color-light--100);
+    }
+
+    .person-list .label {
+      color: var(--mp-color-secondary--100);
+    }
+  }
+
+  /* Mobile Responsive */
+  @media only screen and (max-width: 660px) {
+    .review-content {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto;
+      grid-template-areas: "aside-right" "aside-left" "body";
+      gap: var(--mp-size--6);
+      margin-bottom: var(--mp-size--6);
+    }
+
+    .aside-left {
+      grid-area: aside-right;
+      justify-self: center;
+      margin-bottom: var(--mp-size--6);
+    }
+
+    .aside-right {
+      grid-area: aside-left;
+      justify-self: center;
+      text-align: center;
+      padding: 0 var(--mp-size--6);
+      width: 100%;
+    }
+
+    .page-header {
+      padding-top: var(--mp-size--6);
+    }
+  }
+</style>

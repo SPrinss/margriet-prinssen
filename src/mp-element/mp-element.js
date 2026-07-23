@@ -1,5 +1,5 @@
 import { Properties } from 'html-element-property-mixins';
-import { PropertiesChangedCallback, PropertyChangedHandler, PropertiesChangedHandler } from 'html-element-property-mixins/src/addons';
+import { PropertiesChangedCallback, PropertyChangedHandler, PropertiesChangedHandler } from 'html-element-property-mixins/src/addons/index.js';
 import { html, render as litRender } from 'lit-html';
 
 class MPElement extends PropertiesChangedCallback(PropertyChangedHandler(PropertiesChangedHandler(Properties(HTMLElement)))) {

@@ -1,0 +1,28 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import MpAddContent from '../components/lit/MpAddContent';
+---
+
+<PageLayout
+  title="Content toevoegen - Margriet Prinssen"
+  description="Voeg nieuwe recensies en interviews toe aan de website."
+>
+  <div class="add-page">
+    <MpAddContent client:only="lit" />
+  </div>
+</PageLayout>
+
+<style>
+  .add-page {
+    max-width: var(--mp-page-max-width, 1080px);
+    margin: 0 auto;
+    padding: 0 var(--mp-size--5, 20px);
+    min-height: calc(100vh - 200px);
+  }
+
+  /* Ensure the component fills available space */
+  .add-page :global(mp-add-content) {
+    display: block;
+    width: 100%;
+  }
+</style>

@@ -1,0 +1,200 @@
+---
+interface Theater {
+  id: string;
+  name: string;
+}
+
+interface City {
+  id: string;
+  name: string;
+}
+
+interface Review {
+  id: string;
+  title: string;
+  name: string;
+  theater?: Theater;
+  city?: City;
+  reviewDate?: string;
+  images?: string[];
+  groups?: Array<{ id: string; name: string }>;
+}
+
+interface Props {
+  review: Review;
+}
+
+const { review } = Astro.props;
+const { id, title, name, theater, city, reviewDate, images, groups } = review;
+
+// Get first image if available
+const image = images && images.length > 0 ? images[0] : null;
+
+// Build the href
+const href = `/recensies/${id}`;
+---
+
+<a href={href} class="recensie-preview">
+  <header>
+    <div class="header-main">
+      {title && <h4>{title}</h4>}
+      {name && <h5>{name}</h5>}
+      {groups && groups.length > 0 && groups.map((group) => (
+        <h6>{group.name}</h6>
+      ))}
+    </div>
+    <div class="header-meta">
+      <ul>
+        {reviewDate && <li>{reviewDate}</li>}
+        {theater && <li>{theater.name}</li>}
+        {city && <li>{city.name}</li>}
+      </ul>
+    </div>
+  </header>
+</a>
+
+<style>
+  .recensie-preview {
+    display: block;
+    border-radius: var(--mp-border-radius--1);
+    box-shadow: var(--mp-box-shadow--1);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .recensie-preview:hover {
+    transform: scale(1.01);
+    cursor: pointer;
+    box-shadow: var(--mp-box-shadow--3);
+  }
+
+  header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: var(--mp-size--4);
+    background-color: var(--mp-color-main--60);
+    color: var(--mp-color-dark--100);
+  }
+
+  .header-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    flex: 1;
+  }
+
+  .header-meta {
+    flex: 1;
+  }
+
+  .header-meta ul {
+    text-align: right;
+    align-self: center;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    margin: 0;
+    font-family: var(--mp-text-h6-font-family, var(--mp-text-h-font-family));
+    font-size: var(--mp-text-h6-font-size);
+    font-weight: var(--mp-text-h6-font-weight, var(--mp-text-h-font-weight));
+    line-height: var(--mp-text-h6-line-height, var(--mp-text-h-line-height));
+    text-transform: var(--mp-text-h6-text-transform);
+  }
+
+  h4 {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    margin: 0;
+    font-family: var(--mp-text-h4-font-family, var(--mp-text-h-font-family));
+    font-size: var(--mp-text-h4-font-size);
+    font-weight: var(--mp-text-h4-font-weight, var(--mp-text-h-font-weight));
+    line-height: var(--mp-text-h4-line-height, var(--mp-text-h-line-height));
+  }
+
+  h5 {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    margin: 0;
+    font-family: var(--mp-text-h5-font-family, var(--mp-text-h-font-family));
+    font-size: var(--mp-text-h5-font-size);
+    font-weight: var(--mp-text-h5-font-weight, var(--mp-text-h-font-weight));
+    line-height: var(--mp-text-h5-line-height, var(--mp-text-h-line-height));
+  }
+
+  h6 {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    margin: 0;
+    font-family: var(--mp-text-h6-font-family, var(--mp-text-h-font-family));
+    font-size: var(--mp-text-h6-font-size);
+    font-weight: var(--mp-text-h6-font-weight, var(--mp-text-h-font-weight));
+    line-height: var(--mp-text-h6-line-height, var(--mp-text-h-line-height));
+    text-transform: var(--mp-text-h6-text-transform);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    header {
+      background-color: var(--mp-color-main--100);
+      color: var(--mp-color-dark--90);
+    }
+  }
+
+  @media only screen and (max-width: 660px) {
+    h4 {
+      font-size: var(--mp-text-h4-mobile-font-size);
+    }
+
+    h5 {
+      font-size: var(--mp-text-h5-mobile-font-size);
+    }
+
+    h6 {
+      font-size: var(--mp-text-h6-mobile-font-size);
+    }
+
+    li {
+      font-size: var(--mp-text-h6-mobile-font-size);
+    }
+
+    .header-meta ul {
+      text-align: left;
+    }
+
+    .header-meta ul li {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      font-family: var(--mp-text-c2-font-family, var(--mp-text-c-font-family));
+      font-size: var(--mp-text-c2-font-size);
+      font-weight: var(--mp-text-c2-font-weight, var(--mp-text-c-font-weight));
+      line-height: var(--mp-text-c2-line-height, var(--mp-text-c-line-height));
+    }
+  }
+
+  @media only screen and (max-width: 460px) {
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .header-meta {
+      margin-top: var(--mp-size--2);
+    }
+  }
+</style>

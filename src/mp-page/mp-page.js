@@ -1,6 +1,6 @@
 import { MPElement, html } from '../mp-element/mp-element'
 import { css } from './mp-page.css.js';
-import {unsafeSVG} from 'lit-html/directives/unsafe-svg'
+import {unsafeSVG} from 'lit-html/directives/unsafe-svg.js'
 import { logo } from '../logo/logo-small.js';
 
 class MPPage extends MPElement {
