@@ -181,42 +181,56 @@ function yearFromHints(folderHint, fileName) {
  * Parse an old-style slash-separated meta line into review fields.
  * Segments are either labeled ("Regie: X") or positional (groups, play name).
  */
+const LABEL_RE = /^([a-zA-Zëé &]+?)\s*:\s*(.+)$/;
+
+/**
+ * Route one "Label: value" pair into the draft. A label can combine roles
+ * ("Tekst en regie:") — the value is assigned to every matching field.
+ * Unknown labels are preserved as a credits line so nothing is lost.
+ */
+function applyLabeledValue(rawLabel, value, draft) {
+  const label = rawLabel.toLowerCase();
+  draft._extraCredits = draft._extraCredits || [];
+  let known = false;
+  if (/regie|bewerking/.test(label)) {
+    draft.directors = draft.directors.concat(splitNames(value));
+    known = true;
+  }
+  if (/tekst|script/.test(label)) {
+    draft.writers = draft.writers.concat(splitNames(value));
+    known = true;
+  }
+  if (/spel|\bmet\b|cast/.test(label) || label === 'van en met') {
+    draft.actors = draft.actors.concat(splitNames(value));
+    known = true;
+  }
+  if (/gezelschap|groep/.test(label)) {
+    draft.groups = (draft.groups || []).concat(splitNames(value));
+    known = true;
+  }
+  if (/gezien|premi|^datum$/.test(label)) {
+    parseGezien(value, draft);
+    known = true;
+  }
+  if (/^(meer\s+)?info(rmatie)?$/.test(label)) {
+    known = true; // booking links: dropped
+  }
+  if (!known) {
+    // Dramaturgie, muziek, choreografie, decor, kostuums, licht, … —
+    // no database field exists, so preserve as a credits line in the text
+    draft._extraCredits.push(`${rawLabel.trim()}: ${clean(value)}`);
+  }
+}
+
 function parseSlashMeta(line, draft) {
   const segments = line.split('/').map(clean).filter(Boolean);
   const positional = [];
   draft._extraCredits = draft._extraCredits || [];
 
   for (const segment of segments) {
-    const labelMatch = segment.match(/^([a-zA-Zëé &]+?)\s*:\s*(.+)$/);
+    const labelMatch = segment.match(LABEL_RE);
     if (labelMatch) {
-      const label = labelMatch[1].toLowerCase();
-      const value = labelMatch[2];
-      // A label can combine roles ("Tekst en regie:") — assign to every match
-      let known = false;
-      if (/regie|bewerking/.test(label)) {
-        draft.directors = draft.directors.concat(splitNames(value));
-        known = true;
-      }
-      if (/tekst|script/.test(label)) {
-        draft.writers = draft.writers.concat(splitNames(value));
-        known = true;
-      }
-      if (/spel|\bmet\b|cast/.test(label) || label === 'van en met') {
-        draft.actors = draft.actors.concat(splitNames(value));
-        known = true;
-      }
-      if (/gezien|premi/.test(label)) {
-        parseGezien(value, draft);
-        known = true;
-      }
-      if (/^(meer\s+)?info(rmatie)?$/.test(label)) {
-        known = true; // booking links: dropped
-      }
-      if (!known) {
-        // Dramaturgie, muziek, choreografie, decor, kostuums, licht, … —
-        // no database field exists, so preserve as a credits line in the text
-        draft._extraCredits.push(`${labelMatch[1].trim()}: ${clean(value)}`);
-      }
+      applyLabeledValue(labelMatch[1], labelMatch[2], draft);
     } else if (/^gezien\b/i.test(segment)) {
       parseGezien(segment.replace(/^gezien(\s+op)?:?\s*/i, ''), draft);
     } else if (/^(theater|dans|opera|cabaret|recensie|interview|margriet prinssen)$/i.test(segment)) {
@@ -275,14 +289,16 @@ export function parseArticle(paragraphs, fileName = '', folderHint = '') {
   const folderIsInterview = /interview/i.test(folderHint);
   const folderIsReview = /recensie/i.test(folderHint);
 
-  // Locate signals in the first paragraphs
+  // Locate signals in the first paragraphs. The Gezien line may sit below a
+  // block of role lines (Tekst:/Regie:/Spel:/…), so scan a bit deeper for it.
   const headScan = Math.min(paras.length, 6);
   let gezienIdx = -1;
   let interviewIdx = -1;
   let slashMetaIdx = -1;
-  for (let i = 0; i < headScan; i++) {
+  for (let i = 0; i < Math.min(paras.length, 12); i++) {
     const text = clean(paras[i].text);
     if (gezienIdx === -1 && /^gezien\b/i.test(text)) gezienIdx = i;
+    if (i >= headScan) continue;
     if (interviewIdx === -1 && /^(jd\s+)?interview\b/i.test(text) && text.length < 80) interviewIdx = i;
     if (slashMetaIdx === -1 && i === 0 && (text.match(/\//g) || []).length >= 3) slashMetaIdx = i;
   }
@@ -323,8 +339,19 @@ function parseReview(paras, fileName, folderHint, { gezienIdx, slashMetaIdx, war
       bodyStart = 2;
     }
   } else if (gezienIdx > 0) {
-    // New-style: header block of [groups, name, title?] then the Gezien line
-    const header = paras.slice(0, gezienIdx).map(p => clean(p.text));
+    // New-style: header block of [groups, name, title?] then the Gezien line.
+    // Labeled lines in the header (Tekst:, Regie:, Spel:, Muziek:, …) are
+    // routed to their fields first; the remaining positional lines are
+    // [groups, name, title].
+    const header = [];
+    for (const line of paras.slice(0, gezienIdx).map(p => clean(p.text))) {
+      const labelMatch = line.match(LABEL_RE);
+      if (labelMatch && labelMatch[1].trim().split(/\s+/).length <= 4) {
+        applyLabeledValue(labelMatch[1], labelMatch[2], draft);
+      } else {
+        header.push(line);
+      }
+    }
     if (header.length >= 3) {
       draft.groups = splitNames(header[0]);
       draft.name = header[1];
@@ -444,12 +471,32 @@ function parseInterview(paras, fileName, folderHint, { interviewIdx, slashMetaId
   }
   if (!draft.title) warnings.push('Geen titel (quote) gevonden');
 
+  // A "Datum: 14 december 2024" line directly after the title fills the
+  // interview date
+  while (bodyStart < paras.length) {
+    const dateMatch = clean(paras[bodyStart].text).match(/^(datum|gepubliceerd)\s*:\s*(.+)$/i);
+    if (!dateMatch) break;
+    const parsed = parseDutchDate(dateMatch[2]);
+    if (parsed) draft._parsedDate = parsed;
+    bodyStart++;
+  }
+
   // Header lines that served no field (production line "Gezelschap,
-  // Voorstelling", venue/tour dates, publication) are preserved, not dropped
+  // Voorstelling", venue/tour dates, publication) are preserved, not dropped.
+  // A "Datum: 14 december 2024" line fills the interview date directly.
   for (let i = 0; i < bodyStart && i < paras.length; i++) {
     if (usedIndices.has(i)) continue;
     const text = clean(paras[i].text).replace(/^\*/, '');
-    if (text && text.length < 200) extraCredits.push(text);
+    if (!text || text.length >= 200) continue;
+    const dateMatch = text.match(/^(datum|gepubliceerd)\s*:\s*(.+)$/i);
+    if (dateMatch) {
+      const parsed = parseDutchDate(dateMatch[2]);
+      if (parsed) {
+        draft._parsedDate = parsed;
+        continue;
+      }
+    }
+    extraCredits.push(text);
   }
 
   const date = draft._parsedDate;

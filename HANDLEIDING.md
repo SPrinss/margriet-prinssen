@@ -41,30 +41,43 @@ eerst in via `margrietprinssen.nl/add` en open het artikel opnieuw.
 niet — sla die in Word eerst op als .docx ("Opslaan als…"), of voer het
 artikel in via `/add`.
 
-**Aanbevolen opbouw van een bestand.** De wizard herkent de gegevens het
-best als het bestand zo begint:
+**Wil je dat álles automatisch wordt overgenomen?** Bouw het bestand dan
+precies zo op (regel voor regel, daarna een lege regel en de tekst):
 
-*Recensie:*
+*Recensie — het ideale formaat:*
 ```
-Orkater                                  ← gezelschap(pen)
+Orkater & Toneelgroep Amsterdam          ← gezelschap(pen)
 Orchestra Soledad                        ← naam voorstelling
 Goede bedoelingen zitten het drama in de weg   ← kop
+Tekst: Jan Jansen, Piet Pietersen        ← schrijvers
+Regie: Marie de Vries                    ← regisseur(s)
+Spel: Anna Bakker, Tom Visser en Lisa de Jong  ← acteurs
 Gezien op 14 december 2024, Theater Bellevue, Amsterdam
-(daarna de tekst van de recensie)
+
+(hier begint de tekst van de recensie)
 ```
 
-*Interview:*
+*Interview — het ideale formaat:*
 ```
-Interview met Anita van Dolen            ← "Interview (met) …"
-'De theatraliteit is terug in de dans'   ← kop (mag met of zonder quotes)
-(daarna de tekst van het interview)
+Interview met Anita van Dolen en Karel Smit
+'De theatraliteit is terug in de dans'   ← kop
+Datum: 3 juni 2025                       ← optioneel
+
+(hier begint de tekst van het interview)
 ```
 
-Alles uit de kopregels waar de site geen eigen veld voor heeft — rollen
-(dramaturgie, muziek, decor…), maar ook productie-info, speelplek en
--data — gaat niet verloren: het wordt automatisch als cursieve regel
-onderaan de artikeltekst bewaard. Je ziet daarvan een melding op de kaart,
-en via het bewerkblok kun je die regel later altijd aanpassen of weghalen.
+De spelregels daarbij:
+
+- **Meerdere namen** scheid je met komma's, "en" of "&" — allemaal goed.
+- **Datum voluit mét jaartal** ("14 december 2024"); zonder jaartal kan het
+  jaar niet bepaald worden en vul je hem in de wizard in.
+- Op de Gezien-regel: **eerst het theater, dan de stad**. (Staan ze
+  andersom, dan herkent de wizard bekende steden meestal alsnog.)
+- De rollenregels (Tekst/Regie/Spel) mogen ook weggelaten worden of in de
+  oude vorm op één regel met schuine strepen staan.
+- Andere regels in de kop (Muziek, Dramaturgie, speeldata, productie-info…)
+  komen automatisch als cursieve regel onderaan de tekst — kwijt raak je
+  niets.
 
 Wijkt een bestand hiervan af? Geen probleem — het wordt gewoon ingelezen,
 maar dan moet je meer velden zelf invullen. De oude opmaak met schuine
