@@ -6,6 +6,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Theater journalist website for Margriet Prinssen. Built with Astro + Lit components, Firebase backend, and Algolia search.
 
+**Deployed 2026-07-23**: the live site (https://margrietprinssen.nl) is the static Astro build. Push to `master` → GitHub Actions builds (reads Firestore at build time) and deploys to Firebase Hosting. Firestore/Storage rules and Cloud Functions are deployed via `firebase deploy` with `GOOGLE_APPLICATION_CREDENTIALS` (see root CLAUDE.md for the key location).
+
+### Publishing model
+
+The site is static: article pages are generated at build time from Firestore. Content changes reach the live site via:
+1. **On-change (needs `GH_DISPATCH_TOKEN`)**: every write to `reviews`/`interviews`/`settings` marks `meta/rebuild` pending (v2 triggers in europe-west1 — the eur3 Firestore DB doesn't allow new gen1 triggers); the scheduled `dispatchSiteRebuild` (every 10 min, us-central1) dispatches ONE GitHub Actions deploy after 5+ quiet minutes. **Not active until** a fine-grained GitHub PAT (Actions: read/write on SPrinss/margriet-prinssen) is set as `GH_DISPATCH_TOKEN` in `functions/.env` and functions are redeployed.
+2. **Daily cron fallback (active)**: the deploy workflow also runs daily at 04:00 UTC.
+3. **Manual**: `gh workflow run deploy.yml -R SPrinss/margriet-prinssen`, or push to master.
+
+**Loop-safety invariant: no Cloud Function may ever write to a collection that has a Firestore trigger.** The only function-written doc is `meta/rebuild`, and nothing listens on `meta/*`. Keep it that way.
+
+### Admin pages (authenticated, excluded from sitemap + robots)
+
+- `/add` — single-article entry form
+- `/import` — bulk .docx import wizard (mammoth + `src/lib/import-parser.mjs` heuristics; validate parser changes with `node ../tools/test-import-parser.mjs` against the real corpus in `../margriet-prinssen-files/read_from_files/new_fioles/`)
+- `/curate` — homepage selection (writes `settings/homepage`; `useLatest: true` = default most-recent behavior), image upload to Storage, missing-image warnings
+
 ## Development Commands
 
 ```bash
