@@ -119,16 +119,27 @@ function markContentChanged() {
   }, { merge: true });
 }
 
-exports.requestRebuildOnReviewWrite = functions.firestore.document('reviews/{reviewId}')
-  .onWrite(() => markContentChanged());
+// Note: the Firestore database is in eur3; NEW gen1 Firestore triggers are
+// not supported for it (the pre-existing us-central1 triggers above are
+// grandfathered), so these use v2 triggers instead.
+const { onDocumentWritten } = require('firebase-functions/v2/firestore');
 
-exports.requestRebuildOnInterviewWrite = functions.firestore.document('interviews/{interviewId}')
-  .onWrite(() => markContentChanged());
+exports.rebuildOnReviewWrite = onDocumentWritten(
+  { document: 'reviews/{reviewId}', region: 'europe-west1' },
+  () => markContentChanged()
+);
+
+exports.rebuildOnInterviewWrite = onDocumentWritten(
+  { document: 'interviews/{interviewId}', region: 'europe-west1' },
+  () => markContentChanged()
+);
 
 // Homepage curation changes also require a rebuild. Loop-safe: writes only
 // meta/rebuild, which has no trigger listening to it.
-exports.requestRebuildOnHomepageChange = functions.firestore.document('settings/{settingId}')
-  .onWrite(() => markContentChanged());
+exports.rebuildOnHomepageChange = onDocumentWritten(
+  { document: 'settings/{settingId}', region: 'europe-west1' },
+  () => markContentChanged()
+);
 
 exports.dispatchSiteRebuild = functions.pubsub.schedule('every 10 minutes').onRun(async () => {
   const docRef = admin.firestore().doc('meta/rebuild');
