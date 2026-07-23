@@ -209,8 +209,8 @@ function parseSlashMeta(line, draft) {
         parseGezien(value, draft);
         known = true;
       }
-      if (/info|te zien|te horen|tournee|aldaar/.test(label)) {
-        known = true; // tour/booking info: stale for the archive, dropped
+      if (/^(meer\s+)?info(rmatie)?$/.test(label)) {
+        known = true; // booking links: dropped
       }
       if (!known) {
         // Dramaturgie, muziek, choreografie, decor, kostuums, licht, … —
@@ -329,6 +329,10 @@ function parseReview(paras, fileName, folderHint, { gezienIdx, slashMetaIdx, war
       draft.groups = splitNames(header[0]);
       draft.name = header[1];
       draft.title = header[header.length - 1];
+      // Header lines beyond the recognized three: keep, don't drop
+      if (header.length > 3) {
+        draft._extraCredits = (draft._extraCredits || []).concat(header.slice(2, -1));
+      }
     } else if (header.length === 2) {
       draft.groups = splitNames(header[0]);
       draft.name = header[1];
@@ -367,11 +371,12 @@ function parseReview(paras, fileName, folderHint, { gezienIdx, slashMetaIdx, war
   draft.bodyHtml = paras.slice(bodyStart).map(p => p.html).join('');
   if (!draft.name) warnings.push('Geen naam voorstelling gevonden');
 
-  // Roles without a database field (dramaturgie, muziek, decor, …) are kept
-  // as a credits line at the end of the article text so nothing is lost
+  // Header data without a database field (dramaturgie, muziek, decor,
+  // speeldata, …) is kept as a credits line at the end of the article text
+  // so nothing from the file is lost
   if (draft._extraCredits && draft._extraCredits.length) {
     draft.bodyHtml += `<p><em>${draft._extraCredits.join(' / ')}</em></p>`;
-    warnings.push(`Extra vermeldingen onderaan de tekst geplaatst: ${draft._extraCredits.map(c => c.split(':')[0]).join(', ')}`);
+    warnings.push(`Extra vermeldingen onderaan de tekst geplaatst: ${draft._extraCredits.map(c => c.split(':')[0].slice(0, 40)).join(', ')}`);
   }
 
   delete draft._extraCredits;
@@ -407,11 +412,13 @@ function parseInterview(paras, fileName, folderHint, { interviewIdx, slashMetaId
 
   // Old-style slash meta line before/instead: mine it for a date, skip it
   let extraCredits = [];
+  const usedIndices = new Set(interviewIdx !== -1 ? [interviewIdx] : []);
   if (slashMetaIdx === 0 && interviewIdx !== 0) {
     const tmp = { directors: [], writers: [], actors: [], groups: [] };
     parseSlashMeta(clean(paras[0].text), tmp);
     if (tmp._parsedDate) draft._parsedDate = tmp._parsedDate;
     if (tmp._extraCredits) extraCredits = tmp._extraCredits;
+    usedIndices.add(0);
     if (bodyStart < 1) bodyStart = 1;
   }
 
@@ -431,10 +438,19 @@ function parseInterview(paras, fileName, folderHint, { interviewIdx, slashMetaId
     const pick = candidates.find(c => startsWithQuote(c.text)) || candidates[0];
     if (pick) {
       draft.title = pick.text;
+      usedIndices.add(pick.i);
       bodyStart = pick.i + 1;
     }
   }
   if (!draft.title) warnings.push('Geen titel (quote) gevonden');
+
+  // Header lines that served no field (production line "Gezelschap,
+  // Voorstelling", venue/tour dates, publication) are preserved, not dropped
+  for (let i = 0; i < bodyStart && i < paras.length; i++) {
+    if (usedIndices.has(i)) continue;
+    const text = clean(paras[i].text).replace(/^\*/, '');
+    if (text && text.length < 200) extraCredits.push(text);
+  }
 
   const date = draft._parsedDate;
   if (date && date.year) {
@@ -445,7 +461,7 @@ function parseInterview(paras, fileName, folderHint, { interviewIdx, slashMetaId
   draft.bodyHtml = paras.slice(bodyStart).map(p => p.html).join('');
   if (extraCredits.length) {
     draft.bodyHtml += `<p><em>${extraCredits.join(' / ')}</em></p>`;
-    warnings.push(`Extra vermeldingen onderaan de tekst geplaatst: ${extraCredits.map(c => c.split(':')[0]).join(', ')}`);
+    warnings.push(`Extra vermeldingen onderaan de tekst geplaatst: ${extraCredits.map(c => c.split(':')[0].slice(0, 40)).join(', ')}`);
   }
   delete draft._parsedDate;
   return draft;

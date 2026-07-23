@@ -60,10 +60,11 @@ Interview met Anita van Dolen            ← "Interview (met) …"
 (daarna de tekst van het interview)
 ```
 
-Rollen waar de site geen eigen veld voor heeft (dramaturgie, muziek,
-choreografie, decor, kostuums…) gaan niet verloren: die worden automatisch
-als creditsregel onderaan de artikeltekst bewaard — je ziet daarvan een
-melding op de kaart.
+Alles uit de kopregels waar de site geen eigen veld voor heeft — rollen
+(dramaturgie, muziek, decor…), maar ook productie-info, speelplek en
+-data — gaat niet verloren: het wordt automatisch als cursieve regel
+onderaan de artikeltekst bewaard. Je ziet daarvan een melding op de kaart,
+en via het bewerkblok kun je die regel later altijd aanpassen of weghalen.
 
 Wijkt een bestand hiervan af? Geen probleem — het wordt gewoon ingelezen,
 maar dan moet je meer velden zelf invullen. De oude opmaak met schuine
