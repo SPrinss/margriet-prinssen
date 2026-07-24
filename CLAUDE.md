@@ -20,7 +20,7 @@ The site is static: article pages are generated at build time from Firestore. Co
 ### Admin pages (authenticated, excluded from sitemap + robots)
 
 - `/add` — single-article entry form
-- `/import` — bulk .docx import wizard (mammoth + `src/lib/import-parser.mjs` heuristics; validate parser changes with `node ../tools/test-import-parser.mjs` against the real corpus in `../margriet-prinssen-files/read_from_files/new_fioles/`)
+- `/import` — bulk .docx import wizard (mammoth + `src/lib/import-parser.mjs` heuristics; validate parser changes with `node tools/test-import-parser.mjs` against the real corpus in `../margriet-prinssen-files/read_from_files/new_fioles/`)
 - `/curate` — homepage selection (writes `settings/homepage`; `useLatest: true` = default most-recent behavior), image upload to Storage, missing-image warnings
 
 ## Development Commands
@@ -67,7 +67,7 @@ npm run emulators:fresh  # Start empty (re-seed with tools/seed-emulator.js from
 
 - Emulator UI: http://localhost:4000 — Firestore :8080, Auth :9099, Functions :5001
 - Requires JDK 21 (`/opt/homebrew/opt/openjdk@21`, baked into the npm scripts)
-- Production data dump/seed scripts live in `../tools/` (workspace root): `dump-firestore.js` (read-only export of all collections incl. subcollections) and `seed-emulator.js` (refuses to run without `FIRESTORE_EMULATOR_HOST`)
+- Production data dump/seed scripts live in `tools/` (in this repo): `dump-firestore.js` (read-only export of all collections incl. subcollections), `seed-emulator.js` (refuses to run without `FIRESTORE_EMULATOR_HOST`) and `test-import-parser.mjs` (validates parser changes against the real corpus in `../../margriet-prinssen-files/`). Data dumps land in `tools/firestore-export/` — gitignored: production content incl. personal data, regenerable
 - **Algolia safety**: emulated functions write to `reviews_test`/`interviews_test` indices, never production. Two layers: `functions/.env.local` (gitignored) sets the index names, and `functions/index.js` defaults to `*_test` whenever `FUNCTIONS_EMULATOR=true`
 - Functions were modernized (Node 22, firebase-functions v6, env-based config instead of the removed `functions.config()`). Production deploy needs `ALGOLIA_APP_ID`/`ALGOLIA_ADMIN_KEY` provided via functions env (e.g. `functions/.env` or secrets) — not yet configured for deploys
 
